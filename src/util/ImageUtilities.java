@@ -5,11 +5,15 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
 public class ImageUtilities {
 
+	private static Map<String,BufferedImage> cachedImages = new TreeMap<String,BufferedImage>();
+	
 	public static void layerImageOnImage(BufferedImage bottom, BufferedImage top, int xStart, int yStart) {
 		for(int x=xStart; x<xStart+top.getWidth(); x++) {
 			for(int y=yStart; y<yStart+top.getHeight(); y++) {
@@ -49,8 +53,15 @@ public class ImageUtilities {
 	
 	public static BufferedImage importImage(String str) {
 		BufferedImage retval;
+		
+		//if it's already in cache, forget the file read
+		if(cachedImages.get(str) != null) {
+			return cachedImages.get(str);
+		}
+		
 		try {
 			retval = ImageIO.read(new File("assets/images/"+str));
+			cachedImages.put(str, retval);
 		} catch (IOException e) {
 			e.printStackTrace();
 			retval = new BufferedImage(50,50, BufferedImage.TYPE_INT_ARGB);

@@ -10,6 +10,10 @@ public class Coordinate {
 		this.y = y;
 	}
 	
+	public String toString() {
+		return x+","+y;
+	}
+	
 	public Coordinate left() {
 		return new Coordinate(x-1,y);
 	}

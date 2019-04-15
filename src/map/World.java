@@ -3,22 +3,35 @@ package map;
 import java.util.HashMap;
 import java.util.Map;
 
+import game.TileType;
+import game.Unit;
+import game.UnitType;
+
 public class World {
 
-	static final int WORLD_SIZE = 10;
-	private static Map<Coordinate,Tile> tiles = new HashMap<Coordinate,Tile>();
+	public static final int WORLD_SIZE = 10;
+	private Map<Coordinate,Tile> tiles = new HashMap<Coordinate,Tile>();
 	
 	public World() {
 		
 		for(int lat=0; lat<WORLD_SIZE; lat++) {
 			for(int lon=0; lon<WORLD_SIZE; lon++) {
-				tiles.put(new Coordinate(lon,lat), new Tile(lon,lat));				
+				Tile tile;
+				if(lat*lon + lon > 15) {
+					 tile = new Tile(lon,lat,TileType.TYPES.get("Grassland"));	
+					 for(int i = 0; i < lat; i++) {
+						 tile.addUnit(new Unit(UnitType.TYPES.get("Population")));
+					 }
+				} else {
+					tile = new Tile(lon,lat,TileType.TYPES.get("Sea"));
+				}
+				tiles.put(new Coordinate(lon,lat), tile);
 			}
 		}
 
 	}
 	
-	public static Tile getTileAt(Coordinate coord) {
+	public Tile getTileAt(Coordinate coord) {
 		Coordinate modCoord = new Coordinate(coord.x%WORLD_SIZE,coord.y);
 
 		while(modCoord.x < 0) {

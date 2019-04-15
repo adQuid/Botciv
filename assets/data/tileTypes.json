@@ -1,0 +1,12 @@
+{
+data:[
+	{
+		name:"Grassland",
+		image:"tileTerrain/grassland.png"
+	},
+	{
+		name:"Sea",
+		image:"tileTerrain/sea.png"
+	}
+]
+}

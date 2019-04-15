@@ -29,6 +29,8 @@ public class MainUI {
 	public static JFrame GUI = new JFrame("Botciv");
 	public static JPanel displayPanel = new JPanel();
 	public static JPanel detailPanel = new JPanel();
+	public static JPanel cornerPanel = new JPanel();
+	public static JPanel bottomPanel = new JPanel();
 	
 	//should this be here?
 	public static BotcivGame activeGame = new BotcivGame(new World());
@@ -36,6 +38,8 @@ public class MainUI {
 	public static void setupGUI() {
 	
 		DetailUI.setupDetailUI();
+		CornerDisplay.setup();
+		BottomDisplay.setup();
 		
 		KeyboardFocusManager.getCurrentKeyboardFocusManager()
 		  .addKeyEventDispatcher(new KeyEventDispatcher() {
@@ -107,8 +111,8 @@ public class MainUI {
 		GUI.setLayout(new TableLayout(size));
 		GUI.add(displayPanel,"0,0");
 		GUI.add(detailPanel,"1,0");
-		GUI.add(new JButton("test"),"0,1");
-		GUI.add(new JButton("test"),"1,1");
+		GUI.add(bottomPanel,"0,1");
+		GUI.add(cornerPanel,"1,1");
 		
 		GUI.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		GUI.pack();

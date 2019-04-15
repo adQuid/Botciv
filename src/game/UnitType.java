@@ -12,6 +12,8 @@ import java.util.TreeMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import util.MiscUtilities;
+
 public class UnitType {
 
 	public static Map<String,UnitType> TYPES = new TreeMap<String,UnitType>();
@@ -24,7 +26,12 @@ public class UnitType {
 			map = gson.fromJson(new String(Files.readAllBytes(unitTypeFile)),Map.class);
 			
 			for(Map<String,Object> current: (List<Map<String,Object>>)map.get("data")) {
-				TYPES.put((String)current.get("name"),new UnitType((String)current.get("name")));
+				UnitType toAdd = new UnitType((String)current.get("name"),
+						MiscUtilities.extractInt(current.get("displayClass")),
+						MiscUtilities.extractInt(current.get("displayImportance")),
+						(String)current.get("image"));
+				
+				TYPES.put((String)current.get("name"), toAdd);
 			}
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -36,20 +43,37 @@ public class UnitType {
 	}
 	
 	private String name;
+	//only the most important member of each display class is shown, which the exception of display class 0
+	private int displayClass;
+	private int displayImportance;
+	private String image;
 	
-	public UnitType(String name) {
-		this.name = name;
-		System.out.println(name);
-	}
+	
 
+	public UnitType(String name, int displayClass, int displayImportance, String image) {
+		super();
+		this.name = name;
+		this.displayClass = displayClass;
+		this.displayImportance = displayImportance;
+		this.image = image;
+	}
+	
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public int getDisplayClass() {
+		return displayClass;
 	}
 
+	public int getDisplayImportance() {
+		return displayImportance;
+	}
+
+	public String getImage() {
+		return image;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -19,6 +19,7 @@ public class World {
 				Tile tile;
 				if(Math.abs(lat-40)*lon + lon > 85) {
 					 tile = new Tile(lon,lat,TileType.TYPES.get("Grassland"));	
+					 tile.addUnit(new Unit(UnitType.TYPES.get("Road")));
 					 for(int i = 0; i < lat; i++) {
 						 tile.addUnit(new Unit(UnitType.TYPES.get("Population")));
 					 }

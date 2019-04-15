@@ -16,6 +16,10 @@ public class ImageUtilities {
 
 	private static Map<String,BufferedImage> cachedImages = new TreeMap<String,BufferedImage>();
 	
+	public static BufferedImage layerImageOnImage(BufferedImage bottom, BufferedImage top) {
+		return layerImageOnImage(bottom, scale(top,top.getType(),bottom.getWidth(),bottom.getHeight()),0,0);
+	}
+	
 	public static BufferedImage layerImageOnImage(BufferedImage bottom, BufferedImage top, int xStart, int yStart) {
 		BufferedImage retval = cloneImage(bottom);
 		for(int x=xStart; x<xStart+top.getWidth(); x++) {
@@ -28,16 +32,62 @@ public class ImageUtilities {
 					int topPixel = top.getRGB(x, y);
 					int topAlpha = (topPixel >> 24) & 0xff;
 					float maskingFactor = (float)topAlpha/0xff;
-					
-					
-					int fullAlpha = 0xff << 24;
-					botPixel = ((int)((maskingFactor * (topPixel - (topAlpha<<24))) + ((1-maskingFactor) * (botPixel - (botAlpha<<24)))) + fullAlpha);
-										
-					retval.setRGB(x, y, botPixel);
+
+					if(topPixel != 0x0 && topAlpha != 0x0) {
+						//System.out.println(String.format("0x%08X", topPixel)+" times "+String.format("0x%08X", topAlpha)+" converts to "+String.format("0x%08X",  RBGMult(topPixel,maskingFactor)));
+
+
+						int fullAlpha = 0xff << 24;
+						botPixel = RBGadd(RBGMult(botPixel,1-maskingFactor),RBGMult(topPixel,maskingFactor)) + fullAlpha;
+						//System.out.println(String.format("0x%08X", botPixel));
+						retval.setRGB(x, y, botPixel);
+					}
 				}
 			}
 		}
 		return retval;
+	}
+	
+	private static int RBGadd(int rbg1, int rbg2) {
+		//System.out.println(String.format("0x%08X", rbg1)+" + "+String.format("0x%08X", rbg2));
+		
+		int red1 = (rbg1 >> 0) - (rbg1 >> 8 << 8);
+		int blue1 = (((rbg1 >> 8)  << 8) - (rbg1 >> 16 << 16)) >> 8;
+		int green1 = (((rbg1 >> 16) << 16) - (rbg1 >> 24 << 24)) >> 16;
+		
+		int red2 = (rbg2 >> 0) - (rbg2 >> 8 << 8);
+		int blue2 = (((rbg2 >> 8)  << 8) - (rbg2 >> 16 << 16)) >> 8;
+		int green2 = (((rbg2 >> 16) << 16) - (rbg2 >> 24 << 24)) >> 16;
+		
+		int red = Math.min(red1+red2, 0xff);
+		int blue = Math.min(blue1+blue2, 0xff);
+		int green = Math.min(green1+green2, 0xff);
+		
+		if((red << 0) + (blue << 8) + (green << 16) == 0x00369ACE) {
+//			System.out.println(String.format("0x%08X", (red << 0) + (blue << 8) + (green << 16)));
+		}
+		
+		return (red << 0) + (blue << 8) + (green << 16);
+	}
+	
+	private static int RBGMult(int rbg, float mult) {
+		
+		int red = (rbg >> 0) - (rbg >> 8 << 8);
+		int blue = ((rbg >> 8)  << 8) - (rbg >> 16 << 16) >> 8;
+		int green = ((rbg >> 16) << 16) - (rbg >> 24 << 24) >> 16;
+		
+		red *= mult;
+		blue *= mult;
+		green *= mult;
+		
+		/*if(red+(blue<<8)+(green<<16) == 0x003608BD) {
+			System.out.println(String.format("0x%08X", rbg));
+			System.out.println(String.format("0x%08X", red));
+			System.out.println(String.format("0x%08X", blue));
+			System.out.println(String.format("0x%08X", green));
+		}*/
+		
+		return (red) + (blue<<8) + (green<<16);
 	}
 	
 	/**

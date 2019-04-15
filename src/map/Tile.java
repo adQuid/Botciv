@@ -2,15 +2,16 @@ package map;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import game.TileType;
 import game.Unit;
 import game.UnitType;
 import gui.MainUI;
+import gui.UnitDisplayComparator;
 import util.ImageUtilities;
 
 //this kind of belongs in the game package as well
@@ -77,8 +78,27 @@ public class Tile {
 		BufferedImage retval = ImageUtilities.importImage(type.getImage());	
 		
 		if(MainUI.visionDistance <= 10 && units.size() > 0) {
-			BufferedImage pop = ImageUtilities.importImage("units/Population.png");
-			retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.scale(pop,pop.getType(),retval.getWidth(),retval.getHeight()), 0, 0);
+			List<List<UnitType>> displayCategories = new ArrayList<List<UnitType>>();
+			for(int i=0; i<10; i++) {
+				displayCategories.add(new ArrayList<UnitType>());
+			}
+			for(UnitType current: units.keySet()) {
+				displayCategories.get(current.getDisplayClass()).add(current);
+			}
+			for(int i=0; i<10; i++) {
+				Collections.sort(displayCategories.get(i),new UnitDisplayComparator());				
+			}
+			for(UnitType current: displayCategories.get(0)) {
+				BufferedImage unit = ImageUtilities.importImage(current.getImage());
+				retval = ImageUtilities.layerImageOnImage(retval, unit);
+			}
+			for(int i=1; i<10; i++) {
+				if(!displayCategories.get(i).isEmpty()) {
+					BufferedImage unit = ImageUtilities.importImage(displayCategories.get(i).get(0).getImage());
+					retval = ImageUtilities.layerImageOnImage(retval, unit);	
+				}
+			}
+			
 		}
 				
 		return retval;

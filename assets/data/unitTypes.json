@@ -1,7 +1,16 @@
 {
 data:[
 	{
-		name:"Population"
+		name:"Population",
+		displayClass:1,
+		displayImportance:1,
+		image:"units/Population.png"
+	},
+	{
+		name:"Road",
+		displayClass:0,
+		displayImportance:1,
+		image:"units/Dirt Road.png"
 	}
 ]
 }

@@ -9,7 +9,7 @@ import game.UnitType;
 
 public class World {
 
-	public static final int WORLD_SIZE = 10;
+	public static final int WORLD_SIZE = 100;
 	private Map<Coordinate,Tile> tiles = new HashMap<Coordinate,Tile>();
 	
 	public World() {
@@ -17,7 +17,7 @@ public class World {
 		for(int lat=0; lat<WORLD_SIZE; lat++) {
 			for(int lon=0; lon<WORLD_SIZE; lon++) {
 				Tile tile;
-				if(lat*lon + lon > 15) {
+				if(Math.abs(lat-40)*lon + lon > 85) {
 					 tile = new Tile(lon,lat,TileType.TYPES.get("Grassland"));	
 					 for(int i = 0; i < lat; i++) {
 						 tile.addUnit(new Unit(UnitType.TYPES.get("Population")));

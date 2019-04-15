@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import game.TileType;
 import game.Unit;
 import game.UnitType;
+import gui.MainUI;
 import util.ImageUtilities;
 
 //this kind of belongs in the game package as well
@@ -73,7 +74,14 @@ public class Tile {
 	}
 	
 	public BufferedImage image() {
-		return ImageUtilities.importImage(type.getImage());	
+		BufferedImage retval = ImageUtilities.importImage(type.getImage());	
+		
+		if(MainUI.visionDistance <= 10 && units.size() > 0) {
+			BufferedImage pop = ImageUtilities.importImage("units/Population.png");
+			retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.scale(pop,pop.getType(),retval.getWidth(),retval.getHeight()), 0, 0);
+		}
+				
+		return retval;
 	}
 	
 }

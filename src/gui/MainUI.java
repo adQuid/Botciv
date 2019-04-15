@@ -46,22 +46,30 @@ public class MainUI {
 		    	  	}
 		    	  	if(e.getKeyCode() == KeyEvent.VK_UP) {
 		    	  		if(MainUIMapDisplay.focus.y > 0) {
-		    	  			MainUIMapDisplay.focus = MainUIMapDisplay.focus.up();
+		    	  			for(int i = 0; i <= MainUI.visionDistance/10; i++) {
+		    	  				MainUIMapDisplay.focus = MainUIMapDisplay.focus.up();
+		    	  			}
 		    	  			MainUIMapDisplay.repaintDisplay();
 		    	  		}
 					}
 					if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 						if(MainUIMapDisplay.focus.y+MainUI.visionDistance < World.WORLD_SIZE) {
-							MainUIMapDisplay.focus = MainUIMapDisplay.focus.down();
+							for(int i = 0; i <= MainUI.visionDistance/10; i++) {
+								MainUIMapDisplay.focus = MainUIMapDisplay.focus.down();
+							}
 							MainUIMapDisplay.repaintDisplay();
 						}
 					}
 					if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-						MainUIMapDisplay.focus = MainUIMapDisplay.focus.left();
+						for(int i = 0; i <= MainUI.visionDistance/10; i++) {
+							MainUIMapDisplay.focus = MainUIMapDisplay.focus.left();
+						}
 						MainUIMapDisplay.repaintDisplay();
 					}
 					if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-						MainUIMapDisplay.focus = MainUIMapDisplay.focus.right();
+						for(int i = 0; i <= MainUI.visionDistance/10; i++) {
+							MainUIMapDisplay.focus = MainUIMapDisplay.focus.right();
+						}
 						MainUIMapDisplay.repaintDisplay();
 					}
 		        return false;
@@ -78,6 +86,9 @@ public class MainUI {
 					}
 				}else if(visionDistance > 2){
 					visionDistance--;
+					if(visionDistance%2==0) {
+						MainUIMapDisplay.focus = MainUIMapDisplay.focus.down().right();
+					}
 				}
 				MainUIMapDisplay.repaintDisplay();
 			}			

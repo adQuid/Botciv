@@ -25,9 +25,7 @@ public class MainUIMapDisplay {
 	
 	private static long lastUpdateTime = 0L;
 	
-	public static void paintDisplay() {
-		MainUI.displayPanel = new JPanel();
-		
+	public static void paintDisplay() {		
 		map = new BufferedImage(400, 300, BufferedImage.TYPE_INT_ARGB);
 		paintItBlack(map);
 		imageDisplay.setIcon(new ImageIcon(map));

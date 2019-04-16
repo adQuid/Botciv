@@ -80,7 +80,7 @@ public class MainUI {
 		      }
 		});
 		
-		GUI.addMouseWheelListener(new MouseWheelListener() {
+		displayPanel.addMouseWheelListener(new MouseWheelListener() {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent arg0) {

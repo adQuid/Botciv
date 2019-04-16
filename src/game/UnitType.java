@@ -30,7 +30,7 @@ public class UnitType {
 						MiscUtilities.extractInt(current.get("displayClass")),
 						MiscUtilities.extractInt(current.get("displayImportance")),
 						(String)current.get("image"));
-				
+				toAdd.attributes = (Map)current.get("attributes");
 				TYPES.put((String)current.get("name"), toAdd);
 			}
 		} catch (JsonSyntaxException e) {
@@ -47,7 +47,8 @@ public class UnitType {
 	private int displayClass;
 	private int displayImportance;
 	private String image;
-	
+	//catch-all for stats that most units don't have
+	private Map<String,Object> attributes;	
 	
 
 	public UnitType(String name, int displayClass, int displayImportance, String image) {
@@ -72,6 +73,10 @@ public class UnitType {
 
 	public String getImage() {
 		return image;
+	}
+	
+	public Object getAttribute(String key) {
+		return attributes.get(key);
 	}
 	
 	@Override
@@ -99,4 +104,6 @@ public class UnitType {
 		return true;
 	}	
 		
+	
+	
 }

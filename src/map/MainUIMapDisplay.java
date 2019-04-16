@@ -111,7 +111,7 @@ public class MainUIMapDisplay {
 	}
 	
 	public static Coordinate pixelToMapCoord(int x, int y) {
-		return new Coordinate(((x * MainUI.visionDistance / getMapHeight()) + focus.x)%World.WORLD_SIZE,(y * MainUI.visionDistance / getMapHeight()) + focus.y);
+		return new Coordinate(((x * MainUI.visionDistance / getMapHeight()) + focus.x)%MainUI.activeGame.world.WORLD_SIZE,(y * MainUI.visionDistance / getMapHeight()) + focus.y);
 	}
 	
 	private static void establishSelectAction() {

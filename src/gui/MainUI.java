@@ -57,7 +57,7 @@ public class MainUI {
 		    	  		}
 					}
 					if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-						if(MainUIMapDisplay.focus.y+MainUI.visionDistance < World.WORLD_SIZE) {
+						if(MainUIMapDisplay.focus.y+MainUI.visionDistance < activeGame.world.WORLD_SIZE) {
 							for(int i = 0; i <= MainUI.visionDistance/10; i++) {
 								MainUIMapDisplay.focus = MainUIMapDisplay.focus.down();
 							}
@@ -85,7 +85,7 @@ public class MainUI {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				if(arg0.getWheelRotation() > 0) {
-					if(visionDistance < World.WORLD_SIZE) {
+					if(visionDistance < activeGame.world.WORLD_SIZE) {
 						visionDistance++;
 					}
 				}else if(visionDistance > 2){

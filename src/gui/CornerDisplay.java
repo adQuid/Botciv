@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
@@ -8,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.BotcivPlayer;
 import layout.TableLayout;
 import util.ImageUtilities;
 
@@ -19,6 +22,7 @@ public class CornerDisplay {
 	public static ResourceDisplay influenceDisplay = new ResourceDisplay(ResourceDisplay.ResourceType.influence);
 	public static ResourceDisplay educationDisplay = new ResourceDisplay(ResourceDisplay.ResourceType.education);
 	
+	private static JButton commitTurnButton = new JButton("Commit Turn");
 	
 	public static void setup() {
 		
@@ -62,10 +66,20 @@ public class CornerDisplay {
 		JPanel bigButtonsPanel = new JPanel();
 		bigButtonsPanel.setLayout(new GridLayout(2,2));
 		
+		commitTurnButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MainUI.activeGame.endRound();
+				laborDisplay.setValue(MainUI.activeGame.players.get(0).getLabor(), MainUI.activeGame.players.get(0).getPortfolio(MainUI.activeGame.world).labor);
+				materialsDisplay.setValue(MainUI.activeGame.players.get(0).getMaterials(), MainUI.activeGame.players.get(0).getPortfolio(MainUI.activeGame.world).materials);
+			}			
+		});
+		
 		bigButtonsPanel.add(new JButton("Empire Options"));
 		bigButtonsPanel.add(new JButton("???"));
 		bigButtonsPanel.add(new JButton("Clear Turn"));
-		bigButtonsPanel.add(new JButton("Commit Turn"));
+		bigButtonsPanel.add(commitTurnButton);
 		
 		MainUI.cornerPanel.add(resourcePanel,"0,0");
 		MainUI.cornerPanel.add(bigButtonsPanel,"0,1");

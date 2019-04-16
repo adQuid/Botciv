@@ -1,18 +1,29 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import aibrain.Action;
 import aibrain.Game;
 import aibrain.Player;
+import map.Coordinate;
 import map.World;
 
 public class BotcivGame implements Game{
 
 	public World world;
+	public List<BotcivPlayer> players = new ArrayList<BotcivPlayer>();
 	
 	public BotcivGame(World world) {
 		this.world = world;
+		
+		for(int i=0; i<1; i++) {
+			BotcivPlayer toAdd = new BotcivPlayer("Player "+i);
+
+			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Population"),toAdd));;
+			
+			players.add(toAdd);
+		}
 	}
 	
 	@Override
@@ -23,13 +34,20 @@ public class BotcivGame implements Game{
 
 	@Override
 	public void endRound() {
-		// TODO Auto-generated method stub
-		
+
+		//end of round resource generation
+		for(Player current: players) {
+			BotcivPlayer civ = (BotcivPlayer)current;
+			ResourcePortfolio port = civ.getPortfolio(world);
+			
+			civ.addLabor(port.labor);
+			civ.addMaterials(port.materials);
+			
+		}
 	}
 
 	@Override
 	public List<Player> getPlayers() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

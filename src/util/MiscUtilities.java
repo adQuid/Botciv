@@ -4,6 +4,14 @@ import gui.MainUI;
 
 public class MiscUtilities {
 
+	public static double addTo(double base, Object addTo) {
+		try {
+			return base+(double)addTo;
+		} catch(Exception e) {
+			return base;
+		}
+	}
+	
 	public static int extractInt(Object obj) {
 		return (int)Double.parseDouble(obj.toString());
 	}

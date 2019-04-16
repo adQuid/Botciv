@@ -4,13 +4,17 @@ data:[
 		name:"Population",
 		displayClass:1,
 		displayImportance:1,
-		image:"units/Population.png"
+		image:"units/Population.png",
+		attributes:{
+			laborGeneration:1
+		}
 	},
 	{
 		name:"Road",
 		displayClass:0,
 		displayImportance:1,
-		image:"units/Dirt Road.png"
+		image:"units/Dirt Road.png",
+		attributes:{}
 	}
 ]
 }

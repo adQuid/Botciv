@@ -40,8 +40,11 @@ public class BotcivGame implements Game{
 			BotcivPlayer civ = (BotcivPlayer)current;
 			ResourcePortfolio port = civ.getPortfolio(world);
 			
-			civ.addLabor(port.labor);
+			civ.setLabor(port.labor);
 			civ.addMaterials(port.materials);
+			civ.addWealth(port.wealth);
+			civ.addInfluence(port.influence);
+			civ.setEducation(port.education);
 			
 		}
 	}
@@ -54,7 +57,7 @@ public class BotcivGame implements Game{
 	@Override
 	public Game imageForPlayer(Player arg0) {
 		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
 	@Override

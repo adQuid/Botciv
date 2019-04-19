@@ -14,7 +14,7 @@ public class World {
 
 	public final int WORLD_SIZE = 100;
 	private Map<Coordinate,Tile> tiles = new HashMap<Coordinate,Tile>();
-	
+		
 	public World() {
 		
 		for(int lat=0; lat<WORLD_SIZE; lat++) {
@@ -32,6 +32,11 @@ public class World {
 	}
 	
 	public Tile getTileAt(Coordinate coord) {
+		if(coord == null) {
+			return null;
+		}
+		
+		
 		Coordinate modCoord = new Coordinate(coord.x%WORLD_SIZE,coord.y);
 
 		while(modCoord.x < 0) {
@@ -40,7 +45,13 @@ public class World {
 		
 		return tiles.get(modCoord);
 	}
-	
+		
+	public void clearSelections() {
+		for(Tile tile: tiles.values()) {
+			tile.setSelected(false);
+		}
+	}
+
 	/**
 	 * 
 	 * @param type can be set to null for wildcard

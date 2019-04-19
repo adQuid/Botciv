@@ -79,6 +79,16 @@ public class UnitType {
 		return attributes.get(key);
 	}
 	
+	public boolean has(String key) {
+		if(attributes.get(key)==null) {
+			return false;
+		}
+		if(attributes.get(key).getClass() != Boolean.class) {
+			return true;
+		}
+		return (Boolean)attributes.get(key);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

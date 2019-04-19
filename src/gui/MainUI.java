@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import game.BotcivGame;
+import game.BotcivPlayer;
 import layout.TableLayout;
 import map.Coordinate;
 import map.MainUIMapDisplay;
@@ -33,11 +34,13 @@ public class MainUI {
 	public static JPanel bottomPanel = new JPanel();
 	
 	//should this be here?
-	public static BotcivGame activeGame = new BotcivGame(new World());
+	private static BotcivGame activeGame = new BotcivGame(new World());
+	private static BotcivPlayer playingAs = activeGame.players.get(0);
+	private static BotcivGame imageGame = (BotcivGame) activeGame.imageForPlayer(playingAs);
 	
 	public static void setupGUI() {
 	
-		DetailUI.setupDetailUI();
+		SideDisplay.setupDetailUI();
 		CornerDisplay.setup();
 		BottomDisplay.setup();
 		
@@ -86,13 +89,12 @@ public class MainUI {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				if(arg0.getWheelRotation() > 0) {
 					if(visionDistance < activeGame.world.WORLD_SIZE) {
-						visionDistance++;
+						visionDistance+=2;
+						MainUIMapDisplay.focus = MainUIMapDisplay.focus.up().left();
 					}
-				}else if(visionDistance > 2){
-					visionDistance--;
-					if(visionDistance%2==0) {
-						MainUIMapDisplay.focus = MainUIMapDisplay.focus.down().right();
-					}
+				}else if(visionDistance > 4){
+					visionDistance-=2;
+					MainUIMapDisplay.focus = MainUIMapDisplay.focus.down().right();
 				}
 				MainUIMapDisplay.repaintDisplay();
 			}			
@@ -117,6 +119,10 @@ public class MainUI {
 		GUI.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		GUI.pack();
 		GUI.setVisible(true);
+	}
+	
+	public static BotcivGame getGame() {
+		return imageGame;
 	}
 	
 }

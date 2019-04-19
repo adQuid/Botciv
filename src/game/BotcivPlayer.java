@@ -35,6 +35,10 @@ public class BotcivPlayer implements Player{
 		return labor;
 	}
 
+	public void setLabor(double labor) {
+		this.labor = labor;
+	}
+	
 	public void addLabor(double labor) {
 		this.labor += labor;
 	}
@@ -59,6 +63,10 @@ public class BotcivPlayer implements Player{
 		return influence;
 	}
 
+	public void setInfluence(double influence) {
+		this.influence = influence;
+	}
+	
 	public void addInfluence(double influence) {
 		this.influence += influence;
 	}
@@ -67,6 +75,10 @@ public class BotcivPlayer implements Player{
 		return education;
 	}
 
+	public void setEducation(double education) {
+		this.education = education;
+	}
+	
 	public void addEducation(double education) {
 		this.education += education;
 	}

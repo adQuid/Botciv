@@ -26,8 +26,7 @@ public class DescriptionListener implements MouseListener{
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		BottomDisplay.resetDescription();
 	}
 
 	@Override

@@ -6,7 +6,8 @@ data:[
 		displayImportance:1,
 		image:"units/Population.png",
 		attributes:{
-			laborGeneration:1
+			laborGeneration:1,
+			migrates:true
 		}
 	},
 	{

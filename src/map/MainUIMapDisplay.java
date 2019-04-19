@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import gui.DetailUI;
+import gui.SideDisplay;
 import gui.MainUI;
 import util.ImageUtilities;
 
@@ -54,7 +54,7 @@ public class MainUIMapDisplay {
 		
 		for(int lat=focus.y; lat < focus.y+MainUI.visionDistance*2; lat++) {
 			for(int lon=focus.x; lon < focus.x+MainUI.visionDistance*2; lon++) {
-				Tile tile = MainUI.activeGame.world.getTileAt(new Coordinate(lon,lat));
+				Tile tile = MainUI.getGame().world.getTileAt(new Coordinate(lon,lat));
 				if(tile != null) {
 					paintImage(tile.image(),lon,tile.getY());
 				}
@@ -78,7 +78,7 @@ public class MainUIMapDisplay {
 		Coordinate coord = mapToPixelCoord(xCoord,yCoord);
 
 		
-		BufferedImage scaledImage = ImageUtilities.scale(img,img.getType(),(int)Math.ceil(getMapHeight()/(1.0*MainUI.visionDistance)),(int)Math.ceil(getMapHeight()/(1.0*MainUI.visionDistance)));
+		BufferedImage scaledImage = ImageUtilities.scale(img,(int)Math.ceil(getMapHeight()/(1.0*MainUI.visionDistance)),(int)Math.ceil(getMapHeight()/(1.0*MainUI.visionDistance)));
 
 		for(int x = coord.x; x < coord.x + (getMapHeight()/MainUI.visionDistance); x++) {
 			for(int y = coord.y; y < coord.y + (getMapHeight()/MainUI.visionDistance); y++) {
@@ -111,7 +111,7 @@ public class MainUIMapDisplay {
 	}
 	
 	public static Coordinate pixelToMapCoord(int x, int y) {
-		return new Coordinate(((x * MainUI.visionDistance / getMapHeight()) + focus.x)%MainUI.activeGame.world.WORLD_SIZE,(y * MainUI.visionDistance / getMapHeight()) + focus.y);
+		return new Coordinate(((x * MainUI.visionDistance / getMapHeight()) + focus.x)%MainUI.getGame().world.WORLD_SIZE,(y * MainUI.visionDistance / getMapHeight()) + focus.y);
 	}
 	
 	private static void establishSelectAction() {
@@ -128,7 +128,12 @@ public class MainUIMapDisplay {
 			}
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				DetailUI.focusOnTile(MainUI.activeGame.world.getTileAt(MainUIMapDisplay.pixelToMapCoord(arg0.getX(), arg0.getY())));
+				MainUI.getGame().world.clearSelections();
+				Coordinate newSelect = MainUIMapDisplay.pixelToMapCoord(arg0.getX(), arg0.getY());
+				Tile select = MainUI.getGame().world.getTileAt(newSelect);
+				select.setSelected(true);
+				repaintDisplay();
+				SideDisplay.focusOnTile(MainUI.getGame().world.getTileAt(MainUIMapDisplay.pixelToMapCoord(arg0.getX(), arg0.getY())));
 			}
 			@Override
 			public void mouseReleased(MouseEvent arg0) {

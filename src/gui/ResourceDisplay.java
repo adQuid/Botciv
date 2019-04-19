@@ -40,13 +40,16 @@ public class ResourceDisplay implements MouseListener{
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		BottomDisplay.setDescription(new DecimalFormat("#.###").format(value)+" ("+(rateOfChange>=0?"+":"-")+new DecimalFormat("#.###").format(Math.abs(rateOfChange))+" per turn)");
+		if(type == ResourceType.materials || type == ResourceType.wealth || type == ResourceType.influence) {
+			BottomDisplay.setDescription(new DecimalFormat("#.###").format(value)+" ("+(rateOfChange>=0?"+":"-")+new DecimalFormat("#.###").format(Math.abs(rateOfChange))+" per turn)");
+		} else {
+			BottomDisplay.setDescription(new DecimalFormat("#.###").format(value)+" ("+new DecimalFormat("#.###").format(Math.abs(rateOfChange))+" next turn)");
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		BottomDisplay.resetDescription();
 	}
 
 	@Override

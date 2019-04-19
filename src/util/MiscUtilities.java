@@ -19,7 +19,7 @@ public class MiscUtilities {
 	public static String formatForDescription(String input) {
 		String retval = "<html>"+input+"<html>";
 		
-		for(int i=MainUI.GUI.getWidth()/8; i<retval.length(); i+=MainUI.GUI.getWidth()/8) {
+		for(int i=(2*MainUI.GUI.getWidth())/15; i<retval.length(); i+=(2*MainUI.GUI.getWidth())/15) {
 			while(retval.charAt(i) != ' ') {
 				if(++i >= retval.length()) {
 					return retval;

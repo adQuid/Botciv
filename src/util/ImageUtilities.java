@@ -17,7 +17,7 @@ public class ImageUtilities {
 	private static Map<String,BufferedImage> cachedImages = new TreeMap<String,BufferedImage>();
 	
 	public static BufferedImage layerImageOnImage(BufferedImage bottom, BufferedImage top) {
-		return layerImageOnImage(bottom, scale(top,top.getType(),bottom.getWidth(),bottom.getHeight()),0,0);
+		return layerImageOnImage(bottom, scale(top,bottom.getWidth(),bottom.getHeight()),0,0);
 	}
 	
 	public static BufferedImage layerImageOnImage(BufferedImage bottom, BufferedImage top, int xStart, int yStart) {
@@ -101,13 +101,13 @@ public class ImageUtilities {
 	 * @param fHeight y-factor for transformation / scaling
 	 * @return scaled image
 	 */
-	public static BufferedImage scale(BufferedImage sbi, int imageType, int dWidth, int dHeight) {
+	public static BufferedImage scale(BufferedImage sbi, int dWidth, int dHeight) {
 		
 		BufferedImage dbi = null;
 	    if(sbi != null) {
 			double fWidth = dWidth / (1.0 * sbi.getWidth());
 			double fHeight = dHeight / (1.0 * sbi.getHeight());
-	        dbi = new BufferedImage(dWidth, dHeight, imageType);
+	        dbi = new BufferedImage(dWidth, dHeight, sbi.getType());
 	        Graphics2D g = dbi.createGraphics();
 	        AffineTransform at = AffineTransform.getScaleInstance(fWidth, fHeight);
 	        g.drawRenderedImage(sbi, at);

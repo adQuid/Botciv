@@ -18,11 +18,11 @@ import util.ImageUtilities;
 public class Tile {
 
 	private int x;
-	private int y;
-	
+	private int y;	
 	private TileType type;
-	
 	private Map<UnitType,List<Unit>> units = new HashMap<UnitType,List<Unit>>();
+	
+	private boolean selected;
 	
 	public Tile(int x, int y, TileType type) {
 		super();
@@ -54,26 +54,14 @@ public class Tile {
 		units.get(toAdd.getType()).add(toAdd);
 	}
 	
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+	
 	public Coordinate getRelativeCoordinate(Coordinate viewPoint) {
 		return new Coordinate(x,y);
 	}
-	
-	public Tile west() {
-		return null;
-	}
-	
-	public Tile east() {
-		return null;
-	}
-	
-	public Tile north() {
-		return null;
-	}
-	
-	public Tile south() {
-		return null;
-	}
-	
+		
 	public BufferedImage image() {
 		BufferedImage retval = ImageUtilities.importImage(type.getImage());	
 		
@@ -101,6 +89,10 @@ public class Tile {
 			
 		}
 				
+		if(selected) {
+			retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("ui/selection.png"));
+		}
+		
 		return retval;
 	}
 	

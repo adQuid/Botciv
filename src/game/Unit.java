@@ -2,10 +2,13 @@ package game;
 
 import java.util.Map;
 
+import map.Tile;
+
 public class Unit {
 
 	private UnitType type;
 	private BotcivPlayer owner;
+	private Tile location;
 	
 	public Unit(UnitType type, BotcivPlayer owner) {
 		this.type = type;
@@ -31,7 +34,14 @@ public class Unit {
 	public void setOwner(BotcivPlayer owner) {
 		this.owner = owner;
 	}
-	
+
+	public Tile getLocation() {
+		return location;
+	}
+
+	public void setLocation(Tile location) {
+		this.location = location;
+	}
 
 	
 }

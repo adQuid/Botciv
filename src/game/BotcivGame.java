@@ -20,7 +20,8 @@ public class BotcivGame implements Game{
 		for(int i=0; i<1; i++) {
 			BotcivPlayer toAdd = new BotcivPlayer("Player "+i);
 
-			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Population"),toAdd));;
+			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Population"),toAdd));
+			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Road"),toAdd));
 			
 			players.add(toAdd);
 		}

@@ -52,6 +52,19 @@ public class Tile {
 			units.put(toAdd.getType(), new ArrayList<Unit>());
 		}
 		units.get(toAdd.getType()).add(toAdd);
+		toAdd.setLocation(this);
+	}
+	
+	public void removeUnit(Unit toRemove) {
+		for(Unit current: units.get(toRemove.getType())) {
+			if(current == toRemove) {
+				units.get(toRemove.getType()).remove(toRemove);
+				if(units.get(toRemove.getType()).size() == 0) {
+					units.remove(toRemove.getType());
+				}
+				return;
+			}
+		}
 	}
 	
 	public void setSelected(Boolean selected) {

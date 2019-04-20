@@ -22,7 +22,7 @@ import mapActions.MapActionGlobalStore;
 import mapActions.Migrate;
 import util.ImageUtilities;
 
-public class UnitBottomPanel extends Panel{
+public class TileBottomPanel extends Panel{
 
 	private BufferedImage picture;
 	private JLabel title = new JLabel();
@@ -30,7 +30,7 @@ public class UnitBottomPanel extends Panel{
 	
 	private JPanel buttonPanel = new JPanel();
 	
-	public UnitBottomPanel(JPanel base) {
+	public TileBottomPanel(JPanel base) {
 		super(base);
 	}
 
@@ -45,14 +45,14 @@ public class UnitBottomPanel extends Panel{
 		}
 	}
 	
-	public void selectUnit(Tile tile, Unit unit) {
+	public void selectTile(Tile tile) {
 		super.clearPanel();
 		
 		double[][] size = {{0.2,0.8},{TableLayout.FILL}};		
 		super.basePanel.setLayout(new TableLayout(size));
 		
-		picture = ImageUtilities.scale(ImageUtilities.importImage(unit.getType().getImage()),(int)(super.basePanel.getHeight()*0.8),(int)(basePanel.getHeight()*0.8));
-		title.setText(unit.getType().getName());
+		picture = ImageUtilities.scale(ImageUtilities.importImage("ui/selection.png"),(int)(super.basePanel.getHeight()*0.8),(int)(basePanel.getHeight()*0.8));
+		title.setText("Tile");
 		
 		super.basePanel.add(new JLabel(new ImageIcon(picture)), "0,0");
 		
@@ -64,7 +64,7 @@ public class UnitBottomPanel extends Panel{
 		
 		rightPanel.add(title,"0,0");
 		
-		populateActionButtons(tile, unit);
+		populateActionButtons(tile);
 		
 		rightPanel.add(buttonPanel,"0,1");
 		
@@ -74,34 +74,10 @@ public class UnitBottomPanel extends Panel{
 		super.basePanel.validate();
 	}
 	
-	private void populateActionButtons(Tile tile, Unit unit) {
-		for(int i=0; i<5; i++) {
-			buttonPanel.remove(buttons.get(i));
-			buttons.set(i,new JButton(""));
-			buttonPanel.add(buttons.get(i),i+",0");
-		}
-		
-		int nextButtonIndex = 0;
-		if(unit.getType().has("migrates")) {
-			JButton migrateButton = buttons.get(nextButtonIndex++);
-			migrateButton.addActionListener(new ActionListener() {
+	private void populateActionButtons(Tile tile) {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					List<Coordinate> inRange = MainUI.getGame().world.tilesWithinRange(tile, 1);
-					for(Coordinate current: inRange) {
-						MainUI.getGame().world.getTileAt(current).setSelected(true);
-					}
-					MainUIMapDisplay.repaintDisplay();
-					MapActionGlobalStore.selectedUnit = unit;
-					MainUIMapDisplay.action = new Migrate();
-				}				
-			});		
-			migrateButton.setText("Migrate");
-			migrateButton.addMouseListener(new DescriptionListener("Take one movement point into a tile you own, an unclaimed tile, or a tile belonging to someone you have migration permissoins with."));
-		}
 		
-		this.buttonPanel.repaint();
+
 	}
 
 }

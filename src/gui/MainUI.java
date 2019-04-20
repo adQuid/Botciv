@@ -11,12 +11,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import aibrain.Action;
 import game.BotcivGame;
 import game.BotcivPlayer;
 import layout.TableLayout;
@@ -37,6 +40,7 @@ public class MainUI {
 	private static BotcivGame activeGame = new BotcivGame(new World());
 	private static BotcivPlayer playingAs = activeGame.players.get(0);
 	private static BotcivGame imageGame = (BotcivGame) activeGame.imageForPlayer(playingAs);
+	private static List<Action> actionsThisTurn = new ArrayList<Action>();
 	
 	public static void setupGUI() {
 	
@@ -123,6 +127,20 @@ public class MainUI {
 	
 	public static BotcivGame getGame() {
 		return imageGame;
+	}
+	
+	public static void commitTurn() {
+		activeGame.setActionsForPlayer(actionsThisTurn, playingAs);
+		activeGame.endRound();
+		imageGame = (BotcivGame)activeGame.imageForPlayer(playingAs);		
+	}
+	
+	public static void addAction(Action action) {
+		actionsThisTurn.add(action);
+	}
+	
+	public static void clearActions() {
+		actionsThisTurn.clear();
 	}
 	
 }

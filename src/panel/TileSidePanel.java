@@ -66,7 +66,7 @@ public class TileSidePanel extends Panel{
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					BottomDisplay.focusOnUnit(current.getValue().get(0));
+					BottomDisplay.focusOnUnit(tile, current.getValue().get(0));
 				}				
 			});
 			ownObjects.add(toAdd);

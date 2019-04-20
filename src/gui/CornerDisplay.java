@@ -70,7 +70,7 @@ public class CornerDisplay {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				MainUI.getGame().endRound();
+				MainUI.commitTurn();
 				laborDisplay.setValue(MainUI.getGame().players.get(0).getLabor(), MainUI.getGame().players.get(0).getPortfolio(MainUI.getGame().world).labor);
 				materialsDisplay.setValue(MainUI.getGame().players.get(0).getMaterials(), MainUI.getGame().players.get(0).getPortfolio(MainUI.getGame().world).materials);
 			}			

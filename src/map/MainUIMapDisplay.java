@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import gui.SideDisplay;
+import mapActions.FocusOnTile;
+import mapActions.MapAction;
 import gui.MainUI;
 import util.ImageUtilities;
 
@@ -24,6 +26,8 @@ public class MainUIMapDisplay {
 	public static Coordinate focus = new Coordinate(0,0);
 	
 	private static long lastUpdateTime = 0L;
+	
+	public static MapAction action = new FocusOnTile();
 	
 	public static void paintDisplay() {		
 		map = new BufferedImage(400, 300, BufferedImage.TYPE_INT_ARGB);
@@ -130,10 +134,8 @@ public class MainUIMapDisplay {
 			public void mousePressed(MouseEvent arg0) {
 				MainUI.getGame().world.clearSelections();
 				Coordinate newSelect = MainUIMapDisplay.pixelToMapCoord(arg0.getX(), arg0.getY());
-				Tile select = MainUI.getGame().world.getTileAt(newSelect);
-				select.setSelected(true);
-				repaintDisplay();
-				SideDisplay.focusOnTile(MainUI.getGame().world.getTileAt(MainUIMapDisplay.pixelToMapCoord(arg0.getX(), arg0.getY())));
+				action.doAction(newSelect);
+				action = new FocusOnTile();
 			}
 			@Override
 			public void mouseReleased(MouseEvent arg0) {

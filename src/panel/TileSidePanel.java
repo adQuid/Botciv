@@ -11,13 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.Tile;
 import game.Unit;
 import game.UnitType;
 import gui.BottomDisplay;
 import gui.LinearList;
 import gui.MainUI;
 import layout.TableLayout;
-import map.Tile;
 
 public class TileSidePanel extends Panel{
 
@@ -58,7 +58,7 @@ public class TileSidePanel extends Panel{
 		super.basePanel.add(otherObjectsTitle, "0,3");
 		super.basePanel.add(otherObjectListPanel,"0,4");
 		
-		title.setText(tile.getX()+","+tile.getY());		
+		title.setText(tile.getType().getName());		
 		ownObjects.clear();
 		for(Entry<UnitType,List<Unit>> current: tile.getUnits().entrySet()) {
 			JButton toAdd = new JButton(current.getKey().getName()+" ("+current.getValue().size()+")");

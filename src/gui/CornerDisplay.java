@@ -22,6 +22,7 @@ public class CornerDisplay {
 	public static ResourceDisplay influenceDisplay = new ResourceDisplay(ResourceDisplay.ResourceType.influence);
 	public static ResourceDisplay educationDisplay = new ResourceDisplay(ResourceDisplay.ResourceType.education);
 	
+	private static JButton clearTurnButton = new JButton("Clear Turn");
 	private static JButton commitTurnButton = new JButton("Commit Turn");
 	
 	public static void setup() {
@@ -66,8 +67,14 @@ public class CornerDisplay {
 		JPanel bigButtonsPanel = new JPanel();
 		bigButtonsPanel.setLayout(new GridLayout(2,2));
 		
+		clearTurnButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MainUI.clearTurn();
+			}			
+		});
+		
 		commitTurnButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				MainUI.commitTurn();
@@ -78,7 +85,7 @@ public class CornerDisplay {
 		
 		bigButtonsPanel.add(new JButton("Empire Options"));
 		bigButtonsPanel.add(new JButton("???"));
-		bigButtonsPanel.add(new JButton("Clear Turn"));
+		bigButtonsPanel.add(clearTurnButton);
 		bigButtonsPanel.add(commitTurnButton);
 		
 		MainUI.cornerPanel.add(resourcePanel,"0,0");

@@ -1,22 +1,35 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import aibrain.Player;
+import game.actions.BotcivAction;
 import map.World;
 import util.MiscUtilities;
 
 public class BotcivPlayer implements Player{
 
-	String name;
+	private String name;//must be unique
 	private double labor=0;
 	private double materials=0;
 	private double wealth=0;
 	private double influence=0;
 	private double education=0;
+	private List<BotcivAction> actions = new ArrayList<BotcivAction>();
 	
 	public BotcivPlayer(String name) {
 		this.name = name;
+	}
+	
+	public BotcivPlayer(BotcivPlayer other) {
+		this.name = other.name;
+		this.labor = other.labor;
+		this.materials = other.materials;
+		this.wealth = other.wealth;
+		this.influence = other.influence;
+		this.education = other.education;
+		this.actions = new ArrayList<BotcivAction>(other.actions);
 	}
 	
 	public ResourcePortfolio getPortfolio(World world) {
@@ -31,6 +44,10 @@ public class BotcivPlayer implements Player{
 		return retval;
 	}
 
+	public String getName() {
+		return name;
+	}
+	
 	public double getLabor() {
 		return labor;
 	}
@@ -82,5 +99,16 @@ public class BotcivPlayer implements Player{
 	public void addEducation(double education) {
 		this.education += education;
 	}
-		
+	
+	public List<BotcivAction> getActions() {
+		return actions;
+	}
+	
+	public void setActions(List<BotcivAction> actions) {
+		this.actions = actions;
+	}
+	
+	public void addAction(BotcivAction action) {
+		actions.add(action);
+	}
 }

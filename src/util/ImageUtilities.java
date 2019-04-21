@@ -130,6 +130,10 @@ public class ImageUtilities {
 		} catch (IOException e) {
 			e.printStackTrace();
 			retval = new BufferedImage(50,50, BufferedImage.TYPE_INT_ARGB);
+			for(int i = 0; i < 50; i++) {
+				retval.setRGB(i, i, 0xFFFF0000);
+				retval.setRGB(i, 49-i, 0xFFFF0000);
+			}
 		}
 		return retval;
 	}

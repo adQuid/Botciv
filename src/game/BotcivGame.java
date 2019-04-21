@@ -6,6 +6,7 @@ import java.util.List;
 import aibrain.Action;
 import aibrain.Game;
 import aibrain.Player;
+import game.actions.BotcivAction;
 import map.Coordinate;
 import map.World;
 
@@ -27,6 +28,13 @@ public class BotcivGame implements Game{
 		}
 	}
 	
+	public BotcivGame(BotcivGame other) {
+		this.world = new World(other.world,this);
+		for(BotcivPlayer current: other.players) {
+			this.players.add(current);
+		}
+	}
+	
 	@Override
 	public void appendActionsForPlayer(List<Action> arg0, Player arg1) {
 		// TODO Auto-generated method stub
@@ -36,6 +44,12 @@ public class BotcivGame implements Game{
 	@Override
 	public void endRound() {
 
+		for(BotcivPlayer player: players) {
+			for(BotcivAction action: player.getActions()) {
+				action.doAction(this);
+			}
+		}
+		
 		//end of round resource generation
 		for(Player current: players) {
 			BotcivPlayer civ = (BotcivPlayer)current;
@@ -55,10 +69,19 @@ public class BotcivGame implements Game{
 		return null;
 	}
 
+	public BotcivPlayer playerByName(String name) {
+		for(Player current: players) {
+			if(((BotcivPlayer)current).getName().equals(name)) {
+				return (BotcivPlayer)current;
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public Game imageForPlayer(Player arg0) {
 		// TODO Auto-generated method stub
-		return this;
+		return new BotcivGame(this);
 	}
 
 	@Override
@@ -69,14 +92,20 @@ public class BotcivGame implements Game{
 
 	@Override
 	public Game nextRound() {
-		// TODO Auto-generated method stub
-		return null;
+		Game retval = new BotcivGame(this);
+		retval.endRound();
+		return retval;
 	}
 
 	@Override
 	public void setActionsForPlayer(List<Action> arg0, Player arg1) {
-		// TODO Auto-generated method stub
+		BotcivPlayer player = (BotcivPlayer)arg1;
 		
+		List<BotcivAction> toAdd = new ArrayList<BotcivAction>();
+		for(Action current: arg0) {
+			toAdd.add((BotcivAction)current);
+		}
+		player.setActions(toAdd);
 	}
 
 	@Override

@@ -11,13 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.Tile;
 import game.Unit;
 import gui.DescriptionListener;
 import gui.MainUI;
 import layout.TableLayout;
 import map.Coordinate;
 import map.MainUIMapDisplay;
-import map.Tile;
 import mapActions.MapActionGlobalStore;
 import mapActions.Migrate;
 import util.ImageUtilities;

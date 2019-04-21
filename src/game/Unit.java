@@ -2,10 +2,13 @@ package game;
 
 import java.util.Map;
 
-import map.Tile;
+import map.Coordinate;
 
 public class Unit {
 
+	private static long nextID = 1;
+	
+	private long id;
 	private UnitType type;
 	private BotcivPlayer owner;
 	private Tile location;
@@ -13,6 +16,13 @@ public class Unit {
 	public Unit(UnitType type, BotcivPlayer owner) {
 		this.type = type;
 		this.owner = owner;
+		this.id = nextID++;
+	}
+	
+	public Unit(Unit other, BotcivGame game) {
+		this.type=other.type;
+		this.owner = game.playerByName(other.owner.getName());
+		this.id = other.id;
 	}
 	
 	public String toString() {
@@ -43,5 +53,9 @@ public class Unit {
 		this.location = location;
 	}
 
+	//doesn't quite meet the contract for equals
+	public boolean matches(Unit other) {
+		return id == other.id;
+	}
 	
 }

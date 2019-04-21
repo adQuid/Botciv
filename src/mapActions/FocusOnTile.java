@@ -1,11 +1,11 @@
 package mapActions;
 
+import game.Tile;
 import gui.BottomDisplay;
 import gui.MainUI;
 import gui.SideDisplay;
 import map.Coordinate;
 import map.MainUIMapDisplay;
-import map.Tile;
 
 public class FocusOnTile implements MapAction{
 

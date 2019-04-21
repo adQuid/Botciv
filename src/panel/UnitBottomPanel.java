@@ -11,13 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.Tile;
 import game.Unit;
 import gui.DescriptionListener;
 import gui.MainUI;
 import layout.TableLayout;
 import map.Coordinate;
 import map.MainUIMapDisplay;
-import map.Tile;
 import mapActions.MapActionGlobalStore;
 import mapActions.Migrate;
 import util.ImageUtilities;
@@ -88,7 +88,7 @@ public class UnitBottomPanel extends Panel{
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					List<Coordinate> inRange = MainUI.getGame().world.tilesWithinRange(tile, 1);
+					List<Coordinate> inRange = MainUI.getGame().world.tilesWithinRange(tile.getCoordinate(), 1);
 					for(Coordinate current: inRange) {
 						MainUI.getGame().world.getTileAt(current).setSelected(true);
 					}

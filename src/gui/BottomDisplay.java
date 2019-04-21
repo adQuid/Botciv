@@ -6,9 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import game.Tile;
 import game.Unit;
 import layout.TableLayout;
-import map.Tile;
 import panel.TileBottomPanel;
 import panel.UnitBottomPanel;
 

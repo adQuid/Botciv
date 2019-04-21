@@ -10,10 +10,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.Tile;
 import game.Unit;
 import game.UnitType;
 import layout.TableLayout;
-import map.Tile;
 import panel.TileSidePanel;
 
 public class SideDisplay {

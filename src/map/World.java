@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import game.BotcivGame;
 import game.BotcivPlayer;
+import game.Tile;
 import game.TileType;
 import game.Unit;
 import game.UnitType;
@@ -28,7 +31,12 @@ public class World {
 				tiles.put(new Coordinate(lon,lat), tile);
 			}
 		}
-
+	}
+	
+	public World(World other, BotcivGame game) {
+		for(Entry<Coordinate,Tile> entry: other.tiles.entrySet()) {
+			this.tiles.put(entry.getKey(), new Tile(entry.getValue(),game));
+		}
 	}
 	
 	public Tile getTileAt(Coordinate coord) {
@@ -74,14 +82,14 @@ public class World {
 		return retval;
 	}
 	
-	public List<Coordinate> tilesWithinRange(Tile tile, int range){
+	public List<Coordinate> tilesWithinRange(Coordinate tile, int range){
 		List<Coordinate> retval = new ArrayList<Coordinate>();
 		List<List<Coordinate>> arr = new ArrayList<List<Coordinate>>(); 
 		for(int i=0; i <= range; i++) {
 			arr.add(new ArrayList<Coordinate>());
 		}
 		
-		arr.get(0).add(new Coordinate(tile.getX(),tile.getY()));
+		arr.get(0).add(tile);
 		
 		for(int index=0; index < range; index++) {
 			while(arr.get(index).size() > 0) {
@@ -105,9 +113,16 @@ public class World {
 			if(!list.contains(tile)) {
 				list.add(tile);
 			}
+		}			
+	}
+	
+	public int rangeBetween(Coordinate c1, Coordinate c2) {
+		for(int retval = 0; retval < WORLD_SIZE; retval++) {
+			if(tilesWithinRange(c1,retval).contains(c2)) {
+				return retval;
+			}
 		}
-		
-			
+		return -1;
 	}
 	
 }

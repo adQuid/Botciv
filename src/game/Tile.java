@@ -1,4 +1,4 @@
-package map;
+package game;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -6,12 +6,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import game.TileType;
-import game.Unit;
-import game.UnitType;
 import gui.MainUI;
 import gui.UnitDisplayComparator;
+import map.Coordinate;
 import util.ImageUtilities;
 
 //this kind of belongs in the game package as well
@@ -24,12 +23,34 @@ public class Tile {
 	
 	private boolean selected;
 	
+	//debug
+	private boolean copied = false;
+	
 	public Tile(int x, int y, TileType type) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.type = type;
 	}
+	
+	public Tile(Tile other, BotcivGame game) {
+		this.x = other.x;
+		this.y = other.y;
+		this.type = other.type;
+		
+		for(Entry<UnitType,List<Unit>> current: other.units.entrySet()) {
+			List<Unit> toAdd = new ArrayList<Unit>();
+			for(Unit unit: current.getValue()) {
+				toAdd.add(new Unit(unit,game));
+				toAdd.get(toAdd.size()-1).setLocation(this);
+			}
+			this.units.put(current.getKey(), toAdd);
+		}
+		
+		//debug
+		this.copied = true;
+	}
+	
 	public int getX() {
 		return x;
 	}
@@ -41,6 +62,10 @@ public class Tile {
 	}
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public Coordinate getCoordinate() {
+		return new Coordinate(x,y);
 	}
 	
 	public Map<UnitType,List<Unit>> getUnits(){
@@ -65,6 +90,10 @@ public class Tile {
 				return;
 			}
 		}
+	}
+	
+	public TileType getType() {
+		return type;
 	}
 	
 	public void setSelected(Boolean selected) {

@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.Tile;
 import gui.SideDisplay;
 import mapActions.FocusOnTile;
 import mapActions.MapAction;

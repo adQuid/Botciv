@@ -22,6 +22,8 @@ import javax.swing.WindowConstants;
 import aibrain.Action;
 import game.BotcivGame;
 import game.BotcivPlayer;
+import game.Tile;
+import game.Unit;
 import layout.TableLayout;
 import map.Coordinate;
 import map.MainUIMapDisplay;
@@ -129,18 +131,35 @@ public class MainUI {
 		return imageGame;
 	}
 	
+	public static Unit findMatching(Unit unit) {
+		Tile tile = activeGame.world.getTileAt(unit.getLocation().getCoordinate());
+		
+		List<Unit> matchingUnitList = tile.getUnits().get(unit.getType());
+			
+		for(Unit matchingUnit: matchingUnitList) {
+			if(matchingUnit.matches(unit)) {
+				return matchingUnit;
+			}
+		}
+		System.err.println("Failed to find matching unit!");
+		return null;
+	}
+	
 	public static void commitTurn() {
 		activeGame.setActionsForPlayer(actionsThisTurn, playingAs);
 		activeGame.endRound();
 		imageGame = (BotcivGame)activeGame.imageForPlayer(playingAs);		
+		MainUIMapDisplay.repaintDisplay();
 	}
 	
 	public static void addAction(Action action) {
 		actionsThisTurn.add(action);
 	}
 	
-	public static void clearActions() {
+	public static void clearTurn() {
 		actionsThisTurn.clear();
+		imageGame = (BotcivGame)activeGame.imageForPlayer(playingAs);		
+		MainUIMapDisplay.repaintDisplay();
 	}
 	
 }

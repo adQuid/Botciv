@@ -150,6 +150,7 @@ public class MainUI {
 		activeGame.endRound();
 		imageGame = (BotcivGame)activeGame.imageForPlayer(playingAs);		
 		MainUIMapDisplay.repaintDisplay();
+		BottomDisplay.resetDescription();
 	}
 	
 	public static void addAction(Action action) {

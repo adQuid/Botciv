@@ -14,7 +14,7 @@ import panel.UnitBottomPanel;
 
 public class BottomDisplay {
 
-	private static JLabel description = new JLabel("Welcome!");
+	private static JLabel description = new JLabel(MainUI.getGame().getTurnName());
 	private static JPanel selectionFiller = new JPanel();
 	private static UnitBottomPanel unitPanel = new UnitBottomPanel(selectionFiller);
 	private static TileBottomPanel tilePanel = new TileBottomPanel(selectionFiller);
@@ -37,7 +37,7 @@ public class BottomDisplay {
 	}
 	
 	public static void resetDescription() {
-		description.setText("Turn 1 (Strategic Turn)");
+		description.setText(MainUI.getGame().getTurnName());
 	}
 	
 	public static void focusOnTile(Tile tile) {

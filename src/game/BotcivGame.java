@@ -8,10 +8,12 @@ import aibrain.Game;
 import aibrain.Player;
 import game.actions.BotcivAction;
 import map.Coordinate;
+import map.ImageGenerator;
 import map.World;
 
 public class BotcivGame implements Game{
 
+	public int turn = 1;
 	public World world;
 	public List<BotcivPlayer> players = new ArrayList<BotcivPlayer>();
 	
@@ -23,6 +25,11 @@ public class BotcivGame implements Game{
 
 			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Population"),toAdd));
 			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Road"),toAdd));
+			toAdd.addExploredTile(new Coordinate(i+3,i+3));
+			toAdd.addExploredTile(new Coordinate(i+2,i+3));
+			toAdd.addExploredTile(new Coordinate(i+4,i+3));
+			toAdd.addExploredTile(new Coordinate(i+3,i+2));
+			toAdd.addExploredTile(new Coordinate(i+3,i+4));
 			
 			players.add(toAdd);
 		}
@@ -33,6 +40,7 @@ public class BotcivGame implements Game{
 		for(BotcivPlayer current: other.players) {
 			this.players.add(current);
 		}
+		this.turn = other.turn;
 	}
 	
 	@Override
@@ -62,6 +70,7 @@ public class BotcivGame implements Game{
 			civ.setEducation(port.education);
 			
 		}
+		turn++;
 	}
 
 	@Override
@@ -80,8 +89,9 @@ public class BotcivGame implements Game{
 	
 	@Override
 	public Game imageForPlayer(Player arg0) {
-		// TODO Auto-generated method stub
-		return new BotcivGame(this);
+		BotcivGame retval = new BotcivGame(this);
+		ImageGenerator.pruneImage(retval, (BotcivPlayer)arg0);
+		return retval;
 	}
 
 	@Override
@@ -112,6 +122,10 @@ public class BotcivGame implements Game{
 	public void setLive(boolean arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String getTurnName() {
+		return "Turn "+turn+" (Strategic Round)";
 	}
 
 }

@@ -1,6 +1,10 @@
 {
 data:[
 	{
+		name:"Unexplored Tile",
+		image:"tileTerrain/unexplored.png"
+	},
+	{
 		name:"Grassland",
 		image:"tileTerrain/grassland.png"
 	},

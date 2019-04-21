@@ -1,6 +1,7 @@
 package map;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,10 @@ public class World {
 		}
 	}
 	
+	public Collection<Tile> allTiles() {
+		return tiles.values();
+	}
+	
 	public Tile getTileAt(Coordinate coord) {
 		if(coord == null) {
 			return null;
@@ -54,6 +59,10 @@ public class World {
 		return tiles.get(modCoord);
 	}
 		
+	public void setTileAt(Coordinate coord, Tile tile) {
+		tiles.put(coord, tile);
+	}
+	
 	public void clearSelections() {
 		for(Tile tile: tiles.values()) {
 			tile.setSelected(false);

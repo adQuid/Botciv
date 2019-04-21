@@ -1,10 +1,13 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import aibrain.Player;
 import game.actions.BotcivAction;
+import map.Coordinate;
 import map.World;
 import util.MiscUtilities;
 
@@ -17,6 +20,7 @@ public class BotcivPlayer implements Player{
 	private double influence=0;
 	private double education=0;
 	private List<BotcivAction> actions = new ArrayList<BotcivAction>();
+	private Set<Coordinate> exploredTiles = new HashSet<Coordinate>();
 	
 	public BotcivPlayer(String name) {
 		this.name = name;
@@ -30,6 +34,7 @@ public class BotcivPlayer implements Player{
 		this.influence = other.influence;
 		this.education = other.education;
 		this.actions = new ArrayList<BotcivAction>(other.actions);
+		this.exploredTiles = new HashSet<Coordinate>(other.exploredTiles);
 	}
 	
 	public ResourcePortfolio getPortfolio(World world) {
@@ -110,5 +115,13 @@ public class BotcivPlayer implements Player{
 	
 	public void addAction(BotcivAction action) {
 		actions.add(action);
+	}
+	
+	public Set<Coordinate> getExploredTiles(){
+		return exploredTiles;
+	}
+	
+	public void addExploredTile(Coordinate coord) {
+		exploredTiles.add(coord);
 	}
 }

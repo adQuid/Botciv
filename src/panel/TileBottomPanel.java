@@ -12,7 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import game.Tile;
+import game.TileType;
 import game.Unit;
+import game.UnitType;
+import game.actions.ExploreTile;
+import game.actions.MigrateUnit;
 import gui.DescriptionListener;
 import gui.MainUI;
 import layout.TableLayout;
@@ -75,9 +79,31 @@ public class TileBottomPanel extends Panel{
 	}
 	
 	private void populateActionButtons(Tile tile) {
-
+		for(int i=0; i<5; i++) {
+			buttonPanel.remove(buttons.get(i));
+			buttons.set(i,new JButton(""));
+			buttonPanel.add(buttons.get(i),i+",0");
+		}		
 		
+		int nextButtonIndex = 0;
+		if(tile.getType() == TileType.TYPES.get("Unexplored Tile")) {
+			JButton exploreButton = buttons.get(nextButtonIndex++);
+			exploreButton.addActionListener(new ActionListener() {
 
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if(tile.getUnits().get(UnitType.TYPES.get("Explorer")) == null 
+							|| tile.getUnits().get(UnitType.TYPES.get("Explorer")).size() == 0) {
+						
+						MainUI.addAction(new ExploreTile(tile.getCoordinate()));
+						tile.addUnit(new Unit(UnitType.TYPES.get("Explorer"), MainUI.getPlayer()));
+						MainUIMapDisplay.repaintDisplay();
+					}
+				}				
+			});
+			exploreButton.setText("Explore");
+			exploreButton.addMouseListener(new DescriptionListener("Send explorers here to reveal the area."));
+		}
 	}
 
 }

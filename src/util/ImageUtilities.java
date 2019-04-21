@@ -34,12 +34,9 @@ public class ImageUtilities {
 					float maskingFactor = (float)topAlpha/0xff;
 
 					if(topPixel != 0x0 && topAlpha != 0x0) {
-						//System.out.println(String.format("0x%08X", topPixel)+" times "+String.format("0x%08X", topAlpha)+" converts to "+String.format("0x%08X",  RBGMult(topPixel,maskingFactor)));
-
-
 						int fullAlpha = 0xff << 24;
 						botPixel = RBGadd(RBGMult(botPixel,1-maskingFactor),RBGMult(topPixel,maskingFactor)) + fullAlpha;
-						//System.out.println(String.format("0x%08X", botPixel));
+						
 						retval.setRGB(x, y, botPixel);
 					}
 				}
@@ -49,7 +46,6 @@ public class ImageUtilities {
 	}
 	
 	private static int RBGadd(int rbg1, int rbg2) {
-		//System.out.println(String.format("0x%08X", rbg1)+" + "+String.format("0x%08X", rbg2));
 		
 		int red1 = (rbg1 >> 0) - (rbg1 >> 8 << 8);
 		int blue1 = (((rbg1 >> 8)  << 8) - (rbg1 >> 16 << 16)) >> 8;
@@ -63,10 +59,6 @@ public class ImageUtilities {
 		int blue = Math.min(blue1+blue2, 0xff);
 		int green = Math.min(green1+green2, 0xff);
 		
-		if((red << 0) + (blue << 8) + (green << 16) == 0x00369ACE) {
-//			System.out.println(String.format("0x%08X", (red << 0) + (blue << 8) + (green << 16)));
-		}
-		
 		return (red << 0) + (blue << 8) + (green << 16);
 	}
 	
@@ -79,14 +71,7 @@ public class ImageUtilities {
 		red *= mult;
 		blue *= mult;
 		green *= mult;
-		
-		/*if(red+(blue<<8)+(green<<16) == 0x003608BD) {
-			System.out.println(String.format("0x%08X", rbg));
-			System.out.println(String.format("0x%08X", red));
-			System.out.println(String.format("0x%08X", blue));
-			System.out.println(String.format("0x%08X", green));
-		}*/
-		
+
 		return (red) + (blue<<8) + (green<<16);
 	}
 	

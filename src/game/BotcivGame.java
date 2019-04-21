@@ -24,7 +24,7 @@ public class BotcivGame implements Game{
 			BotcivPlayer toAdd = new BotcivPlayer("Player "+i);
 
 			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Population"),toAdd));
-			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Road"),toAdd));
+			//world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Explorer"),toAdd));
 			toAdd.addExploredTile(new Coordinate(i+3,i+3));
 			toAdd.addExploredTile(new Coordinate(i+2,i+3));
 			toAdd.addExploredTile(new Coordinate(i+4,i+3));
@@ -54,7 +54,7 @@ public class BotcivGame implements Game{
 
 		for(BotcivPlayer player: players) {
 			for(BotcivAction action: player.getActions()) {
-				action.doAction(this);
+				action.doAction(this,player);
 			}
 		}
 		

@@ -131,6 +131,10 @@ public class MainUI {
 		return imageGame;
 	}
 	
+	public static BotcivPlayer getPlayer() {
+		return playingAs;
+	}
+	
 	public static Unit findMatching(Unit unit) {
 		Tile tile = activeGame.world.getTileAt(unit.getLocation().getCoordinate());
 		

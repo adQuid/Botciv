@@ -27,6 +27,7 @@ public class BottomDisplay {
 		descriptionPanel.add(description);
 		
 		unitPanel.setup();
+		tilePanel.setup();
 		
 		MainUI.bottomPanel.add(descriptionPanel,"0,0");
 		MainUI.bottomPanel.add(selectionFiller,"0,1");

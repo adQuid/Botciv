@@ -1,6 +1,13 @@
 {
 data:[
 	{
+		name:"Explorer",
+		displayClass:0,
+		displayImportance:10,
+		image:"units/explorer.png",
+		attributes:{}
+	},
+	{
 		name:"Population",
 		displayClass:1,
 		displayImportance:1,

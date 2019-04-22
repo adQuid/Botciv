@@ -31,6 +31,16 @@ public class Coordinate {
 		return new Double(Math.ceil(Math.sqrt(Math.pow(x-other.x, 2) + Math.pow(y-other.y, 2)))).intValue();
 	}
 
+	public Coordinate wrap(int size) {
+		Coordinate modCoord = new Coordinate(x%size,y);
+
+		while(modCoord.x < 0) {
+			modCoord.x += size;
+		}
+		
+		return modCoord;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -36,6 +36,7 @@ public class MainUIMapDisplay {
 		imageDisplay.setIcon(new ImageIcon(map));
 		
 		MainUI.displayPanel.add(imageDisplay);
+		focus = MainUI.getPlayer().getLastFocus();
 		establishSelectAction();
 	}
 	

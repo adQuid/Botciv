@@ -1,8 +1,12 @@
 package game.actions;
 
+import java.util.HashMap;
+
 import game.BotcivGame;
 import game.BotcivPlayer;
+import game.ResourcePortfolio;
 import map.Coordinate;
+import util.GameLogicUtilities;
 
 public class ExploreTile extends BotcivAction{
 
@@ -19,7 +23,10 @@ public class ExploreTile extends BotcivAction{
 
 	@Override
 	public void doAction(BotcivGame game, BotcivPlayer player) {
-		player.addExploredTile(coord);
+		if(GameLogicUtilities.tryTopay(player, 
+				new ResourcePortfolio("{I:1,M:2}"))) {
+			player.addExploredTile(coord);
+		}
 	}
 
 }

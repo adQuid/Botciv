@@ -22,6 +22,8 @@ public class BotcivPlayer implements Player{
 	private List<BotcivAction> actions = new ArrayList<BotcivAction>();
 	private Set<Coordinate> exploredTiles = new HashSet<Coordinate>();
 	
+	private Coordinate lastFocus = new Coordinate(0,0);
+	
 	public BotcivPlayer(String name) {
 		this.name = name;
 	}
@@ -37,7 +39,7 @@ public class BotcivPlayer implements Player{
 		this.exploredTiles = new HashSet<Coordinate>(other.exploredTiles);
 	}
 	
-	public ResourcePortfolio getPortfolio(World world) {
+	public ResourcePortfolio getResourceDeltas(World world) {
 		List<Unit> units = world.getAllUnitsOfTypeByPlayer(null, this);
 		
 		ResourcePortfolio retval = new ResourcePortfolio();
@@ -124,4 +126,14 @@ public class BotcivPlayer implements Player{
 	public void addExploredTile(Coordinate coord) {
 		exploredTiles.add(coord);
 	}
+
+	public Coordinate getLastFocus() {
+		return lastFocus;
+	}
+
+	public void setLastFocus(Coordinate lastFocus) {
+		this.lastFocus = lastFocus;
+	}
+	
+	
 }

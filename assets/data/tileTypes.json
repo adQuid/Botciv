@@ -2,15 +2,33 @@
 data:[
 	{
 		name:"Unexplored Tile",
-		image:"tileTerrain/unexplored.png"
+		image:"tileTerrain/unexplored.png",
+		suitableStart:false
 	},
 	{
 		name:"Grassland",
-		image:"tileTerrain/grassland.png"
+		image:"tileTerrain/grassland.png",
+		suitableStart:true
+	},
+	{
+		name:"Plain",
+		image:"tileTerrain/plains.png",
+		suitableStart:true
+	},
+	{
+		name:"Mountain",
+		image:"tileTerrain/mountains.png",
+		suitableStart:false
 	},
 	{
 		name:"Sea",
-		image:"tileTerrain/sea.png"
+		image:"tileTerrain/sea.png",
+		suitableStart:false
+	},
+	{
+		name:"Ice Cap",
+		image:"tileTerrain/ice_cap.png",
+		suitableStart:false
 	}
 ]
 }

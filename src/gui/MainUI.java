@@ -31,7 +31,7 @@ import map.World;
 
 public class MainUI {
 
-	public static int visionDistance = 5;
+	public static int visionDistance = 3;
 	public static JFrame GUI = new JFrame("Botciv");
 	public static JPanel displayPanel = new JPanel();
 	public static JPanel detailPanel = new JPanel();
@@ -139,7 +139,11 @@ public class MainUI {
 		Tile tile = activeGame.world.getTileAt(unit.getLocation().getCoordinate());
 		
 		List<Unit> matchingUnitList = tile.getUnits().get(unit.getType());
-			
+		
+		if(matchingUnitList == null) {
+			return null;
+		}
+		
 		for(Unit matchingUnit: matchingUnitList) {
 			if(matchingUnit.matches(unit)) {
 				return matchingUnit;
@@ -151,6 +155,7 @@ public class MainUI {
 	
 	public static void commitTurn() {
 		activeGame.setActionsForPlayer(actionsThisTurn, playingAs);
+		actionsThisTurn.clear();
 		activeGame.endRound();
 		imageGame = (BotcivGame)activeGame.imageForPlayer(playingAs);		
 		MainUIMapDisplay.repaintDisplay();

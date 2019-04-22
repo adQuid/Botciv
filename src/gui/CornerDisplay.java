@@ -78,8 +78,7 @@ public class CornerDisplay {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				MainUI.commitTurn();
-				laborDisplay.setValue(MainUI.getGame().players.get(0).getLabor(), MainUI.getGame().players.get(0).getPortfolio(MainUI.getGame().world).labor);
-				materialsDisplay.setValue(MainUI.getGame().players.get(0).getMaterials(), MainUI.getGame().players.get(0).getPortfolio(MainUI.getGame().world).materials);
+				updateResourceDisplays();
 			}			
 		});
 		
@@ -90,6 +89,14 @@ public class CornerDisplay {
 		
 		MainUI.cornerPanel.add(resourcePanel,"0,0");
 		MainUI.cornerPanel.add(bigButtonsPanel,"0,1");
+	}
+	
+	public static void updateResourceDisplays() {
+		laborDisplay.setValue(MainUI.getGame().players.get(0).getLabor(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).labor);
+		materialsDisplay.setValue(MainUI.getGame().players.get(0).getMaterials(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).materials);
+		influenceDisplay.setValue(MainUI.getGame().players.get(0).getInfluence(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).influence);
+		wealthDisplay.setValue(MainUI.getGame().players.get(0).getWealth(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).wealth);
+		educationDisplay.setValue(MainUI.getGame().players.get(0).getEducation(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).education);
 	}
 	
 }

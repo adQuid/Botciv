@@ -56,7 +56,8 @@ public class TileBottomPanel extends Panel{
 		super.basePanel.setLayout(new TableLayout(size));
 		
 		picture = ImageUtilities.scale(ImageUtilities.importImage("ui/selection.png"),(int)(super.basePanel.getHeight()*0.8),(int)(basePanel.getHeight()*0.8));
-		title.setText("Tile");
+		title.setText(tile.getType().getName()+" "+tile.getAltitude()+"M "+tile.getTemperature()+"C");
+		title.addMouseListener(new DescriptionListener("Altitude: "+tile.getAltitude()));
 		
 		super.basePanel.add(new JLabel(new ImageIcon(picture)), "0,0");
 		
@@ -102,7 +103,7 @@ public class TileBottomPanel extends Panel{
 				}				
 			});
 			exploreButton.setText("Explore");
-			exploreButton.addMouseListener(new DescriptionListener("Send explorers here to reveal the area."));
+			exploreButton.addMouseListener(new DescriptionListener("Send explorers here to reveal the area at a cost of 1 influence and 2 materials."));
 		}
 	}
 

@@ -11,7 +11,7 @@ public class ImageGenerator {
 		for(Tile tile: input.world.allTiles()) {
 			Coordinate coord = tile.getCoordinate();
 			if(!player.getExploredTiles().contains(coord)) {
-				input.world.setTileAt(coord, new Tile(coord.x, coord.y, TileType.TYPES.get("Unexplored Tile")));
+				//input.world.setTileAt(coord, new Tile(coord.x, coord.y, TileType.TYPES.get("Unexplored Tile")));
 			}
 		}
 	}

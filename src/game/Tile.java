@@ -18,14 +18,14 @@ public class Tile {
 
 	private int x;
 	private int y;	
+	private int altitude = -2000;
+	private int temperature = 14;
+	private int rainfall = 0;
 	private TileType type;
 	private Map<UnitType,List<Unit>> units = new HashMap<UnitType,List<Unit>>();
 	
 	private boolean selected;
-	
-	//debug
-	private boolean copied = false;
-	
+		
 	public Tile(int x, int y, TileType type) {
 		super();
 		this.x = x;
@@ -37,6 +37,9 @@ public class Tile {
 		this.x = other.x;
 		this.y = other.y;
 		this.type = other.type;
+		this.altitude = other.altitude;
+		this.temperature = other.temperature;
+		this.rainfall = other.rainfall;
 		
 		for(Entry<UnitType,List<Unit>> current: other.units.entrySet()) {
 			List<Unit> toAdd = new ArrayList<Unit>();
@@ -46,9 +49,6 @@ public class Tile {
 			}
 			this.units.put(current.getKey(), toAdd);
 		}
-		
-		//debug
-		this.copied = true;
 	}
 	
 	public int getX() {
@@ -62,8 +62,31 @@ public class Tile {
 	}
 	public void setY(int y) {
 		this.y = y;
+	}	
+	public int getAltitude() {
+		return altitude;
 	}
-	
+
+	public void setAltitude(int altitude) {
+		this.altitude = altitude;
+	}
+
+	public int getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(int temperature) {
+		this.temperature = temperature;
+	}
+
+	public int getRainfall() {
+		return rainfall;
+	}
+
+	public void setRainfall(int rainfall) {
+		this.rainfall = rainfall;
+	}
+
 	public Coordinate getCoordinate() {
 		return new Coordinate(x,y);
 	}
@@ -94,6 +117,10 @@ public class Tile {
 	
 	public TileType getType() {
 		return type;
+	}
+	
+	public void setType(TileType type) {
+		this.type = type;
 	}
 	
 	public void setSelected(Boolean selected) {

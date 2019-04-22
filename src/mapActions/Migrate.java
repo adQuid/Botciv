@@ -11,7 +11,9 @@ public class Migrate implements MapAction{
 	@Override
 	public void doAction(Coordinate coord) {
 		Unit unit = MapActionGlobalStore.selectedUnit;
-		if(MainUI.getGame().world.rangeBetween(unit.getLocation().getCoordinate(), coord) <= 1) {
+		//if we can't find a matching unit, we will assume that it's already moved
+		if(MainUI.findMatching(unit) != null &&
+				MainUI.getGame().world.rangeBetween(unit.getLocation().getCoordinate(), coord) <= 1) {
 			MainUI.addAction(new MigrateUnit(MainUI.findMatching(unit), coord));
 			MapActionGlobalStore.selectedUnit.getLocation().removeUnit(unit);
 			MainUI.getGame().world.getTileAt(coord).addUnit(unit);

@@ -10,6 +10,7 @@ import game.actions.BotcivAction;
 import map.Coordinate;
 import map.ImageGenerator;
 import map.World;
+import util.WorldGenerator;
 
 public class BotcivGame implements Game{
 
@@ -22,17 +23,11 @@ public class BotcivGame implements Game{
 		
 		for(int i=0; i<1; i++) {
 			BotcivPlayer toAdd = new BotcivPlayer("Player "+i);
-
-			world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Population"),toAdd));
-			//world.getTileAt(new Coordinate(i+3,i+3)).addUnit(new Unit(UnitType.TYPES.get("Explorer"),toAdd));
-			toAdd.addExploredTile(new Coordinate(i+3,i+3));
-			toAdd.addExploredTile(new Coordinate(i+2,i+3));
-			toAdd.addExploredTile(new Coordinate(i+4,i+3));
-			toAdd.addExploredTile(new Coordinate(i+3,i+2));
-			toAdd.addExploredTile(new Coordinate(i+3,i+4));
 			
 			players.add(toAdd);
 		}
+		
+		WorldGenerator.establishStartLocations(world, players);
 	}
 	
 	public BotcivGame(BotcivGame other) {
@@ -56,19 +51,21 @@ public class BotcivGame implements Game{
 			for(BotcivAction action: player.getActions()) {
 				action.doAction(this,player);
 			}
+			player.setActions(new ArrayList<BotcivAction>());
 		}
 		
 		//end of round resource generation
-		for(Player current: players) {
-			BotcivPlayer civ = (BotcivPlayer)current;
-			ResourcePortfolio port = civ.getPortfolio(world);
+		for(BotcivPlayer current: players) {
+			ResourcePortfolio port = current.getResourceDeltas(world);
 			
-			civ.setLabor(port.labor);
-			civ.addMaterials(port.materials);
-			civ.addWealth(port.wealth);
-			civ.addInfluence(port.influence);
-			civ.setEducation(port.education);
+			current.setLabor(port.labor);
+			current.addMaterials(port.materials);
+			current.addWealth(port.wealth);
+			current.addInfluence(port.influence);
+			current.setEducation(port.education);
 			
+			//for now all governments generate an automatic 10 influence
+			current.addInfluence(10);
 		}
 		turn++;
 	}

@@ -13,6 +13,7 @@ import game.Tile;
 import game.TileType;
 import game.Unit;
 import game.UnitType;
+import util.WorldGenerator;
 
 public class World {
 
@@ -21,17 +22,7 @@ public class World {
 		
 	public World() {
 		
-		for(int lat=0; lat<WORLD_SIZE; lat++) {
-			for(int lon=0; lon<WORLD_SIZE; lon++) {
-				Tile tile;
-				if(Math.abs(lat-40)*lon + lon > 85) {
-					 tile = new Tile(lon,lat,TileType.TYPES.get("Grassland"));	
-				} else {
-					tile = new Tile(lon,lat,TileType.TYPES.get("Sea"));
-				}
-				tiles.put(new Coordinate(lon,lat), tile);
-			}
-		}
+		tiles = WorldGenerator.generateTerrain(this);
 	}
 	
 	public World(World other, BotcivGame game) {
@@ -48,15 +39,8 @@ public class World {
 		if(coord == null) {
 			return null;
 		}
-		
-		
-		Coordinate modCoord = new Coordinate(coord.x%WORLD_SIZE,coord.y);
-
-		while(modCoord.x < 0) {
-			modCoord.x += WORLD_SIZE;
-		}
-		
-		return tiles.get(modCoord);
+						
+		return tiles.get(coord.wrap(WORLD_SIZE));
 	}
 		
 	public void setTileAt(Coordinate coord, Tile tile) {

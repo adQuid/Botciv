@@ -30,6 +30,8 @@ public class MainUIMapDisplay {
 	
 	public static MapAction action = new FocusOnTile();
 	
+	public static int threadsDone = 0;
+	
 	public static void paintDisplay() {		
 		map = new BufferedImage(400, 300, BufferedImage.TYPE_INT_ARGB);
 		paintItBlack(map);
@@ -58,12 +60,23 @@ public class MainUIMapDisplay {
 		
 		paintItBlack(map);
 		
-		for(int lat=focus.y; lat < focus.y+MainUI.visionDistance*2; lat++) {
-			for(int lon=focus.x; lon < focus.x+MainUI.visionDistance*2; lon++) {
-				Tile tile = MainUI.getGame().world.getTileAt(new Coordinate(lon,lat));
-				if(tile != null) {
-					paintImage(tile.image(),lon,tile.getY());
-				}
+		threadsDone = 0;
+		Thread painter1 = new Thread(new MapPainter(focus.y, focus.y+MainUI.visionDistance, focus.x, focus.x+MainUI.visionDistance));
+		Thread painter2 = new Thread(new MapPainter(focus.y+MainUI.visionDistance, focus.y+MainUI.visionDistance*2, focus.x, focus.x+MainUI.visionDistance));
+		Thread painter3 = new Thread(new MapPainter(focus.y, focus.y+MainUI.visionDistance, focus.x+MainUI.visionDistance, focus.x+MainUI.visionDistance*2));
+		Thread painter4 = new Thread(new MapPainter(focus.y+MainUI.visionDistance, focus.y+MainUI.visionDistance*2, focus.x+MainUI.visionDistance, focus.x+MainUI.visionDistance*2));
+		
+		painter1.start();
+		painter2.start();
+		painter3.start();
+		painter4.start();
+		
+		while(threadsDone < 4) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		
@@ -79,40 +92,18 @@ public class MainUIMapDisplay {
 		map = new BufferedImage(getMapWidth(), getMapHeight(), BufferedImage.TYPE_INT_ARGB);
 		repaintDisplay();
 	}
-	
-	public static void paintImage(BufferedImage img, int xCoord, int yCoord) {
-		Coordinate coord = mapToPixelCoord(xCoord,yCoord);
-
 		
-		BufferedImage scaledImage = ImageUtilities.scale(img,(int)Math.ceil(getMapHeight()/(1.0*MainUI.visionDistance)),(int)Math.ceil(getMapHeight()/(1.0*MainUI.visionDistance)));
-
-		for(int x = coord.x; x < coord.x + (getMapHeight()/MainUI.visionDistance); x++) {
-			for(int y = coord.y; y < coord.y + (getMapHeight()/MainUI.visionDistance); y++) {
-				if(x > 0 && y > 0 && x < getMapWidth() && y < getMapHeight()) {
-					try {
-						int alpha = scaledImage.getRGB(x - coord.x, y - coord.y) >> 24 & 0xFF;
-						if(alpha > 0) {
-							map.setRGB(x, y, scaledImage.getRGB(x - coord.x, y - coord.y));
-						}
-					}catch(ArrayIndexOutOfBoundsException e) {
-						//System.err.println("drawing error!");
-					}					
-				}
-			}
-		}
-	}
-	
-	private static int getMapWidth() {
+	public static int getMapWidth() {
 		int retval = Math.max((int)(MainUI.GUI.getWidth()*0.8),400);
 		return retval - (retval%MainUI.visionDistance);
 	}
 	
-	private static int getMapHeight() {
+	public static int getMapHeight() {
 		int retval = Math.max((int)(MainUI.GUI.getHeight()*0.75),300);
 		return retval - (retval%MainUI.visionDistance);
 	}
 	
-	private static Coordinate mapToPixelCoord(int x, int y) {
+	public static Coordinate mapToPixelCoord(int x, int y) {
 		return new Coordinate((x - focus.x) * getMapHeight() / MainUI.visionDistance,(y - focus.y) * getMapHeight() / MainUI.visionDistance);
 	}
 	

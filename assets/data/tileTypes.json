@@ -21,6 +21,11 @@ data:[
 		suitableStart:false
 	},
 	{
+		name:"Desert",
+		image:"tileTerrain/desert.png",
+		suitableStart:false
+	},
+	{
 		name:"Sea",
 		image:"tileTerrain/sea.png",
 		suitableStart:false

@@ -132,7 +132,12 @@ public class Tile {
 	}
 		
 	public BufferedImage image() {
-		BufferedImage retval = ImageUtilities.importImage(type.getImage());	
+		BufferedImage retval;
+		if(MainUI.visionDistance <= 15) {
+			retval = ImageUtilities.importImage(type.getImage());	
+		} else {
+			retval = ImageUtilities.importImage(type.getImage().substring(0, type.getImage().length()-4)+"-tiny.png");
+		}
 		
 		if(MainUI.visionDistance <= 10 && units.size() > 0) {
 			List<List<UnitType>> displayCategories = new ArrayList<List<UnitType>>();

@@ -16,6 +16,16 @@ data:[
 		suitableStart:true
 	},
 	{
+		name:"Forest",
+		image:"tileTerrain/forest.png",
+		suitableStart:true
+	},
+	{
+		name:"Jungle",
+		image:"tileTerrain/jungle.png",
+		suitableStart:true
+	},
+	{
 		name:"Mountain",
 		image:"tileTerrain/mountains.png",
 		suitableStart:false
@@ -23,6 +33,11 @@ data:[
 	{
 		name:"Desert",
 		image:"tileTerrain/desert.png",
+		suitableStart:false
+	},
+	{
+		name:"Tundra",
+		image:"tileTerrain/tundra.png",
 		suitableStart:false
 	},
 	{

@@ -18,7 +18,7 @@ import map.World;
 
 public class WorldGenerator {
 
-	private static int plates = 14;
+	private static int plates = 18;
 	private static Random rand = new Random();
 	
 	public static Map<Coordinate,Tile> generateTerrain(World world) {
@@ -43,15 +43,15 @@ public class WorldGenerator {
 		//...and let dry ground appear."
 		for(int i=0; i < plates; i++) {
 			Coordinate start = new Coordinate(rand.nextInt(world.WORLD_SIZE),rand.nextInt(world.WORLD_SIZE));
-			int plateBase = rand.nextInt(600)-700;
+			int plateBase = rand.nextInt(650)-700;
 			int tendrils = rand.nextInt(3) + rand.nextInt(3) + 1;
 			Set<Coordinate> thisContinent = new HashSet<Coordinate>();
 			
 			for(int tend=0; tend<tendrils; tend++) {
 				int xTravel = rand.nextInt(5) - 2;
 				int yTravel = rand.nextInt(5) - 2;
-				int length = rand.nextInt(30) + 1;
-				int width = rand.nextInt(6)+3;
+				int length = rand.nextInt(34) + 1;
+				int width = rand.nextInt(9)+3;
 
 				for(int j=0; j<length; j++) {
 					Coordinate nextCoord = new Coordinate(start.x+(j*xTravel),start.y+(j*yTravel)).wrap(world.WORLD_SIZE);
@@ -111,7 +111,7 @@ public class WorldGenerator {
 		
 		//basic temperature by latitude
 		for(Tile tile: tiles.values()) {
-			tile.setTemperature(40 - (9*(Math.abs(tile.getY() - (world.WORLD_SIZE/2)))/8));
+			tile.setTemperature(40 - (17*(Math.abs(tile.getY() - (world.WORLD_SIZE/2)))/16));
 		}
 		
 		//checking for rainfall
@@ -150,10 +150,16 @@ public class WorldGenerator {
 				tile.setType(TileType.TYPES.get("Ice Cap"));
 			} else {
 				if(tile.getAltitude() > -10) {
-					if(tile.getRainfall() > 6) {
+					if(tile.getRainfall() + (tile.getTemperature()/3) > 33) {
+						tile.setType(TileType.TYPES.get("Jungle"));
+					}else if(tile.getRainfall() - (tile.getTemperature()/3) > 20) {
+						tile.setType(TileType.TYPES.get("Forest"));
+					} else if(tile.getRainfall() - (tile.getTemperature()/5) > 7) {
 						tile.setType(TileType.TYPES.get("Grassland"));
-					} else {
+					} else if(tile.getRainfall() - (tile.getTemperature()/5) > 0){
 						tile.setType(TileType.TYPES.get("Plain"));
+					} else {
+						tile.setType(TileType.TYPES.get("Desert"));
 					}
 					landTiles++;
 				} else {
@@ -183,16 +189,16 @@ public class WorldGenerator {
 	private static int cliffs(Map<Coordinate,Tile> tiles, Tile tile, int size) {
 		int retval = 0;
 		
-		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().left().wrap(size))) > 200) {
+		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().left().wrap(size))) > 250) {
 			retval++;
 		}
-		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().right().wrap(size))) > 200) {
+		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().right().wrap(size))) > 250) {
 			retval++;
 		}
-		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().up().wrap(size))) > 200) {
+		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().up().wrap(size))) > 250) {
 			retval++;
 		}
-		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().down().wrap(size))) > 200) {
+		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().down().wrap(size))) > 250) {
 			retval++;
 		}
 		
@@ -209,20 +215,19 @@ public class WorldGenerator {
 	}
 	
 	private static void spreadRainfall(Coordinate start, Map<Coordinate,Tile> tiles, int size) {
-		List<Coordinate> retval = new ArrayList<Coordinate>();
 		List<List<Coordinate>> arr = new ArrayList<List<Coordinate>>(); 
-		for(int i=0; i <= 5; i++) {
+		for(int i=0; i <= 8; i++) {
 			arr.add(new ArrayList<Coordinate>());
 		}
 		
 		arr.get(0).add(start);
 		
-		for(int index=0; index < 5; index++) {
+		for(int index=0; index < 8; index++) {
 			while(arr.get(index).size() > 0) {
 				Coordinate coord = arr.get(index).get(0).wrap(size);
 
 				if(tiles.get(coord).getType() != TileType.TYPES.get("Mountain")) {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + rand.nextInt(2));
+					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
 					addConditionally(tiles, size, arr.get(index+1), coord);
 					addConditionally(tiles, size, arr.get(index+1),coord.up());
 					addConditionally(tiles, size, arr.get(index+1),coord.down());

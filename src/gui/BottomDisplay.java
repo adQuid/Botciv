@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 import game.Tile;
 import game.Unit;
 import layout.TableLayout;
+import panel.GameOptionsBottomPanel;
 import panel.TileBottomPanel;
 import panel.UnitBottomPanel;
 
@@ -18,6 +19,7 @@ public class BottomDisplay {
 	private static JPanel selectionFiller = new JPanel();
 	private static UnitBottomPanel unitPanel = new UnitBottomPanel(selectionFiller);
 	private static TileBottomPanel tilePanel = new TileBottomPanel(selectionFiller);
+	private static GameOptionsBottomPanel gameOptionsPanel = new GameOptionsBottomPanel(selectionFiller);
 		
 	public static void setup() {
 		double[][] bigSplit = {{TableLayout.FILL},{0.2,0.8}};
@@ -26,6 +28,7 @@ public class BottomDisplay {
 		JPanel descriptionPanel = new JPanel();
 		descriptionPanel.add(description);
 		
+		gameOptionsPanel.setup();
 		unitPanel.setup();
 		tilePanel.setup();
 		
@@ -39,6 +42,10 @@ public class BottomDisplay {
 	
 	public static void resetDescription() {
 		description.setText(MainUI.getGame().getTurnName());
+	}
+	
+	public static void openGameOptions() {
+		gameOptionsPanel.openGameOptions();
 	}
 	
 	public static void focusOnTile(Tile tile) {

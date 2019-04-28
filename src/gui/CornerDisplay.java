@@ -24,6 +24,7 @@ public class CornerDisplay {
 	
 	private static JButton clearTurnButton = new JButton("Clear Turn");
 	private static JButton commitTurnButton = new JButton("Commit Turn");
+	private static JButton gameOptionsButton = new JButton("Game Options");
 	
 	public static void setup() {
 		
@@ -67,6 +68,13 @@ public class CornerDisplay {
 		JPanel bigButtonsPanel = new JPanel();
 		bigButtonsPanel.setLayout(new GridLayout(2,2));
 		
+		gameOptionsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BottomDisplay.openGameOptions();
+			}			
+		});
+		
 		clearTurnButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -83,7 +91,7 @@ public class CornerDisplay {
 		});
 		
 		bigButtonsPanel.add(new JButton("Empire Options"));
-		bigButtonsPanel.add(new JButton("???"));
+		bigButtonsPanel.add(gameOptionsButton);
 		bigButtonsPanel.add(clearTurnButton);
 		bigButtonsPanel.add(commitTurnButton);
 		

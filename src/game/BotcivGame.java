@@ -2,21 +2,26 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import aibrain.Action;
 import aibrain.Game;
 import aibrain.Player;
 import game.actions.BotcivAction;
 import map.Coordinate;
-import map.ImageGenerator;
-import map.World;
+import util.ImageGenerator;
+import util.MiscUtilities;
 import util.WorldGenerator;
 
 public class BotcivGame implements Game{
 
 	public int turn = 1;
+	private static final String TURN_NAME = "turn";
 	public World world;
+	private static final String WORLD_NAME = "world";
 	public List<BotcivPlayer> players = new ArrayList<BotcivPlayer>();
+	private static final String PLAYERS_NAME = "players";
 	
 	public BotcivGame(World world) {
 		this.world = world;
@@ -31,11 +36,35 @@ public class BotcivGame implements Game{
 	}
 	
 	public BotcivGame(BotcivGame other) {
-		this.world = new World(other.world,this);
 		for(BotcivPlayer current: other.players) {
 			this.players.add(current);
 		}
+		this.world = new World(other.world,this);
 		this.turn = other.turn;
+	}
+	
+	public BotcivGame(Map<String,Object> map) {
+		turn = MiscUtilities.extractInt(map.get(TURN_NAME));
+		List<Map<String,Object>> playerList = (List<Map<String,Object>>)map.get(PLAYERS_NAME);
+		for(Map<String,Object> current: playerList) {
+			players.add(new BotcivPlayer(current,this));
+		}
+		world = new World((Map<String,Object>)map.get(WORLD_NAME),this);
+	}
+	
+	public Map<String,Object> saveString() {
+		Map<String,Object> retval = new TreeMap<String,Object>();
+		
+		retval.put(TURN_NAME, turn);
+		retval.put(WORLD_NAME, world.saveString());
+		
+		List<Map<String,Object>> playerList = new ArrayList<Map<String,Object>>();
+		for(BotcivPlayer player: players) {
+			playerList.add(player.saveString());
+		}
+		retval.put(PLAYERS_NAME, playerList);
+		
+		return retval;
 	}
 	
 	@Override

@@ -1,9 +1,10 @@
-package map;
+package util;
 
 import game.BotcivGame;
 import game.BotcivPlayer;
 import game.Tile;
 import game.TileType;
+import map.Coordinate;
 
 public class ImageGenerator {
 

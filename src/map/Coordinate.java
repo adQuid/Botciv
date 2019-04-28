@@ -1,5 +1,8 @@
 package map;
 
+import game.World;
+import util.MiscUtilities;
+
 public class Coordinate {
 
 	public int x;
@@ -10,21 +13,26 @@ public class Coordinate {
 		this.y = y;
 	}
 	
+	public Coordinate(String str) {
+		this.x = MiscUtilities.extractInt(str.split(",")[0]);
+		this.y = MiscUtilities.extractInt(str.split(",")[1]);
+	}
+	
 	public String toString() {
 		return x+","+y;
 	}
 	
 	public Coordinate left() {
-		return new Coordinate(x-1,y);
+		return new Coordinate(x-1,y).wrap(World.WORLD_SIZE);
 	}
 	public Coordinate right() {
-		return new Coordinate(x+1,y);
+		return new Coordinate(x+1,y).wrap(World.WORLD_SIZE);
 	}
 	public Coordinate up() {
-		return new Coordinate(x,y-1);
+		return new Coordinate(x,y-1).wrap(World.WORLD_SIZE);
 	}
 	public Coordinate down() {
-		return new Coordinate(x,y+1);
+		return new Coordinate(x,y+1).wrap(World.WORLD_SIZE);
 	}
 	
 	public int distanceTo(Coordinate other) {

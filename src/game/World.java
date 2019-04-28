@@ -1,4 +1,4 @@
-package map;
+package game;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,20 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
-import game.BotcivGame;
-import game.BotcivPlayer;
-import game.Tile;
-import game.TileType;
-import game.Unit;
-import game.UnitType;
+import map.Coordinate;
 import util.WorldGenerator;
 
 public class World {
 
-	public final int WORLD_SIZE = 100;
+	public final static int WORLD_SIZE = 100;
 	private Map<Coordinate,Tile> tiles = new HashMap<Coordinate,Tile>();
-		
+	private static final String TILES_NAME = "tiles";	
+	
 	public World() {
 		
 		tiles = WorldGenerator.generateTerrain(this);
@@ -29,6 +26,26 @@ public class World {
 		for(Entry<Coordinate,Tile> entry: other.tiles.entrySet()) {
 			this.tiles.put(entry.getKey(), new Tile(entry.getValue(),game));
 		}
+	}
+	
+	public World(Map<String,Object> map, BotcivGame game) {
+		List<Map<String,Object>> tileList = (List<Map<String,Object>>)map.get(TILES_NAME);
+		for(Map<String,Object> tileMap: tileList) {
+			Tile toAdd = new Tile(tileMap,game);
+			tiles.put(toAdd.getCoordinate(), toAdd);
+		}
+	}
+	
+	public Map<String,Object> saveString(){
+		Map<String,Object> retval = new TreeMap<String,Object>();
+
+		List<Map<String,Object>> tilesMap = new ArrayList<Map<String,Object>>();
+		for(Tile current: tiles.values()) {
+			tilesMap.add(current.saveString());
+		}
+		retval.put(TILES_NAME, tilesMap);
+		
+		return retval;
 	}
 	
 	public Collection<Tile> allTiles() {

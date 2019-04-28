@@ -12,17 +12,25 @@ import gui.MainUI;
 import gui.UnitDisplayComparator;
 import map.Coordinate;
 import util.ImageUtilities;
+import util.MiscUtilities;
 
 //this kind of belongs in the game package as well
 public class Tile {
 
 	private int x;
+	private static final String X_NAME = "x";
 	private int y;	
+	private static final String Y_NAME = "y";
 	private int altitude = -2000;
+	private static final String ALTITUDE_NAME = "a";
 	private int temperature = 14;
+	private static final String TEMPERATURE_NAME = "t";
 	private int rainfall = 0;
+	private static final String RAINFALL_NAME = "r";
 	private TileType type;
+	private static final String TYPE_NAME = "tp";
 	private Map<UnitType,List<Unit>> units = new HashMap<UnitType,List<Unit>>();
+	private static final String UNITS_NAME = "u";
 	
 	private boolean selected;
 		
@@ -49,6 +57,41 @@ public class Tile {
 			}
 			this.units.put(current.getKey(), toAdd);
 		}
+	}
+	
+	public Tile(Map<String,Object> map, BotcivGame game) {
+		x = MiscUtilities.extractInt(map.get(X_NAME).toString());
+		y = MiscUtilities.extractInt(map.get(Y_NAME).toString());
+		altitude = MiscUtilities.extractInt(map.get(ALTITUDE_NAME).toString());
+		temperature = MiscUtilities.extractInt(map.get(TEMPERATURE_NAME).toString());
+		rainfall = MiscUtilities.extractInt(map.get(RAINFALL_NAME).toString());
+		type = TileType.TYPES.get(map.get(TYPE_NAME).toString());
+		List<Map<String,Object>> unitList = (List<Map<String,Object>>)map.get(UNITS_NAME);
+		for(Map<String,Object> unitMap: unitList) {
+			Unit toAdd = new Unit(unitMap,game,this);
+			addUnit(toAdd);
+		}
+	}
+	
+	public Map<String,Object> saveString(){
+		Map<String,Object> retval = new HashMap<String,Object>();
+		
+		retval.put(X_NAME, x);
+		retval.put(Y_NAME, y);
+		retval.put(ALTITUDE_NAME, altitude);
+		retval.put(TEMPERATURE_NAME, temperature);
+		retval.put(RAINFALL_NAME, rainfall);
+		retval.put(TYPE_NAME, type.getName());
+		
+		List<Map<String,Object>> unitsMap = new ArrayList<Map<String,Object>>();
+		for(List<Unit> curList: units.values()) {
+			for(Unit curUnit: curList) {
+				unitsMap.add(curUnit.toSaveString());
+			}
+		}
+		retval.put(UNITS_NAME, unitsMap);
+		
+		return retval;
 	}
 	
 	public int getX() {

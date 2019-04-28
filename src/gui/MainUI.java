@@ -11,23 +11,31 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.google.gson.Gson;
+
 import aibrain.Action;
 import game.BotcivGame;
 import game.BotcivPlayer;
 import game.Tile;
 import game.Unit;
+import game.World;
 import layout.TableLayout;
 import map.Coordinate;
 import map.MainUIMapDisplay;
-import map.World;
 
 public class MainUI {
 
@@ -39,13 +47,17 @@ public class MainUI {
 	public static JPanel bottomPanel = new JPanel();
 	
 	//should this be here?
-	private static BotcivGame activeGame = new BotcivGame(new World());
-	private static BotcivPlayer playingAs = activeGame.players.get(0);
-	private static BotcivGame imageGame = (BotcivGame) activeGame.imageForPlayer(playingAs);
+	private static BotcivGame activeGame;
+	private static BotcivPlayer playingAs; 
+	private static BotcivGame imageGame;
 	private static List<Action> actionsThisTurn = new ArrayList<Action>();
 	
-	public static void setupGUI() {
+	public static void setupGUI(BotcivGame game, BotcivPlayer player) {
 	
+		activeGame = game;
+		playingAs = player;
+		imageGame = (BotcivGame) activeGame.imageForPlayer(playingAs);
+		
 		SideDisplay.setupDetailUI();
 		CornerDisplay.setup();
 		BottomDisplay.setup();
@@ -58,7 +70,7 @@ public class MainUI {
 		    	  		return false;
 		    	  	}
 		    	  	if(e.getKeyCode() == KeyEvent.VK_UP) {
-		    	  		if(MainUIMapDisplay.focus.y > 0) {
+		    	  		if(MainUIMapDisplay.focus.y > -5) {
 		    	  			for(int i = 0; i <= MainUI.visionDistance/10; i++) {
 		    	  				MainUIMapDisplay.focus = MainUIMapDisplay.focus.up();
 		    	  			}
@@ -66,7 +78,7 @@ public class MainUI {
 		    	  		}
 					}
 					if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-						if(MainUIMapDisplay.focus.y+MainUI.visionDistance < activeGame.world.WORLD_SIZE) {
+						if(MainUIMapDisplay.focus.y+MainUI.visionDistance < activeGame.world.WORLD_SIZE + 5) {
 							for(int i = 0; i <= MainUI.visionDistance/10; i++) {
 								MainUIMapDisplay.focus = MainUIMapDisplay.focus.down();
 							}
@@ -151,6 +163,20 @@ public class MainUI {
 		}
 		System.err.println("Failed to find matching unit!");
 		return null;
+	}
+	
+	public static void saveGame() {
+		Map<String,Object> saveState = activeGame.saveString();
+		Gson gson = new Gson();
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("saves/test.savegam"));
+			writer.write(gson.toJson(saveState));
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void commitTurn() {

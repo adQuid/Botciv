@@ -15,6 +15,7 @@ import game.Tile;
 import game.TileType;
 import game.Unit;
 import game.UnitType;
+import game.actions.ClaimTile;
 import game.actions.ExploreTile;
 import game.actions.MigrateUnit;
 import gui.DescriptionListener;
@@ -56,7 +57,9 @@ public class TileBottomPanel extends Panel{
 		super.basePanel.setLayout(new TableLayout(size));
 		
 		picture = ImageUtilities.scale(ImageUtilities.importImage("ui/selection.png"),(int)(super.basePanel.getHeight()*0.8),(int)(basePanel.getHeight()*0.8));
-		title.setText(tile.getType().getName()+" "+tile.getAltitude()+"M "+tile.getTemperature()+"C");
+
+		String ownerStr = tile.getOwner()!=null?tile.getOwner().getName()+"'s":"Unclaimed";
+		title.setText(ownerStr+" "+tile.getType().getName());
 		title.addMouseListener(new DescriptionListener("Altitude: "+tile.getAltitude()));
 		
 		super.basePanel.add(new JLabel(new ImageIcon(picture)), "0,0");
@@ -104,6 +107,24 @@ public class TileBottomPanel extends Panel{
 			});
 			exploreButton.setText("Explore");
 			exploreButton.addMouseListener(new DescriptionListener("Send explorers here to reveal the area at a cost of 1 influence and 2 materials."));
+		}
+		if(MainUI.getPlayer().getExploredTiles().contains(tile.getCoordinate()) 
+				&& MainUI.getPlayer() != tile.getOwner()) {
+			JButton claimButton = buttons.get(nextButtonIndex++);
+			claimButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if(tile.getUnits().get(UnitType.TYPES.get("Claim")) == null 
+							|| tile.getUnits().get(UnitType.TYPES.get("Claim")).size() == 0) {
+						tile.addUnit(new Unit(UnitType.TYPES.get("Claim"), MainUI.getPlayer()));
+						MainUIMapDisplay.repaintDisplay();
+						MainUI.addAction(new ClaimTile(tile.getCoordinate()));
+					}
+				}				
+			});
+			claimButton.setText("Claim");
+			claimButton.addMouseListener(new DescriptionListener("."));
 		}
 	}
 

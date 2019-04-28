@@ -46,6 +46,7 @@ public class BotcivPlayer implements Player{
 		this.education = other.education;
 		this.actions = new ArrayList<BotcivAction>(other.actions);
 		this.exploredTiles = new HashSet<Coordinate>(other.exploredTiles);
+		this.lastFocus = other.lastFocus;
 	}
 	
 	public BotcivPlayer(Map<String, Object> map, BotcivGame game) {
@@ -60,6 +61,7 @@ public class BotcivPlayer implements Player{
 		for(String current: exploreList) {
 			exploredTiles.add(new Coordinate(current));
 		}
+		
 		lastFocus = new Coordinate(map.get(LAST_FOCUS_NAME).toString());
 	}
 	
@@ -78,6 +80,7 @@ public class BotcivPlayer implements Player{
 			exploredTilesList.add(coord.toString());
 		}
 		retval.put(EXPLORED_NAME, exploredTilesList);
+				
 		retval.put(LAST_FOCUS_NAME, lastFocus.toString());		
 		
 		return retval;
@@ -170,7 +173,7 @@ public class BotcivPlayer implements Player{
 	public void addExploredTile(Coordinate coord) {
 		exploredTiles.add(coord);
 	}
-
+	
 	public Coordinate getLastFocus() {
 		return lastFocus;
 	}

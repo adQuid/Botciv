@@ -23,8 +23,8 @@ public class BotcivGame implements Game{
 	public List<BotcivPlayer> players = new ArrayList<BotcivPlayer>();
 	private static final String PLAYERS_NAME = "players";
 	
-	public BotcivGame(World world) {
-		this.world = world;
+	public BotcivGame() {
+		this.world = new World();
 		
 		for(int i=0; i<1; i++) {
 			BotcivPlayer toAdd = new BotcivPlayer("Player "+i);

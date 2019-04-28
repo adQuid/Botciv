@@ -31,6 +31,8 @@ public class Tile {
 	private static final String TYPE_NAME = "tp";
 	private Map<UnitType,List<Unit>> units = new HashMap<UnitType,List<Unit>>();
 	private static final String UNITS_NAME = "u";
+	private BotcivPlayer owner = null;
+	private static final String OWNER_NAME = "o";
 	
 	private boolean selected;
 		
@@ -57,6 +59,8 @@ public class Tile {
 			}
 			this.units.put(current.getKey(), toAdd);
 		}
+		
+		this.owner = other.owner;
 	}
 	
 	public Tile(Map<String,Object> map, BotcivGame game) {
@@ -70,6 +74,9 @@ public class Tile {
 		for(Map<String,Object> unitMap: unitList) {
 			Unit toAdd = new Unit(unitMap,game,this);
 			addUnit(toAdd);
+		}
+		if(map.get(OWNER_NAME) != null) {
+			owner = game.playerByName(map.get(OWNER_NAME).toString());
 		}
 	}
 	
@@ -90,6 +97,10 @@ public class Tile {
 			}
 		}
 		retval.put(UNITS_NAME, unitsMap);
+		
+		if(owner != null) {
+			retval.put(OWNER_NAME, owner.getName());
+		}
 		
 		return retval;
 	}
@@ -195,12 +206,12 @@ public class Tile {
 			}
 			for(UnitType current: displayCategories.get(0)) {
 				BufferedImage unit = ImageUtilities.importImage(current.getImage());
-				retval = ImageUtilities.layerImageOnImage(retval, unit);
+				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit));
 			}
 			for(int i=1; i<10; i++) {
 				if(!displayCategories.get(i).isEmpty()) {
 					BufferedImage unit = ImageUtilities.importImage(displayCategories.get(i).get(0).getImage());
-					retval = ImageUtilities.layerImageOnImage(retval, unit);	
+					retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit));	
 				}
 			}
 			
@@ -212,5 +223,12 @@ public class Tile {
 		
 		return retval;
 	}
-	
+
+	public BotcivPlayer getOwner() {
+		return owner;
+	}
+
+	public void setOwner(BotcivPlayer owner) {
+		this.owner = owner;
+	}		
 }

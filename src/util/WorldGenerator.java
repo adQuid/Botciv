@@ -287,7 +287,7 @@ public class WorldGenerator {
 			Coordinate startLocation = viableLocations.get(rand.nextInt(viableLocations.size()));
 			player.setLastFocus(startLocation.left().left().up());
 			
-			world.getTileAt(startLocation).addUnit(new Unit(UnitType.TYPES.get("Population"),player));
+			world.getTileAt(startLocation).addUnit(new Unit(UnitType.TYPES.get("Claim"),player));
 			player.addExploredTile(startLocation);
 			player.addExploredTile(new Coordinate(startLocation.x-1,startLocation.y));
 			player.addExploredTile(new Coordinate(startLocation.x+1,startLocation.y));

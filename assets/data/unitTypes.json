@@ -8,6 +8,13 @@ data:[
 		attributes:{}
 	},
 	{
+		name:"Claim",
+		displayClass:0,
+		displayImportance:10,
+		image:"units/claim.png",
+		attributes:{}
+	},
+	{
 		name:"Population",
 		displayClass:1,
 		displayImportance:1,

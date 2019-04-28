@@ -129,4 +129,18 @@ public class ImageUtilities {
 	    WritableRaster raster = img.copyData(img.getRaster().createCompatibleWritableRaster());
 	    return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
+	
+	public static BufferedImage applyFactionColor(BufferedImage img) {
+		BufferedImage retval = cloneImage(img);
+		
+		for(int x=0; x<retval.getWidth(); x++) {
+			for(int y=0; y<retval.getHeight(); y++) {
+				if(retval.getRGB(x, y) == -65349) { //FF00BB
+					retval.setRGB(x, y, 0xFF00FF00);
+				}
+			}
+		}
+		
+		return retval;
+	}
 }

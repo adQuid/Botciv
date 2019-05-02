@@ -60,7 +60,7 @@ public class TileBottomPanel extends Panel{
 
 		String ownerStr = tile.getOwner()!=null?tile.getOwner().getName()+"'s":"Unclaimed";
 		title.setText(ownerStr+" "+tile.getType().getName());
-		title.addMouseListener(new DescriptionListener("Altitude: "+tile.getAltitude()));
+		title.addMouseListener(new DescriptionListener("Altitude: "+tile.getAltitude()+" Temperature:"+tile.getTemperature()));
 		
 		super.basePanel.add(new JLabel(new ImageIcon(picture)), "0,0");
 		

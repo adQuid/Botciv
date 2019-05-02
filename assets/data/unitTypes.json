@@ -1,6 +1,7 @@
 {
 data:[
 	{
+		id:"explorer",
 		name:"Explorer",
 		displayClass:0,
 		displayImportance:10,
@@ -8,6 +9,7 @@ data:[
 		attributes:{}
 	},
 	{
+		id:"claim",
 		name:"Claim",
 		displayClass:0,
 		displayImportance:10,
@@ -15,21 +17,36 @@ data:[
 		attributes:{}
 	},
 	{
+		id:"population",
 		name:"Population",
 		displayClass:1,
 		displayImportance:1,
 		image:"units/Population.png",
 		attributes:{
 			laborGeneration:1,
-			migrates:true
+			migrates:true,
+			builds:["farm"]
 		}
 	},
 	{
+		id:"road",
 		name:"Road",
 		displayClass:0,
-		displayImportance:1,
+		displayImportance:2,
 		image:"units/Dirt Road.png",
-		attributes:{}
+		attributes:{
+			materialsCost:15
+		}
+	},
+	{
+		id:"farm",
+		name:"Farm",
+		displayClass:1,
+		displayImportance:2,
+		image:"units/Farm.png",
+		attributes:{
+			materialsCost:10
+		}
 	}
 ]
 }

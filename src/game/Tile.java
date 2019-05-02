@@ -185,13 +185,15 @@ public class Tile {
 		return new Coordinate(x,y);
 	}
 		
-	public BufferedImage image() {
+	public BufferedImage image(int width, int height) {
 		BufferedImage retval;
 		if(MainUI.visionDistance <= 15) {
 			retval = ImageUtilities.importImage(type.getImage());	
 		} else {
 			retval = ImageUtilities.importImage(type.getImage().substring(0, type.getImage().length()-4)+"-tiny.png");
 		}
+		
+		retval = ImageUtilities.scale(retval, width, height);
 		
 		if(MainUI.visionDistance <= 10 && units.size() > 0) {
 			List<List<UnitType>> displayCategories = new ArrayList<List<UnitType>>();
@@ -208,11 +210,17 @@ public class Tile {
 				BufferedImage unit = ImageUtilities.importImage(current.getImage());
 				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit));
 			}
+			List<UnitType> layers = new ArrayList<UnitType>();
 			for(int i=1; i<10; i++) {
 				if(!displayCategories.get(i).isEmpty()) {
-					BufferedImage unit = ImageUtilities.importImage(displayCategories.get(i).get(0).getImage());
-					retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit));	
+					layers.add(displayCategories.get(i).get(0));
 				}
+			}
+			Collections.sort(layers, new UnitDisplayComparator());
+			Collections.reverse(layers);//the comparator is backwards 
+			for(UnitType type: layers) {
+				BufferedImage unit = ImageUtilities.importImage(type.getImage());
+				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit));	
 			}
 			
 		}

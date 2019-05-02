@@ -10,7 +10,7 @@ import aibrain.Game;
 import aibrain.Player;
 import game.actions.BotcivAction;
 import map.Coordinate;
-import util.ImageGenerator;
+import util.WorldViewGenerator;
 import util.MiscUtilities;
 import util.WorldGenerator;
 
@@ -116,7 +116,7 @@ public class BotcivGame implements Game{
 	@Override
 	public Game imageForPlayer(Player arg0) {
 		BotcivGame retval = new BotcivGame(this);
-		ImageGenerator.pruneImage(retval, (BotcivPlayer)arg0);
+		WorldViewGenerator.pruneImage(retval, (BotcivPlayer)arg0);
 		return retval;
 	}
 

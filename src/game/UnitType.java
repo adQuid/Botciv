@@ -26,7 +26,8 @@ public class UnitType {
 			map = gson.fromJson(new String(Files.readAllBytes(unitTypeFile)),Map.class);
 			
 			for(Map<String,Object> current: (List<Map<String,Object>>)map.get("data")) {
-				UnitType toAdd = new UnitType((String)current.get("name"),
+				UnitType toAdd = new UnitType((String)current.get("id"),
+						(String)current.get("name"),
 						MiscUtilities.extractInt(current.get("displayClass")),
 						MiscUtilities.extractInt(current.get("displayImportance")),
 						(String)current.get("image"));
@@ -42,6 +43,7 @@ public class UnitType {
 		}
 	}
 	
+	private String id;
 	private String name;
 	//only the most important member of each display class is shown, which the exception of display class 0
 	private int displayClass;
@@ -51,12 +53,17 @@ public class UnitType {
 	private Map<String,Object> attributes;	
 	
 
-	public UnitType(String name, int displayClass, int displayImportance, String image) {
+	public UnitType(String id, String name, int displayClass, int displayImportance, String image) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.displayClass = displayClass;
 		this.displayImportance = displayImportance;
 		this.image = image;
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public String getName() {

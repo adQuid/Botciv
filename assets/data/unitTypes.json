@@ -3,6 +3,7 @@ data:[
 	{
 		id:"explorer",
 		name:"Explorer",
+		tooltip:"Placeholder for exploration",
 		displayClass:0,
 		displayImportance:10,
 		image:"units/explorer.png",
@@ -11,6 +12,7 @@ data:[
 	{
 		id:"claim",
 		name:"Claim",
+		tooltip:"Placeholder for claiming ground",
 		displayClass:0,
 		displayImportance:10,
 		image:"units/claim.png",
@@ -19,6 +21,7 @@ data:[
 	{
 		id:"population",
 		name:"Population",
+		tooltip:"People",
 		displayClass:1,
 		displayImportance:1,
 		image:"units/Population.png",
@@ -41,6 +44,7 @@ data:[
 	{
 		id:"farm",
 		name:"Farm",
+		tooltip:"Produces 2 food when at least one population is available to work it.",
 		displayClass:1,
 		displayImportance:2,
 		image:"units/Farm.png",

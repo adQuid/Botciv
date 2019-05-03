@@ -28,11 +28,12 @@ public class UnitType {
 			for(Map<String,Object> current: (List<Map<String,Object>>)map.get("data")) {
 				UnitType toAdd = new UnitType((String)current.get("id"),
 						(String)current.get("name"),
+						(String)current.get("tooltip"),
 						MiscUtilities.extractInt(current.get("displayClass")),
 						MiscUtilities.extractInt(current.get("displayImportance")),
 						(String)current.get("image"));
 				toAdd.attributes = (Map)current.get("attributes");
-				TYPES.put((String)current.get("name"), toAdd);
+				TYPES.put((String)current.get("id"), toAdd);
 			}
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -45,6 +46,7 @@ public class UnitType {
 	
 	private String id;
 	private String name;
+	private String tooltip;
 	//only the most important member of each display class is shown, which the exception of display class 0
 	private int displayClass;
 	private int displayImportance;
@@ -53,10 +55,11 @@ public class UnitType {
 	private Map<String,Object> attributes;	
 	
 
-	public UnitType(String id, String name, int displayClass, int displayImportance, String image) {
+	public UnitType(String id, String name, String tooltip, int displayClass, int displayImportance, String image) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.tooltip = tooltip;
 		this.displayClass = displayClass;
 		this.displayImportance = displayImportance;
 		this.image = image;
@@ -70,6 +73,10 @@ public class UnitType {
 		return name;
 	}
 
+	public String getTooltip() {
+		return tooltip;
+	}
+	
 	public int getDisplayClass() {
 		return displayClass;
 	}

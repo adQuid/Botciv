@@ -32,10 +32,7 @@ public class TileSidePanel extends Panel{
 	private JPanel otherObjectListPanel = new JPanel();
 	private List<Component> otherObjects = new ArrayList<Component>();
 	private LinearList otherObjectLinList = new LinearList(otherObjectListPanel,otherObjects,5);
-	
-	
-	private static JLabel placeholder = new JLabel("placeholder");
-	
+		
 	public TileSidePanel(JPanel base) {
 		super(base);
 
@@ -44,13 +41,15 @@ public class TileSidePanel extends Panel{
 
 	@Override
 	public void setup() {
-		double[][] size = {{TableLayout.FILL},{0.15,0.1,0.35,0.1,0.35}};
-		super.basePanel.setLayout(new TableLayout(size));
+
 		
 	}
 	
 	public void focusOnTile(Tile tile) {
 		clearPanel();
+		
+		double[][] size = {{TableLayout.FILL},{0.15,0.1,0.35,0.1,0.35}};
+		super.basePanel.setLayout(new TableLayout(size));
 		
 		super.basePanel.add(title,"0,0");
 		super.basePanel.add(ownObjectsTitle,"0,1");
@@ -58,7 +57,7 @@ public class TileSidePanel extends Panel{
 		super.basePanel.add(otherObjectsTitle, "0,3");
 		super.basePanel.add(otherObjectListPanel,"0,4");
 		
-		title.setText(tile.getType().getName());		
+		title.setText(tile.getType().getName());
 		ownObjects.clear();
 		for(Entry<UnitType,List<Unit>> current: tile.getUnits().entrySet()) {
 			JButton toAdd = new JButton(current.getKey().getName()+" ("+current.getValue().size()+")");
@@ -75,7 +74,13 @@ public class TileSidePanel extends Panel{
 		
 		otherObjectLinList.updatePanel();
 		
-		MainUI.detailPanel.validate();
+		title.repaint();
+		ownObjectsTitle.repaint();
+		ownObjectListPanel.repaint();
+		otherObjectsTitle.repaint();
+		otherObjectListPanel.repaint();
+		
+		super.basePanel.validate();
 	}
 
 }

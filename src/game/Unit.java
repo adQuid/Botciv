@@ -42,7 +42,7 @@ public class Unit {
 		Map<String,Object> retval = new TreeMap<String,Object>();
 		
 		retval.put(ID_NAME, id);
-		retval.put(TYPE_NAME, type.getName());
+		retval.put(TYPE_NAME, type.getId());
 		retval.put(OWNER_NAME, owner.getName());
 		
 		return retval;

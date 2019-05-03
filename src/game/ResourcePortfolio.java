@@ -40,4 +40,24 @@ public class ResourcePortfolio {
 		this.education = MiscUtilities.extractDouble(map.get("E"));
 	}
 	
+	public String toString() {
+		String retval = "";
+		if(labor != 0) {
+			retval+="Labor "+labor+" ";
+		}
+		if(materials != 0) {
+			retval+="Materials "+materials+" ";
+		}
+		if(influence != 0) {
+			retval+="Influence "+influence+" ";
+		}
+		if(wealth != 0) {
+			retval+="Wealth "+wealth+" ";
+		}
+		if(education != 0) {
+			retval+="Education "+education+" ";
+		}
+		return retval;
+	}
+	
 }

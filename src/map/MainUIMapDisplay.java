@@ -17,6 +17,7 @@ import game.Tile;
 import gui.SideDisplay;
 import mapActions.FocusOnTile;
 import mapActions.MapAction;
+import gui.CornerDisplay;
 import gui.MainUI;
 import util.ImageUtilities;
 
@@ -82,6 +83,8 @@ public class MainUIMapDisplay {
 		
 		imageDisplay.setIcon(new ImageIcon(map));
 		imageDisplay.repaint();
+		
+		CornerDisplay.updateResourceDisplays();
 	}
 		
 	public static void resizeDisplay() {

@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.ResourcePortfolio;
 import game.Tile;
 import game.TileType;
 import game.Unit;
@@ -20,11 +21,13 @@ import game.actions.ExploreTile;
 import game.actions.MigrateUnit;
 import gui.DescriptionListener;
 import gui.MainUI;
+import gui.SideDisplay;
 import layout.TableLayout;
 import map.Coordinate;
 import map.MainUIMapDisplay;
 import mapActions.MapActionGlobalStore;
 import mapActions.Migrate;
+import util.GameLogicUtilities;
 import util.ImageUtilities;
 
 public class TileBottomPanel extends Panel{
@@ -96,35 +99,53 @@ public class TileBottomPanel extends Panel{
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if(tile.getUnits().get(UnitType.TYPES.get("Explorer")) == null 
-							|| tile.getUnits().get(UnitType.TYPES.get("Explorer")).size() == 0) {
+					if((tile.getUnits().get(UnitType.TYPES.get("explorer")) == null 
+							|| tile.getUnits().get(UnitType.TYPES.get("explorer")).size() == 0)
+							&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:1,M:2}"))) {
 						
 						MainUI.addAction(new ExploreTile(tile.getCoordinate()));
-						tile.addUnit(new Unit(UnitType.TYPES.get("Explorer"), MainUI.getPlayer()));
+						tile.addUnit(new Unit(UnitType.TYPES.get("explorer"), MainUI.getPlayer()));
 						MainUIMapDisplay.repaintDisplay();
+						
 					}
 				}				
 			});
 			exploreButton.setText("Explore");
 			exploreButton.addMouseListener(new DescriptionListener("Send explorers here to reveal the area at a cost of 1 influence and 2 materials."));
 		}
+		
 		if(MainUI.getPlayer().getExploredTiles().contains(tile.getCoordinate()) 
-				&& MainUI.getPlayer() != tile.getOwner()) {
+				&& !MainUI.getPlayer().equals(tile.getOwner())) {
 			JButton claimButton = buttons.get(nextButtonIndex++);
 			claimButton.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if(tile.getUnits().get(UnitType.TYPES.get("Claim")) == null 
-							|| tile.getUnits().get(UnitType.TYPES.get("Claim")).size() == 0) {
-						tile.addUnit(new Unit(UnitType.TYPES.get("Claim"), MainUI.getPlayer()));
+					if((tile.getUnits().get(UnitType.TYPES.get("claim")) == null 
+							|| tile.getUnits().get(UnitType.TYPES.get("claim")).size() == 0) 
+							&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:5}"))) {
+						tile.addUnit(new Unit(UnitType.TYPES.get("claim"), MainUI.getPlayer()));
 						MainUIMapDisplay.repaintDisplay();
 						MainUI.addAction(new ClaimTile(tile.getCoordinate()));
 					}
 				}				
 			});
 			claimButton.setText("Claim");
-			claimButton.addMouseListener(new DescriptionListener("."));
+			claimButton.addMouseListener(new DescriptionListener("Extend your government to this tile at a cost of 5 influence."));
+		}
+		
+		List<UnitType> buildableUnits = GameLogicUtilities.unitsBuildableAtTile(MainUI.getPlayer(), tile);
+		if(tile.getOwner() != null && tile.getOwner().equals(MainUI.getPlayer()) && buildableUnits.size() > 0) {
+			JButton claimButton = buttons.get(nextButtonIndex++);
+			claimButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					SideDisplay.showBuildableUnits(tile, buildableUnits);
+				}				
+			});
+			claimButton.setText("Build");
+			claimButton.addMouseListener(new DescriptionListener("Construct new units at this tile."));
 		}
 	}
 

@@ -37,7 +37,7 @@ public class BotcivGame implements Game{
 	
 	public BotcivGame(BotcivGame other) {
 		for(BotcivPlayer current: other.players) {
-			this.players.add(current);
+			this.players.add(new BotcivPlayer(current));
 		}
 		this.world = new World(other.world,this);
 		this.turn = other.turn;

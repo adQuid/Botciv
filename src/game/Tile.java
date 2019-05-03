@@ -224,7 +224,26 @@ public class Tile {
 			}
 			
 		}
-				
+			
+		if(MainUI.visionDistance <= 20 && owner != null) {
+			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().left()).getOwner())) {
+				retval = ImageUtilities.layerImageOnImage(retval, 
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/West Border.png")));
+			}
+			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().right()).getOwner())) {
+				retval = ImageUtilities.layerImageOnImage(retval, 
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/East Border.png")));
+			}
+			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().up()).getOwner())) {
+				retval = ImageUtilities.layerImageOnImage(retval, 
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/North Border.png")));
+			}
+			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().down()).getOwner())) {
+				retval = ImageUtilities.layerImageOnImage(retval, 
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/South Border.png")));
+			}
+		}
+		
 		if(selected) {
 			retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("ui/selection.png"));
 		}

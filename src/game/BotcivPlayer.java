@@ -98,6 +98,10 @@ public class BotcivPlayer implements Player{
 		return retval;
 	}
 
+	public boolean equals(BotcivPlayer other) {
+		return other != null && this.name.equals(other.name);
+	}
+	
 	public String getName() {
 		return name;
 	}

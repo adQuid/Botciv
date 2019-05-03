@@ -144,7 +144,7 @@ public class MainUI {
 	}
 	
 	public static BotcivPlayer getPlayer() {
-		return playingAs;
+		return imageGame.playerByName(playingAs.getName());
 	}
 	
 	public static Unit findMatching(Unit unit) {

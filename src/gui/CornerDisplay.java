@@ -97,6 +97,8 @@ public class CornerDisplay {
 		
 		MainUI.cornerPanel.add(resourcePanel,"0,0");
 		MainUI.cornerPanel.add(bigButtonsPanel,"0,1");
+		
+		updateResourceDisplays();
 	}
 	
 	public static void updateResourceDisplays() {

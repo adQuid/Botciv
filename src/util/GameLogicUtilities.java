@@ -8,6 +8,7 @@ import game.ResourcePortfolio;
 import game.Tile;
 import game.Unit;
 import game.UnitType;
+import game.World;
 
 public class GameLogicUtilities {
 
@@ -56,6 +57,28 @@ public class GameLogicUtilities {
 		}
 		
 		
+		return retval;
+	}
+	
+	public static ResourcePortfolio getResourceDeltas(World world, BotcivPlayer player) {
+		List<Unit> units = world.getAllUnitsOfTypeByPlayer(null, player);
+		ResourcePortfolio retval = new ResourcePortfolio();
+		
+		retval.influence = 10;//for now all governments generate 10 influence
+		
+		for(Unit current: units) {
+			retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"));
+			retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"));
+			retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"));
+			retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"));
+			retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"));
+		}
+		
+		for(Tile current: world.allTiles()) {
+			if(player.equals(current.getOwner())) {
+				retval.influence--;
+			}
+		}
 		return retval;
 	}
 }

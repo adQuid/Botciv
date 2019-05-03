@@ -27,6 +27,7 @@ data:[
 		image:"units/Population.png",
 		attributes:{
 			laborGeneration:1,
+			materialsGeneration:1,
 			migrates:true,
 			builds:["farm"]
 		}

@@ -11,6 +11,7 @@ import aibrain.Player;
 import game.actions.BotcivAction;
 import map.Coordinate;
 import util.WorldViewGenerator;
+import util.GameLogicUtilities;
 import util.MiscUtilities;
 import util.WorldGenerator;
 
@@ -69,8 +70,9 @@ public class BotcivGame implements Game{
 	
 	@Override
 	public void appendActionsForPlayer(List<Action> arg0, Player arg1) {
-		// TODO Auto-generated method stub
-		
+		for(Action current: arg0) {
+			playerByName(((BotcivPlayer)arg1).getName()).addAction((BotcivAction)current);	
+		}
 	}
 
 	@Override
@@ -85,16 +87,13 @@ public class BotcivGame implements Game{
 		
 		//end of round resource generation
 		for(BotcivPlayer current: players) {
-			ResourcePortfolio port = current.getResourceDeltas(world);
+			ResourcePortfolio port = GameLogicUtilities.getResourceDeltas(world, current);
 			
 			current.setLabor(port.labor);
 			current.addMaterials(port.materials);
 			current.addWealth(port.wealth);
 			current.addInfluence(port.influence);
 			current.setEducation(port.education);
-			
-			//for now all governments generate an automatic 10 influence
-			current.addInfluence(10);
 		}
 		turn++;
 	}

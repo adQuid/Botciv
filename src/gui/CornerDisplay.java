@@ -11,7 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import game.BotcivPlayer;
+import game.ResourcePortfolio;
 import layout.TableLayout;
+import util.GameLogicUtilities;
 import util.ImageUtilities;
 
 public class CornerDisplay {
@@ -102,11 +104,12 @@ public class CornerDisplay {
 	}
 	
 	public static void updateResourceDisplays() {
-		laborDisplay.setValue(MainUI.getGame().players.get(0).getLabor(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).labor);
-		materialsDisplay.setValue(MainUI.getGame().players.get(0).getMaterials(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).materials);
-		influenceDisplay.setValue(MainUI.getGame().players.get(0).getInfluence(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).influence);
-		wealthDisplay.setValue(MainUI.getGame().players.get(0).getWealth(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).wealth);
-		educationDisplay.setValue(MainUI.getGame().players.get(0).getEducation(), MainUI.getGame().players.get(0).getResourceDeltas(MainUI.getGame().world).education);
+		ResourcePortfolio deltas = GameLogicUtilities.getResourceDeltas(MainUI.getGame().world,MainUI.getPlayer());
+		laborDisplay.setValue(MainUI.getGame().players.get(0).getLabor(), deltas.labor);
+		materialsDisplay.setValue(MainUI.getGame().players.get(0).getMaterials(), deltas.materials);
+		influenceDisplay.setValue(MainUI.getGame().players.get(0).getInfluence(), deltas.influence);
+		wealthDisplay.setValue(MainUI.getGame().players.get(0).getWealth(), deltas.wealth);
+		educationDisplay.setValue(MainUI.getGame().players.get(0).getEducation(), deltas.education);
 	}
 	
 }

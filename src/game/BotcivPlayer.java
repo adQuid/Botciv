@@ -86,18 +86,6 @@ public class BotcivPlayer implements Player{
 		return retval;
 	}
 	
-	public ResourcePortfolio getResourceDeltas(World world) {
-		List<Unit> units = world.getAllUnitsOfTypeByPlayer(null, this);
-		
-		ResourcePortfolio retval = new ResourcePortfolio();
-		for(Unit current: units) {
-			retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"));
-			retval.materials = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("materialsGeneration"));
-		}
-		
-		return retval;
-	}
-
 	public boolean equals(BotcivPlayer other) {
 		return other != null && this.name.equals(other.name);
 	}
@@ -169,7 +157,7 @@ public class BotcivPlayer implements Player{
 	public void addAction(BotcivAction action) {
 		actions.add(action);
 	}
-	
+		
 	public Set<Coordinate> getExploredTiles(){
 		return exploredTiles;
 	}

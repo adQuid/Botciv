@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.GridLayout;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionListener;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -137,6 +139,11 @@ public class MainUI {
 		GUI.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		GUI.pack();
 		GUI.setVisible(true);
+	}
+	
+	public static void clearUI() {
+		SideDisplay.focusOnTile(getGame().world.getTileAt(MainUIMapDisplay.focus));		
+		BottomDisplay.focusOnTile(getGame().world.getTileAt(MainUIMapDisplay.focus));
 	}
 	
 	public static BotcivGame getGame() {

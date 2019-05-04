@@ -7,6 +7,7 @@ data:[
 		displayClass:0,
 		displayImportance:10,
 		image:"units/explorer.png",
+		maxHealth:1,
 		attributes:{}
 	},
 	{
@@ -16,6 +17,7 @@ data:[
 		displayClass:0,
 		displayImportance:10,
 		image:"units/claim.png",
+		maxHealth:1,
 		attributes:{}
 	},
 	{
@@ -25,6 +27,7 @@ data:[
 		displayClass:1,
 		displayImportance:1,
 		image:"units/Population.png",
+		maxHealth:10,
 		attributes:{
 			laborGeneration:1,
 			materialsGeneration:1,
@@ -38,6 +41,7 @@ data:[
 		displayClass:0,
 		displayImportance:2,
 		image:"units/Dirt Road.png",
+		maxHealth:4,
 		attributes:{
 			materialsCost:15
 		}
@@ -45,12 +49,15 @@ data:[
 	{
 		id:"farm",
 		name:"Farm",
-		tooltip:"Produces 2 food when at least one population is available to work it.",
+		tooltip:"Produces food when at least one population is available to work it.",
 		displayClass:1,
 		displayImportance:2,
 		image:"units/Farm.png",
+		maxHealth:8,
 		attributes:{
-			materialsCost:10
+			laborCost:1,
+			materialsCost:10,
+			foodProduced:1.4
 		}
 	}
 ]

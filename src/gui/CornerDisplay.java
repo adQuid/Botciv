@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import game.BotcivPlayer;
 import game.ResourcePortfolio;
 import layout.TableLayout;
+import map.MainUIMapDisplay;
 import util.GameLogicUtilities;
 import util.ImageUtilities;
 
@@ -87,8 +88,8 @@ public class CornerDisplay {
 		commitTurnButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				MainUI.clearUI();
 				MainUI.commitTurn();
-				updateResourceDisplays();
 			}			
 		});
 		

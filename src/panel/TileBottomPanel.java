@@ -77,10 +77,7 @@ public class TileBottomPanel extends Panel{
 		
 		populateActionButtons(tile);
 		
-		rightPanel.add(buttonPanel,"0,1");
-		
-		
-		
+		rightPanel.add(buttonPanel,"0,1");		
 		
 		super.basePanel.validate();
 	}

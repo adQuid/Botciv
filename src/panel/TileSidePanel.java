@@ -33,6 +33,9 @@ public class TileSidePanel extends Panel{
 	private List<Component> otherObjects = new ArrayList<Component>();
 	private LinearList otherObjectLinList = new LinearList(otherObjectListPanel,otherObjects,5);
 		
+	private UnitType lastSelected = null;
+	private int lastIndex = 0;
+	
 	public TileSidePanel(JPanel base) {
 		super(base);
 
@@ -47,6 +50,7 @@ public class TileSidePanel extends Panel{
 	
 	public void focusOnTile(Tile tile) {
 		clearPanel();
+		lastIndex = 0;
 		
 		double[][] size = {{TableLayout.FILL},{0.15,0.1,0.35,0.1,0.35}};
 		super.basePanel.setLayout(new TableLayout(size));
@@ -65,7 +69,12 @@ public class TileSidePanel extends Panel{
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					BottomDisplay.focusOnUnit(tile, current.getValue().get(0));
+					if(lastSelected == null || lastIndex >= current.getValue().size()) {
+						lastIndex = 0;
+					}
+					lastSelected = current.getKey();
+					
+					BottomDisplay.focusOnUnit(tile, current.getValue().get(lastIndex++));
 				}				
 			});
 			ownObjects.add(toAdd);

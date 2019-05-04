@@ -85,6 +85,8 @@ public class BotcivGame implements Game{
 			player.setActions(new ArrayList<BotcivAction>());
 		}
 		
+		GameLogicUtilities.calculateMarkets(this);
+		
 		//end of round resource generation
 		for(BotcivPlayer current: players) {
 			ResourcePortfolio port = GameLogicUtilities.getResourceDeltas(world, current);

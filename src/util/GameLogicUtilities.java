@@ -1,14 +1,20 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import game.BotcivGame;
 import game.BotcivPlayer;
 import game.ResourcePortfolio;
 import game.Tile;
 import game.Unit;
 import game.UnitType;
 import game.World;
+import map.Coordinate;
 
 public class GameLogicUtilities {
 
@@ -60,18 +66,52 @@ public class GameLogicUtilities {
 		return retval;
 	}
 	
+	private static class MarketTileComparator implements Comparator<Tile> {
+		@Override
+		public int compare(Tile arg0, Tile arg1) {
+			return (int)(arg0.tradePower() - arg1.tradePower());
+		}		
+	}
+	
+	public static void calculateMarkets(BotcivGame game) {
+		List<Tile> tiles = new ArrayList<Tile>(game.world.allTiles());
+		Set<Tile> tilesInMarket = new HashSet<Tile>();
+		List<Market> markets = new ArrayList<Market>();
+		Collections.sort(tiles, new MarketTileComparator());
+		
+		for(Tile current: tiles) {
+			if(current.getOwner() != null && !tilesInMarket.contains(current)) {
+				Set<Tile> newArea = new HashSet<Tile>();
+				for(Coordinate coord: game.world.tilesWithinRange(current.getCoordinate(), (int)current.tradePower())) {
+					if(!tilesInMarket.contains(game.world.getTileAt(coord))) {
+						newArea.add(current);
+						tilesInMarket.add(current);
+					}
+				}
+				markets.add(new Market(current,newArea));
+			}
+		}
+		
+		for(Market current: markets) {
+			current.tradeFood();
+		}
+		
+	}
+	
 	public static ResourcePortfolio getResourceDeltas(World world, BotcivPlayer player) {
 		List<Unit> units = world.getAllUnitsOfTypeByPlayer(null, player);
 		ResourcePortfolio retval = new ResourcePortfolio();
 		
 		retval.influence = 10;//for now all governments generate 10 influence
-		
+				
 		for(Unit current: units) {
-			retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"));
-			retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"));
-			retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"));
-			retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"));
-			retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"));
+			if(current.getHealth() == current.getType().getMaxHealth()) {
+				retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"));
+				retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"));
+				retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"));
+				retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"));
+				retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"));
+			}
 		}
 		
 		for(Tile current: world.allTiles()) {

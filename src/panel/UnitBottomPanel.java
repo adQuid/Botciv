@@ -52,7 +52,7 @@ public class UnitBottomPanel extends Panel{
 		super.basePanel.setLayout(new TableLayout(size));
 		
 		picture = ImageUtilities.scale(ImageUtilities.importImage(unit.getType().getImage()),(int)(super.basePanel.getHeight()*0.8),(int)(basePanel.getHeight()*0.8));
-		title.setText(unit.getType().getName());
+		title.setText(unit.getType().getName() + " " + unit.getHealth() + "/" + unit.getType().getMaxHealth());
 		
 		super.basePanel.add(new JLabel(new ImageIcon(picture)), "0,0");
 		

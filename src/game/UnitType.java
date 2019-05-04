@@ -31,7 +31,8 @@ public class UnitType {
 						(String)current.get("tooltip"),
 						MiscUtilities.extractInt(current.get("displayClass")),
 						MiscUtilities.extractInt(current.get("displayImportance")),
-						(String)current.get("image"));
+						(String)current.get("image"),
+						MiscUtilities.extractInt(current.get("maxHealth")));
 				toAdd.attributes = (Map)current.get("attributes");
 				TYPES.put((String)current.get("id"), toAdd);
 			}
@@ -51,11 +52,12 @@ public class UnitType {
 	private int displayClass;
 	private int displayImportance;
 	private String image;
+	private int maxHealth;
 	//catch-all for stats that most units don't have
 	private Map<String,Object> attributes;	
 	
 
-	public UnitType(String id, String name, String tooltip, int displayClass, int displayImportance, String image) {
+	public UnitType(String id, String name, String tooltip, int displayClass, int displayImportance, String image, int maxHealth) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -63,6 +65,7 @@ public class UnitType {
 		this.displayClass = displayClass;
 		this.displayImportance = displayImportance;
 		this.image = image;
+		this.maxHealth = maxHealth;
 	}
 	
 	public String getId() {
@@ -87,8 +90,12 @@ public class UnitType {
 
 	public String getImage() {
 		return image;
-	}
+	}	
 	
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
 	public Object getAttribute(String key) {
 		return attributes.get(key);
 	}

@@ -35,6 +35,9 @@ public class BotcivPlayer implements Player{
 	
 	public BotcivPlayer(String name) {
 		this.name = name;
+		this.influence = 10;
+		this.labor = 1;
+		this.materials = 5;
 	}
 	
 	public BotcivPlayer(BotcivPlayer other) {

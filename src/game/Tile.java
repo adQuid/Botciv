@@ -17,6 +17,8 @@ import util.MiscUtilities;
 //this kind of belongs in the game package as well
 public class Tile {
 
+	
+	//STATEFUL VALUES THAT ARE SAVED
 	private int x;
 	private static final String X_NAME = "x";
 	private int y;	
@@ -34,6 +36,7 @@ public class Tile {
 	private BotcivPlayer owner = null;
 	private static final String OWNER_NAME = "o";
 	
+	//STATELESS VALUES THAT ARENT SAVED
 	private boolean selected;
 		
 	public Tile(int x, int y, TileType type) {
@@ -145,8 +148,16 @@ public class Tile {
 		return new Coordinate(x,y);
 	}
 	
-	public Map<UnitType,List<Unit>> getUnits(){
+	public Map<UnitType,List<Unit>> getUnits() {
 		return units;
+	}
+	
+	public List<Unit> getAllUnits() {
+		List<Unit> retval = new ArrayList<Unit>();
+		for(List<Unit> current: units.values()) {
+			retval.addAll(current);
+		}		
+		return retval;
 	}
 	
 	public void addUnit(Unit toAdd) {
@@ -185,6 +196,14 @@ public class Tile {
 		return new Coordinate(x,y);
 	}
 		
+	public BotcivPlayer getOwner() {
+		return owner;
+	}
+
+	public void setOwner(BotcivPlayer owner) {
+		this.owner = owner;
+	}		
+	
 	public BufferedImage image(int width, int height) {
 		BufferedImage retval;
 		if(MainUI.visionDistance <= 15) {
@@ -225,6 +244,7 @@ public class Tile {
 			
 		}
 			
+		//borders with other nations
 		if(MainUI.visionDistance <= 20 && owner != null) {
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().left()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 
@@ -244,18 +264,35 @@ public class Tile {
 			}
 		}
 		
+		//selection
 		if(selected) {
 			retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("ui/selection.png"));
 		}
 		
 		return retval;
 	}
-
-	public BotcivPlayer getOwner() {
-		return owner;
+	
+	public double tradePower() {
+		double retval = 0;		
+		for(Unit current: getAllUnits()) {
+			retval += MiscUtilities.extractDouble(current.getType().getAttribute("tradePower"));
+		}		
+		return retval;
 	}
-
-	public void setOwner(BotcivPlayer owner) {
-		this.owner = owner;
-	}		
+	
+	public double food() {
+		double retval = 0;		
+		for(Unit current: getAllUnits()) {
+			retval += MiscUtilities.extractDouble(current.getType().getAttribute("foodProduced"));
+		}		
+		return retval;
+	}
+	
+	public int population() {
+		int retval = 0;
+		for(Unit current: units.get(UnitType.TYPES.get("population"))) {
+			retval += current.getHealth();
+		}
+		return retval/UnitType.TYPES.get("population").getMaxHealth();
+	}
 }

@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.google.gson.Gson;
 
+import controller.Controller;
 import game.BotcivGame;
 import game.BotcivPlayer;
 import game.TileType;
@@ -21,7 +22,9 @@ public class Launcher {
 		TileType.loadData();
 		BotcivGame activeGame = loadGame();
 		BotcivPlayer player = activeGame.players.get(0);
-		MainUI.setupGUI(activeGame, player);
+		Controller.instance = new Controller(activeGame);
+		
+		MainUI.setupGUI(player);
 	}
 	
 	public static BotcivGame loadGame() {

@@ -3,51 +3,91 @@ data:[
 	{
 		name:"Unexplored Tile",
 		image:"tileTerrain/unexplored.png",
+		landPassable:false,
+		seaPassable:false,
+		movementCost:100,
+		foodValue:[0],
 		suitableStart:false
 	},
 	{
 		name:"Grassland",
 		image:"tileTerrain/grassland.png",
+		landPassable:true,
+		seaPassable:false,
+		movementCost:100,
+		foodValue:[1.0,0.9,0.7],
 		suitableStart:true
 	},
 	{
 		name:"Plain",
 		image:"tileTerrain/plains.png",
+		landPassable:true,
+		seaPassable:false,
+		movementCost:100,
+		foodValue:[0.8,0.6,0.4],
 		suitableStart:true
 	},
 	{
 		name:"Forest",
 		image:"tileTerrain/forest.png",
+		landPassable:true,
+		seaPassable:false,
+		movementCost:100,
+		foodValue:[1.2,1.0,0.8],
 		suitableStart:true
 	},
 	{
 		name:"Jungle",
 		image:"tileTerrain/jungle.png",
+		landPassable:true,
+		seaPassable:false,
+		movementCost:3,
+		foodValue:[1.4,1.2],
 		suitableStart:true
 	},
 	{
 		name:"Mountain",
 		image:"tileTerrain/mountains.png",
+		landPassable:true,
+		seaPassable:false,
+		movementCost:3,
+		foodValue:[0.7,0.4],
 		suitableStart:false
 	},
 	{
 		name:"Desert",
 		image:"tileTerrain/desert.png",
+		landPassable:true,
+		seaPassable:false,
+		movementCost:1.5,
+		foodValue:[0.5],
 		suitableStart:false
 	},
 	{
 		name:"Tundra",
 		image:"tileTerrain/tundra.png",
+		landPassable:true,
+		seaPassable:false,
+		movementCost:2,
+		foodValue:[0.5,0.5],
 		suitableStart:false
 	},
 	{
 		name:"Sea",
 		image:"tileTerrain/sea.png",
+		landPassable:false,
+		seaPassable:true,
+		movementCost:1,
+		foodValue:[1.0,0.9,0.8],
 		suitableStart:false
 	},
 	{
 		name:"Ice Cap",
 		image:"tileTerrain/ice_cap.png",
+		landPassable:true,
+		seaPassable:false,
+		movementCost:3,
+		foodValue:[0],
 		suitableStart:false
 	}
 ]

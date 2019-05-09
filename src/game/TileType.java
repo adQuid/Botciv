@@ -15,8 +15,6 @@ import com.google.gson.JsonSyntaxException;
 public class TileType {
 
 	public static Map<String,TileType> TYPES = new TreeMap<String,TileType>();
-
-	public boolean suitableStart;
 	
 	public static void loadData(){
 		Path unitTypeFile = Paths.get("./assets/data/tileTypes.json");
@@ -29,7 +27,10 @@ public class TileType {
 				TYPES.put((String)current.get("name"),
 						new TileType((String)current.get("name"),
 								(String)current.get("image"),
-								(Boolean)current.get("suitableStart")));
+								(Boolean)current.get("landPassable"),
+								(Boolean)current.get("seaPassable"),
+								(Boolean)current.get("suitableStart"),
+								(List<Double>)current.get("foodValue")));
 			}
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -42,11 +43,18 @@ public class TileType {
 	
 	private String name;
 	private String image;
+	public boolean landPassable;
+	public boolean seaPassable;
+	public boolean suitableStart;
+	public List<Double> foodValue;
 	
-	public TileType(String name, String image, boolean suitableStart) {
+	public TileType(String name, String image, boolean landPassable, boolean seaPassable, boolean suitableStart, List<Double> foodValue) {
 		this.name = name;
 		this.image = image;
+		this.landPassable = landPassable;
+		this.seaPassable = seaPassable;
 		this.suitableStart = suitableStart;
+		this.foodValue = foodValue;
 		System.out.println("Loading "+name);
 	}
 

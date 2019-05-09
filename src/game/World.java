@@ -92,6 +92,18 @@ public class World {
 		return retval;
 	}
 	
+	public List<Coordinate> tilesOwnedByPlayer(BotcivPlayer player){
+		List<Coordinate> retval = new ArrayList<Coordinate>();
+		
+		for(Tile current: tiles.values()) {
+			if(current.getOwner().equals(player)) {
+				retval.add(current.getCoordinate());
+			}
+		}
+		
+		return retval;
+	}
+	
 	public List<Coordinate> tilesWithinRange(Coordinate tile, int range){
 		List<Coordinate> retval = new ArrayList<Coordinate>();
 		List<List<Coordinate>> arr = new ArrayList<List<Coordinate>>(); 

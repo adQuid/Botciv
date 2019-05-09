@@ -31,6 +31,7 @@ data:[
 		attributes:{
 			laborGeneration:1,
 			materialsGeneration:1,
+			foodProduced:1.05,
 			migrates:true,
 			builds:["farm"]
 		}
@@ -57,7 +58,7 @@ data:[
 		attributes:{
 			laborCost:1,
 			materialsCost:10,
-			foodProduced:1.4
+			foodProduced:2.2
 		}
 	}
 ]

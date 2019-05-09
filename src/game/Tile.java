@@ -160,6 +160,13 @@ public class Tile {
 		return retval;
 	}
 	
+	public List<Unit> getUnitsByType(UnitType type) {
+		if(units.get(type) == null) {
+			return new ArrayList<Unit>();
+		}
+		return units.get(type);
+	}
+	
 	public void addUnit(Unit toAdd) {
 		if(units.get(toAdd.getType()) == null) {
 			units.put(toAdd.getType(), new ArrayList<Unit>());
@@ -281,18 +288,31 @@ public class Tile {
 	}
 	
 	public double food() {
-		double retval = 0;		
+		List<Double> foodValues = new ArrayList<Double>();
 		for(Unit current: getAllUnits()) {
-			retval += MiscUtilities.extractDouble(current.getType().getAttribute("foodProduced"));
+			if(current.getHealth() == current.getType().getMaxHealth()) {
+				foodValues.add(MiscUtilities.extractDouble(current.getType().getAttribute("foodProduced")));
+			}
 		}		
+		
+		Collections.sort(foodValues);
+		Collections.reverse(foodValues);
+		double retval = 0;		
+		for(int i=0; i<Math.min(type.foodValue.size(),population()); i++) {
+			if(i < foodValues.size()) {
+				retval += Math.max(0, foodValues.get(i) * type.foodValue.get(i));
+			}
+		}
 		return retval;
 	}
 	
 	public int population() {
 		int retval = 0;
-		for(Unit current: units.get(UnitType.TYPES.get("population"))) {
-			retval += current.getHealth();
+		if(units.get(UnitType.TYPES.get("population")) != null) {
+			for(Unit current: units.get(UnitType.TYPES.get("population"))) {
+				retval++;
+			}
 		}
-		return retval/UnitType.TYPES.get("population").getMaxHealth();
+		return retval;
 	}
 }

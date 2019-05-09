@@ -30,6 +30,7 @@ import javax.swing.WindowConstants;
 import com.google.gson.Gson;
 
 import aibrain.Action;
+import controller.Controller;
 import game.BotcivGame;
 import game.BotcivPlayer;
 import game.Tile;
@@ -47,18 +48,15 @@ public class MainUI {
 	public static JPanel detailPanel = new JPanel();
 	public static JPanel cornerPanel = new JPanel();
 	public static JPanel bottomPanel = new JPanel();
-	
-	//should this be here?
-	private static BotcivGame activeGame;
-	private static BotcivPlayer playingAs; 
+
 	private static BotcivGame imageGame;
+	private static BotcivPlayer playingAs; 
 	private static List<Action> actionsThisTurn = new ArrayList<Action>();
 	
-	public static void setupGUI(BotcivGame game, BotcivPlayer player) {
+	public static void setupGUI(BotcivPlayer player) {
 	
-		activeGame = game;
 		playingAs = player;
-		imageGame = (BotcivGame) activeGame.imageForPlayer(playingAs);
+		imageGame = Controller.instance.getImageGame(playingAs);
 		
 		SideDisplay.setupDetailUI();
 		CornerDisplay.setup();
@@ -80,7 +78,7 @@ public class MainUI {
 		    	  		}
 					}
 					if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-						if(MainUIMapDisplay.focus.y+MainUI.visionDistance < activeGame.world.WORLD_SIZE + 5) {
+						if(MainUIMapDisplay.focus.y+MainUI.visionDistance < getGame().world.WORLD_SIZE + 5) {
 							for(int i = 0; i <= MainUI.visionDistance/10; i++) {
 								MainUIMapDisplay.focus = MainUIMapDisplay.focus.down();
 							}
@@ -108,7 +106,7 @@ public class MainUI {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				if(arg0.getWheelRotation() > 0) {
-					if(visionDistance < activeGame.world.WORLD_SIZE) {
+					if(visionDistance < MainUI.getGame().world.WORLD_SIZE) {
 						visionDistance+=2;
 						MainUIMapDisplay.focus = MainUIMapDisplay.focus.up().left();
 					}
@@ -155,7 +153,7 @@ public class MainUI {
 	}
 	
 	public static Unit findMatching(Unit unit) {
-		Tile tile = activeGame.world.getTileAt(unit.getLocation().getCoordinate());
+		Tile tile = getGame().world.getTileAt(unit.getLocation().getCoordinate());
 		
 		List<Unit> matchingUnitList = tile.getUnits().get(unit.getType());
 		
@@ -173,7 +171,7 @@ public class MainUI {
 	}
 	
 	public static void saveGame() {
-		Map<String,Object> saveState = activeGame.saveString();
+		Map<String,Object> saveState = getGame().saveString();
 		Gson gson = new Gson();
 		
 		try {
@@ -185,23 +183,19 @@ public class MainUI {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void commitTurn() {
-		activeGame.setActionsForPlayer(actionsThisTurn, playingAs);
-		actionsThisTurn.clear();
-		activeGame.endRound();
-		imageGame = (BotcivGame)activeGame.imageForPlayer(playingAs);		
-		MainUIMapDisplay.repaintDisplay();
-		BottomDisplay.resetDescription();
-	}
-	
+		
 	public static void addAction(Action action) {
 		actionsThisTurn.add(action);
 	}
 	
+	public static void commitTurn() {
+		Controller.instance.commitTurn(actionsThisTurn, playingAs);
+		imageGame = Controller.instance.getImageGame(playingAs);
+	}
+	
 	public static void clearTurn() {
 		actionsThisTurn.clear();
-		imageGame = (BotcivGame)activeGame.imageForPlayer(playingAs);		
+		imageGame = Controller.instance.getImageGame(playingAs);		
 		MainUIMapDisplay.repaintDisplay();
 	}
 	

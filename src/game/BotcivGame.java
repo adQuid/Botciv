@@ -17,6 +17,8 @@ import util.WorldGenerator;
 
 public class BotcivGame implements Game{
 
+	public boolean isLive = true;
+	
 	public int turn = 1;
 	private static final String TURN_NAME = "turn";
 	public World world;
@@ -42,6 +44,7 @@ public class BotcivGame implements Game{
 		}
 		this.world = new World(other.world,this);
 		this.turn = other.turn;
+		this.isLive = false;
 	}
 	
 	public BotcivGame(Map<String,Object> map) {
@@ -123,8 +126,7 @@ public class BotcivGame implements Game{
 
 	@Override
 	public boolean isLive() {
-		// TODO Auto-generated method stub
-		return false;
+		return isLive;
 	}
 
 	@Override
@@ -146,8 +148,8 @@ public class BotcivGame implements Game{
 	}
 
 	@Override
-	public void setLive(boolean arg0) {
-		// TODO Auto-generated method stub
+	public void setLive(boolean isLive) {
+		this.isLive = isLive;
 		
 	}
 	

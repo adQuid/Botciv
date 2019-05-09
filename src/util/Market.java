@@ -36,23 +36,25 @@ public class Market {
 		}
 		averageFood /= tiles.size();
 		
+		UnitType pop = UnitType.TYPES.get("population");
 		for(Tile current: tiles) {
-			if(averageFood > 0.0) {
-				System.out.println("This is making "+(current.food()-averageFood)+" food");
-			}
-			int growth = (int)((averageFood - current.population()) * UnitType.TYPES.get("population").getMaxHealth());
+			int growth = (int)((averageFood - current.population()) * pop.getMaxHealth());
 			System.out.println("Growth "+growth);
-			for(Unit unit: current.getUnits().get(UnitType.TYPES.get("population"))) {
-				while(growth > 0 && unit.getHealth() < unit.getType().getMaxHealth()) {
+			
+			int growthRate = Math.min(growth, current.population()*2);
+			for(Unit unit: current.getUnitsByType(pop)) {
+				while(growthRate > 0 && unit.getHealth() < unit.getType().getMaxHealth()) {
 					unit.setHealth(unit.getHealth()+1);
-					growth--;
+					growthRate--;
 				}
 			}
-			while(growth > 0) {
-				Unit toAdd = new Unit(UnitType.TYPES.get("population"),current.getOwner(),
-						Math.min(UnitType.TYPES.get("population").getMaxHealth(), growth));
-				growth -= toAdd.getHealth();
-				current.addUnit(toAdd);
+			if(growth >= 10) {
+				while(growthRate > 0) {
+					Unit toAdd = new Unit(pop,current.getOwner(),
+							Math.min(pop.getMaxHealth(), growthRate));
+					growthRate -= toAdd.getHealth();
+					current.addUnit(toAdd);
+				}
 			}
 		}
 	}

@@ -190,13 +190,19 @@ public class MainUI {
 	
 	public static void commitTurn() {
 		Controller.instance.commitTurn(actionsThisTurn, playingAs);
-		imageGame = Controller.instance.getImageGame(playingAs);
+		actionsThisTurn.clear();
 	}
 	
 	public static void clearTurn() {
 		actionsThisTurn.clear();
 		imageGame = Controller.instance.getImageGame(playingAs);		
 		MainUIMapDisplay.repaintDisplay();
+	}
+	
+	public static void updateGameDisplay() {
+		imageGame = Controller.instance.getImageGame(playingAs);
+		MainUIMapDisplay.repaintDisplay();
+		BottomDisplay.resetDescription();
 	}
 	
 }

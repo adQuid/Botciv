@@ -96,7 +96,7 @@ public class World {
 		List<Coordinate> retval = new ArrayList<Coordinate>();
 		
 		for(Tile current: tiles.values()) {
-			if(current.getOwner().equals(player)) {
+			if(current.getOwner() != null && current.getOwner().equals(player)) {
 				retval.add(current.getCoordinate());
 			}
 		}

@@ -21,7 +21,7 @@ public class Launcher {
 		UnitType.loadData();
 		TileType.loadData();
 		BotcivGame activeGame = loadGame();
-		BotcivPlayer player = activeGame.players.get(0);
+		BotcivPlayer player = (BotcivPlayer)activeGame.getPlayers().get(0);
 		Controller.instance = new Controller(activeGame);
 		
 		MainUI.setupGUI(player);

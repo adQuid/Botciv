@@ -23,7 +23,7 @@ public class BotcivGame implements Game{
 	private static final String TURN_NAME = "turn";
 	public World world;
 	private static final String WORLD_NAME = "world";
-	public List<BotcivPlayer> players = new ArrayList<BotcivPlayer>();
+	public List<BotcivPlayer> players = new ArrayList<BotcivPlayer>(); //public to avoid casting madness
 	private static final String PLAYERS_NAME = "players";
 	
 	public BotcivGame() {
@@ -105,7 +105,11 @@ public class BotcivGame implements Game{
 
 	@Override
 	public List<Player> getPlayers() {
-		return null;
+		List<Player> retval = new ArrayList<Player>();
+		for(BotcivPlayer current: players) {
+			retval.add(current);
+		}
+		return retval;
 	}
 
 	public BotcivPlayer playerByName(String name) {
@@ -138,7 +142,7 @@ public class BotcivGame implements Game{
 
 	@Override
 	public void setActionsForPlayer(List<Action> arg0, Player arg1) {
-		BotcivPlayer player = (BotcivPlayer)arg1;
+		BotcivPlayer player = playerByName(((BotcivPlayer)arg1).getName());
 		
 		List<BotcivAction> toAdd = new ArrayList<BotcivAction>();
 		for(Action current: arg0) {

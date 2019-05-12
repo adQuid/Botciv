@@ -39,7 +39,6 @@ public class Market {
 		UnitType pop = UnitType.TYPES.get("population");
 		for(Tile current: tiles) {
 			int growth = (int)((averageFood - current.population()) * pop.getMaxHealth());
-			System.out.println("Growth "+growth);
 			
 			int growthRate = Math.min(growth, current.population()*2);
 			for(Unit unit: current.getUnitsByType(pop)) {

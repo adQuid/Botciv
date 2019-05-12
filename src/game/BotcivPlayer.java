@@ -14,6 +14,8 @@ import util.MiscUtilities;
 
 public class BotcivPlayer implements Player{
 
+	private boolean player = false;
+	private static final String PLAYER_NAME = "pl";
 	private String name;//must be unique
 	private static final String NAME_NAME = "nme";
 	private double labor=0;
@@ -41,6 +43,7 @@ public class BotcivPlayer implements Player{
 	}
 	
 	public BotcivPlayer(BotcivPlayer other) {
+		this.player = other.player;
 		this.name = other.name;
 		this.labor = other.labor;
 		this.materials = other.materials;
@@ -53,6 +56,7 @@ public class BotcivPlayer implements Player{
 	}
 	
 	public BotcivPlayer(Map<String, Object> map, BotcivGame game) {
+		player = (Boolean)map.get(PLAYER_NAME);
 		name = map.get(NAME_NAME).toString();
 		labor = MiscUtilities.extractDouble(map.get(LABOR_NAME).toString());
 		materials = MiscUtilities.extractDouble(map.get(MATERIALS_NAME).toString());
@@ -71,6 +75,7 @@ public class BotcivPlayer implements Player{
 	public Map<String, Object> saveString() {
 		Map<String,Object> retval = new HashMap<String,Object>();
 		
+		retval.put(PLAYER_NAME, player);
 		retval.put(NAME_NAME, name);
 		retval.put(LABOR_NAME, labor);
 		retval.put(MATERIALS_NAME, materials);
@@ -89,8 +94,19 @@ public class BotcivPlayer implements Player{
 		return retval;
 	}
 	
-	public boolean equals(BotcivPlayer other) {
-		return other != null && this.name.equals(other.name);
+	public boolean equals(Object other) {
+		if(other == null || !(other instanceof BotcivPlayer)) {
+			return false;
+		}
+		return this.name.equals(((BotcivPlayer)other).name);
+	}
+	
+	public String toString() {
+		return name;
+	}
+	
+	public boolean getPlayer() {
+		return player;
 	}
 	
 	public String getName() {

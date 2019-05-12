@@ -17,6 +17,15 @@ public class ClaimTile extends BotcivAction{
 	}
 	
 	@Override
+	public boolean equals(Object other) {
+		if(other == null || !(other instanceof ClaimTile)) {
+			return false;
+		}
+		ClaimTile castOther = (ClaimTile)other;
+		return coord.equals(castOther.coord);
+	}
+	
+	@Override
 	public boolean isContingency() {
 		return false;
 	}

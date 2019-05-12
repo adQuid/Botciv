@@ -19,6 +19,15 @@ public class MigrateUnit extends BotcivAction{
 	}
 		
 	@Override
+	public boolean equals(Object other) {
+		if(other == null || !(other instanceof MigrateUnit)) {
+			return false;
+		}
+		MigrateUnit castOther = (MigrateUnit)other;
+		return unit.equals(castOther.unit) && location.equals(castOther.location);
+	}
+	
+	@Override
 	public boolean isContingency() {
 		return false;
 	}

@@ -14,8 +14,8 @@ import java.util.List;
 public class AIBrain {
 	
 	private Player self;
-	private int maxTtl = 0;
-	private int lookAheadSecondary = 0;
+	private int tightForecastLength = 0;
+	private int looseForecastLentgh = 0;
 	private int tailLength = 0;
 	private HypotheticalResult lastIdea = null;
 	//the behavior of decay actually biases towards LATER turns, not earlier ones, with a value < 1
@@ -50,8 +50,8 @@ public class AIBrain {
 	public AIBrain(Player self, int lookAhead, int lookAheadSecondary, int lookAheadTail,IdeaGenerator ideaGenerator,
 			ContingencyGenerator contingencyGenerator, GameEvaluator gameEvaluator, GameCloner gameCloner) {
 		this.self = self;
-		this.maxTtl = lookAhead;
-		this.lookAheadSecondary = lookAheadSecondary;
+		this.tightForecastLength = lookAhead;
+		this.looseForecastLentgh = lookAheadSecondary;
 		this.tailLength = lookAheadTail;
 		this.ideaGenerator = ideaGenerator;
 		this.contingencyGenerator = contingencyGenerator;
@@ -77,27 +77,29 @@ public class AIBrain {
 		
 		HypotheticalResult retval = null;
 		
+		lastIdea = runIterations(trueGame, tightForecastLength);
 		if(lastIdea == null) {
-			addLog("I have no plan");
-			lastIdea = runIterations(trueGame, maxTtl);
+			addLog("Generating first plan");
 			retval = lastIdea;
 		} else {
 			retval = new HypotheticalResult(lastIdea);
 			
 			//we presumably did the first round of the last idea, so lets remove it
-			retval.getPlan().removeActionListFromFront();
+			retval.removeActionListFromFront();
 
 			//is my last idea still working?
 			Score latestScore = runPath(gameCloner.cloneGame(trueGame), retval.getPlan()).getScore();
 			Score assumedScore = retval.getScore().withoutFirstRound();
 			if(latestScore.totalScore().compareTo(assumedScore.totalScore()) < 0) {
 				addLog("this plan got worse: "+latestScore+" vs "+assumedScore);
-				retval = runIterations(trueGame, maxTtl);
+				//forget what I decided not to do and look over all of it again
+				lastIdea.clearActionMemory();
+				retval = runIterations(trueGame, tightForecastLength);
 			} else {
 				addLog("this plan is just as good or better: "+latestScore.totalScore()+" vs "+assumedScore);				
 				
 				//now we add a new final step to keep the same length
-				HypotheticalResult appendResult = runIterations(runGame(trueGame,retval.getPlan()),maxTtl/2 + 1);
+				HypotheticalResult appendResult = runIterations(runGame(trueGame,retval.getPlan()),tightForecastLength/2 + 1);
 								
 				//push the new action onto the end, and adjust score appropriately
 				retval.appendActionsEnd(appendResult.getImmediateActions());
@@ -162,7 +164,7 @@ public class AIBrain {
 		//if I don't know what I'm doing without the deal, figure it out real quick
 		HypotheticalResult baseCase = getNewPlan(sourceGame);
 		
-		HypotheticalResult resultWithDeal = runIterations(sourceGame, maxTtl, deal);
+		HypotheticalResult resultWithDeal = runIterations(sourceGame, tightForecastLength, deal);
 		
 		if(baseCase.getScore().totalScore().compareTo(new BigDecimal(0)) == 0) {
 			if(resultWithDeal.getScore().totalScore().compareTo(new BigDecimal(0)) > 0) {
@@ -206,8 +208,8 @@ public class AIBrain {
 		}
 		while(this.ideaGenerator.hasFurtherIdeas(copyGame, self, committedActions, iteration)) {		
 			Hypothetical hypothetical = new Hypothetical(copyGame, 
-					this, plan.getPlannedActions(), forcast,
-                    lookAheadSecondary, tailLength, self, iteration,ideaGenerator);
+					this, getActionMemory(), plan.getPlannedActions(), forcast,
+                    looseForecastLentgh, tailLength, self, iteration,ideaGenerator);
 			result = hypothetical.calculate();
 			committedActions = result.getImmediateActions();
 			plan = result.getPlan();
@@ -219,8 +221,8 @@ public class AIBrain {
 			System.err.println("Idea Generator generated no ideas on iteration 1");
 
 			Hypothetical hypothetical = new Hypothetical(copyGame,
-					this, plan.getPlannedActions(), forcast,
-                    lookAheadSecondary, tailLength, self, 1,ideaGenerator);
+					this, lastIdea.getActionMemory(), plan.getPlannedActions(), forcast,
+                    looseForecastLentgh, tailLength, self, 1,ideaGenerator);
 			return hypothetical.calculate();
 		}
 		
@@ -238,8 +240,8 @@ public class AIBrain {
 			}
 			
 			Hypothetical hypothetical = new Hypothetical(game, 
-					this, plan.getPlannedActions(), maxTtl/2 + 1,
-                    lookAheadSecondary, tailLength, self, 1,ideaGenerator);
+					this, lastIdea.getActionMemory(), plan.getPlannedActions(), tightForecastLength/2 + 1,
+                    looseForecastLentgh, tailLength, self, 1,ideaGenerator);
 			HypotheticalResult result = hypothetical.calculate();
 			committedActions = result.getImmediateActions();
 			plan = result.getPlan();
@@ -262,7 +264,7 @@ public class AIBrain {
 			copyGame.endRound();
 			
 			//if we are in loose forcast phase, skip a round
-			if(actionIndex >= maxTtl) {
+			if(actionIndex >= tightForecastLength) {
 				copyGame.endRound();
 			}
 			
@@ -284,7 +286,7 @@ public class AIBrain {
 		if(debug)System.err.print("[");
 		
 		for(int actionIndex = 0; actionIndex < plan.getPlannedActions().size(); actionIndex++) {
-			scoreAccumulator.addLayer(new HypotheticalResult(copyGame,this.self,plan,gameEvaluator).getScore().getFirstLayer());
+			scoreAccumulator.addLayer(new HypotheticalResult(copyGame,this.self,plan, getActionMemory(),gameEvaluator).getScore().getFirstLayer());
 			
 			//debug
 			if(debug)System.err.print(scoreAccumulator.getLastLayer()+", ");
@@ -295,7 +297,7 @@ public class AIBrain {
 			copyGame.endRound();
 			
 			//if we are in loose forcast phase, skip a round
-			if(actionIndex >= maxTtl) {
+			if(actionIndex >= tightForecastLength) {
 				scoreAccumulator.addLayer(new HypotheticalResult(copyGame, this.self,gameEvaluator).getScore().decay(getDecayRate()).getFirstLayer());
 				copyGame.endRound();
 			}
@@ -311,7 +313,7 @@ public class AIBrain {
 		
 		if(debug)System.err.println();
 		
-		HypotheticalResult retval = new HypotheticalResult(copyGame, self, plan,gameEvaluator);
+		HypotheticalResult retval = new HypotheticalResult(copyGame, self, plan, getActionMemory(), gameEvaluator);
 		//retval.setScore(scoreAccumulator.addLayer(retval.getScore().getFirstLayer()));
 		retval.setScore(scoreAccumulator);
 		return retval;
@@ -344,7 +346,7 @@ public class AIBrain {
 	}
 	
 	public int getMaxTtl() {
-		return maxTtl;
+		return tightForecastLength + looseForecastLentgh;
 	}	
 	
 	public double getDecayRate() {
@@ -369,6 +371,18 @@ public class AIBrain {
 	
 	public void addLog(String log) {
 		logs.add(log);
+	}
+	
+	public List<List<List<Action>>> getActionMemory() {
+		if(lastIdea == null) {
+			List<List<List<Action>>> retval = new ArrayList<List<List<Action>>>();
+			for(int i = 0; i < getMaxTtl(); i++) {
+				retval.add(new ArrayList<List<Action>>());
+			}
+			return retval;
+		} else {
+			return lastIdea.getActionMemory();
+		}
 	}
 	
 	public List<String> getLogs(){

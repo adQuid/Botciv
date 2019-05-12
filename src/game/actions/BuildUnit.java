@@ -22,6 +22,15 @@ public class BuildUnit extends BotcivAction{
 	}
 	
 	@Override
+	public boolean equals(Object other) {
+		if(other == null || !(other instanceof BuildUnit)) {
+			return false;
+		}
+		BuildUnit castOther = (BuildUnit)other;
+		return type == castOther.type && coord.equals(castOther.coord);
+	}
+	
+	@Override
 	public boolean isContingency() {
 		return false;
 	}

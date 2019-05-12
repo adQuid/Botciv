@@ -33,7 +33,7 @@ public class BotcivIdeaGenerator implements IdeaGenerator{
 
 	@Override
 	public boolean hasFurtherIdeas(Game arg0, Player arg1, List<Action> committedActions, int iteration) {
-		return iteration < 4;
+		return iteration < 2;
 	}
 
 }

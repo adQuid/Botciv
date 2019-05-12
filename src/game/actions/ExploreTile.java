@@ -17,6 +17,15 @@ public class ExploreTile extends BotcivAction{
 	}
 	
 	@Override
+	public boolean equals(Object other) {
+		if(other == null || !(other instanceof ExploreTile)) {
+			return false;
+		}
+		ExploreTile castOther = (ExploreTile)other;
+		return coord.equals(castOther.coord);
+	}
+	
+	@Override
 	public boolean isContingency() {
 		return false;
 	}

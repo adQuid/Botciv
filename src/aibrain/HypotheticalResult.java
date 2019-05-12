@@ -12,16 +12,16 @@ public class HypotheticalResult {
 
 	private Score score;
 	private Plan plan = new Plan();
+	private List<List<List<Action>>> actionMemory;
 	
-	//keeps no logs or reasonings. Only for quickly determining the value of a game state
 	HypotheticalResult(Game game, Player empire, GameEvaluator evaluator) {
 		this.score = evaluator.getValue(game, empire);
 	}
 	
-	//keeps no logs or reasonings. Only for quickly determining the value of a game state
-	HypotheticalResult(Game game, Player empire, Plan plan, GameEvaluator evaluator) {
+	HypotheticalResult(Game game, Player empire, Plan plan, List<List<List<Action>>> actionMemory, GameEvaluator evaluator) {
 		this.score = evaluator.getValue(game, empire);
 		this.plan = plan;				
+		this.actionMemory = actionMemory;
 	}	
 	
 	HypotheticalResult(Game game, List<Action> actions, Player empire, List<Action> nextActions, Reasoning reason, GameEvaluator evaluator) {
@@ -29,23 +29,11 @@ public class HypotheticalResult {
 		this.plan.addActionListToEnd(actions);
 		this.plan.addActionListToEnd(nextActions);
 	}
-
-	HypotheticalResult(Game game, List<Action> actions, Player empire, Plan plan, List<Action> nextActions, Reasoning newReason, GameEvaluator evaluator) {
-		this.score = evaluator.getValue(game, empire);
-		this.plan.addActionListToEnd(actions);
-		this.plan = plan;
-		plan.addActionListToEnd(nextActions);
-	}
-	
-	HypotheticalResult(Score score, List<Action> actions) {
-		super();
-		this.score = score;
-		this.plan.addActionListToEnd(actions);
-	}
 	
 	HypotheticalResult(HypotheticalResult other){
 		this.score = new Score(other.score);
-		this.plan = new Plan(other.plan);		
+		this.plan = new Plan(other.plan);	
+		this.actionMemory = new ArrayList<List<List<Action>>>(other.actionMemory);
 	}
 	
 	public Score getScore() {
@@ -91,5 +79,19 @@ public class HypotheticalResult {
 	void setPlan(Plan plan) {
 		this.plan = plan;
 	}
-		
+
+	public List<List<List<Action>>> getActionMemory() {
+		return actionMemory;
+	}
+	
+	public void clearActionMemory() {
+		for(List<List<Action>> current: actionMemory) {
+			current.clear();
+		}
+	}
+
+	public void removeActionListFromFront() {
+		plan.removeActionListFromFront();
+		actionMemory.remove(0);
+	}
 }

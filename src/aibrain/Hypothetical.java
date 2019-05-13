@@ -9,7 +9,7 @@ import utils.ListUtils;
 
 class Hypothetical {
 
-	private static int numMade = 0;
+	public static int numMade = 0;
 	
 	private int iteration;
 	private AIBrain parent;
@@ -56,7 +56,7 @@ class Hypothetical {
 		this.actionMemory = new ArrayList<List<List<Action>>>(actionMemory);
 		this.possibleParentActions = possibleParentActions;
 		this.usedParentActions = usedParentActions;
-		this.commitedActions = actions;
+		this.commitedActions = new ArrayList<List<Action>>(actions);
 		this.tightForcastLength = tightForcastLength;
 		this.looseForcastLength = looseForcastLength;
 		this.tail = tail;
@@ -67,24 +67,13 @@ class Hypothetical {
 	}
 	
 	public HypotheticalResult calculate() {
-		return calculate(false);
+		return calculate(false, null);
 	}
 	
-	public HypotheticalResult calculate(boolean debug) {
-		
-		//these are the actions I look at when trying out new actions this turn
-		List<List<Action>> possibleActions = ideaGenerator.generateIdeas(game, self, iteration);
-		List<List<Action>> actionsToCheck = new ArrayList<List<Action>>(possibleActions);
-		//these are the actions I pass down to the next level to not consider if I don't do them at this level
-		List<List<Action>> passdownActions = ideaGenerator.generateIdeas(game, self, iteration);
-
-		List<HypotheticalResult> allOptions = new ArrayList<HypotheticalResult>();
-			
-		HypotheticalResult thisLevelResult = new HypotheticalResult(game,self,plan,actionMemory,parent.getEvaluator());
-		
-		Game futureGame = parent.getCloner().cloneGame(game);
+	public HypotheticalResult calculate(boolean debug, List<List<Action>> script) {
 		
 		//base case where I'm out of time
+		Game futureGame = parent.getCloner().cloneGame(game);
 		if(tightForcastLength == 0 && looseForcastLength == 0) {
 			for(int index = 0; index < tail; index++) {
 				futureGame.endRound();
@@ -95,25 +84,38 @@ class Hypothetical {
 			retval.setScore(scoreAccumulator);
 			return retval;
 		}
-				
-		//remove all actions that the parent could have done, but didn't do
-		possibleParentActions.remove(usedParentActions);		
-		actionsToCheck.removeAll(possibleParentActions);
-		//remove all actions that the AIBrain looked at before
-		actionsToCheck.removeAll(actionMemory.get(depthInForecast()));
-				
+		
+		//these are the actions I look at when trying out new actions this turn
+		List<List<Action>> possibleActions = ideaGenerator.generateIdeas(game, self, iteration);
+		List<List<Action>> actionsToCheck = new ArrayList<List<Action>>(possibleActions);
+		//these are the actions I pass down to the next level to not consider if I don't do them at this level
+		List<List<Action>> passdownActions = ideaGenerator.generateIdeas(game, self, iteration);
+		
+		List<List<Action>> ideas = new ArrayList<List<Action>>();
+		if(script == null) {
+			//remove all actions that the parent could have done, but didn't do
+			possibleParentActions.remove(usedParentActions);		
+			actionsToCheck.removeAll(possibleParentActions);
+			//remove all actions that the AIBrain looked at before
+			actionsToCheck.removeAll(actionMemory.get(depthInForecast()));
+
+			ideas = actionsToCheck;
+			//always include the empty idea
+			ideas.add(0,new ArrayList<Action>());
+		} else {
+			ideas.add(script.remove(0));
+		}
+		//dangerously overwrite actionMemory
 		actionMemory.set(depthInForecast(), possibleActions);
 		
-		List<List<Action>> ideas = actionsToCheck;
-		//always include the empty idea
-		ideas.add(0,new ArrayList<Action>());
-									
 		//add score from this round
+		HypotheticalResult thisLevelResult = new HypotheticalResult(game,self,plan,actionMemory,parent.getEvaluator());
 		scoreAccumulator.addLayer(thisLevelResult.getScore().getFirstLayer());
-					
+																				
 		parent.applyContingencies(futureGame,this.self,1);
-								
+			
 		//try adding a new action
+		List<HypotheticalResult> allOptions = new ArrayList<HypotheticalResult>();
 		for(List<Action> current: ideas) {
 
 			Score scoreToPass = new Score(scoreAccumulator);
@@ -130,14 +132,14 @@ class Hypothetical {
 			Plan planToPass = new Plan(plan);
 			planToPass.addActionListToEnd(combinedIdeas);
 			allOptions.add(packResult((tightForcastLength == 0?
-						new Hypothetical(branchGame,modifiers,parent,actionMemory,toPass,
+						new Hypothetical(branchGame,modifiers,parent,ListUtils.prune(actionMemory,depthInForecast(),current),toPass,
 							new ArrayList<Action>(current), commitedActions.subList(1, commitedActions.size()),tightForcastLength,
 							looseForcastLength-1,tail,self,
-							scoreToPass.decay(parent.getDecayRate()),iteration,ideaGenerator,planToPass).calculate(debug)
-						:new Hypothetical(branchGame,modifiers,parent,actionMemory,toPass,
+							scoreToPass.decay(parent.getDecayRate()),iteration,ideaGenerator,planToPass).calculate(debug,script)
+						:new Hypothetical(branchGame,modifiers,parent,ListUtils.prune(actionMemory,depthInForecast(),current),toPass,
 							new ArrayList<Action>(current), commitedActions.subList(1, commitedActions.size()),tightForcastLength-1,
 							looseForcastLength,tail,self,
-							scoreToPass.decay(parent.getDecayRate()), iteration,ideaGenerator,planToPass).calculate(debug))
+							scoreToPass.decay(parent.getDecayRate()), iteration,ideaGenerator,planToPass).calculate(debug,script))
 					,combinedIdeas));	
 		}
 					

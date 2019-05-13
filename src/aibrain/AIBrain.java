@@ -84,12 +84,9 @@ public class AIBrain {
 		} else {
 			retval = new HypotheticalResult(lastIdea);
 			
-			//we presumably did the first round of the last idea, so lets remove it
-			retval.removeActionListFromFront();
-
 			//is my last idea still working?
-			Score latestScore = runPath(gameCloner.cloneGame(trueGame), retval.getPlan()).getScore();
-			Score assumedScore = retval.getScore().withoutFirstRound();
+			Score latestScore = runPath(trueGame, retval.getPlan()).getScore();
+			Score assumedScore = retval.getScore();
 			if(latestScore.totalScore().compareTo(assumedScore.totalScore()) < 0) {
 				addLog("this plan got worse: "+latestScore+" vs "+assumedScore);
 				//forget what I decided not to do and look over all of it again
@@ -281,42 +278,11 @@ public class AIBrain {
 	HypotheticalResult runPath(Game game, Plan plan, boolean debug) {
 		Game copyGame = gameCloner.cloneGame(game);
 				
-		Score scoreAccumulator = new Score();
+		Hypothetical hypothetical = new Hypothetical(copyGame, 
+				this, getActionMemory(), plan.getPlannedActions(), tightForecastLength,
+                looseForecastLentgh, tailLength, self, 1,ideaGenerator);
 		
-		if(debug)System.err.print("[");
-		
-		for(int actionIndex = 0; actionIndex < plan.getPlannedActions().size(); actionIndex++) {
-			scoreAccumulator.addLayer(new HypotheticalResult(copyGame,this.self,plan, getActionMemory(),gameEvaluator).getScore().getFirstLayer());
-			
-			//debug
-			if(debug)System.err.print(scoreAccumulator.getLastLayer()+", ");
-			
-			applyContingencies(copyGame,this.self,1);//what should iteration be here?
-			
-			copyGame.setActionsForPlayer(plan.getPlannedActions().get(actionIndex), this.self);
-			copyGame.endRound();
-			
-			//if we are in loose forcast phase, skip a round
-			if(actionIndex >= tightForecastLength) {
-				scoreAccumulator.addLayer(new HypotheticalResult(copyGame, this.self,gameEvaluator).getScore().decay(getDecayRate()).getFirstLayer());
-				copyGame.endRound();
-			}
-			
-			scoreAccumulator.decay(getDecayRate());
-		}
-		
-		for(int index = 0; index < tailLength; index++) {
-			copyGame.endRound();
-			scoreAccumulator.addLayer(new HypotheticalResult(copyGame, this.self,gameEvaluator).getScore().getFirstLayer());
-			if(debug)System.err.print(scoreAccumulator.getLastLayer()+", ");
-		}
-		
-		if(debug)System.err.println();
-		
-		HypotheticalResult retval = new HypotheticalResult(copyGame, self, plan, getActionMemory(), gameEvaluator);
-		//retval.setScore(scoreAccumulator.addLayer(retval.getScore().getFirstLayer()));
-		retval.setScore(scoreAccumulator);
-		return retval;
+		return hypothetical.calculate(false, new ArrayList<List<Action>>(plan.getPlannedActions()));
 	}
 	
 	//not sure I really want this method here, it's kind of a strange utility

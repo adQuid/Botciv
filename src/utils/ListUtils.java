@@ -16,4 +16,18 @@ public class ListUtils {
 		return union;
 	}
 	
+	public static List<List<Action>> without(List<List<Action>> list, List<Action> toRemove){
+		List<List<Action>> retval = new ArrayList<List<Action>>(list);
+		retval.remove(toRemove);
+		return retval;
+	}
+	
+	public static List<List<List<Action>>> prune(List<List<List<Action>>> input, int index, List<Action> toRemove){
+		List<List<List<Action>>> retval = new ArrayList<List<List<Action>>>(input);
+		
+		retval.set(index, without(retval.get(index),toRemove));
+		
+		return retval;
+	}
+	
 }

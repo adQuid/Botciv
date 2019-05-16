@@ -17,9 +17,8 @@ public class World {
 	private Map<Coordinate,Tile> tiles = new HashMap<Coordinate,Tile>();
 	private static final String TILES_NAME = "tiles";	
 	
-	public World() {
+	public World() {		
 		
-		tiles = WorldGenerator.generateTerrain(this);
 	}
 	
 	public World(World other, BotcivGame game) {
@@ -62,6 +61,10 @@ public class World {
 		
 	public void setTileAt(Coordinate coord, Tile tile) {
 		tiles.put(coord, tile);
+	}
+	
+	public void generateWorld() {
+		tiles = WorldGenerator.generateTerrain(this);
 	}
 	
 	public void clearSelections() {

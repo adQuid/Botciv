@@ -24,7 +24,7 @@ public class Launcher {
 		BotcivPlayer player = (BotcivPlayer)activeGame.getPlayers().get(0);
 		Controller.instance = new Controller(activeGame);
 		
-		MainUI.setupGUI(player);
+		MainUI.setupGUI(player,false);
 	}
 	
 	public static BotcivGame loadGame() {

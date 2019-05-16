@@ -28,6 +28,7 @@ public class BotcivGame implements Game{
 	
 	public BotcivGame() {
 		this.world = new World();
+		world.generateWorld();
 		
 		for(int i=0; i<1; i++) {
 			BotcivPlayer toAdd = new BotcivPlayer("Player "+i,true);
@@ -36,6 +37,10 @@ public class BotcivGame implements Game{
 		}
 		
 		WorldGenerator.establishStartLocations(world, players);
+	}
+	
+	public BotcivGame(World world) {
+		this.world = world;
 	}
 	
 	public BotcivGame(BotcivGame other) {

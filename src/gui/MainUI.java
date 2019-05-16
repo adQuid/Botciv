@@ -53,7 +53,7 @@ public class MainUI {
 	private static BotcivPlayer playingAs; 
 	private static List<Action> actionsThisTurn = new ArrayList<Action>();
 	
-	public static void setupGUI(BotcivPlayer player) {
+	public static void setupGUI(BotcivPlayer player, boolean testing) {
 	
 		playingAs = player;
 		imageGame = Controller.instance.getImageGame(playingAs);
@@ -136,7 +136,9 @@ public class MainUI {
 		
 		GUI.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		GUI.pack();
-		GUI.setVisible(true);
+		if(!testing) {
+			GUI.setVisible(true);
+		}
 	}
 	
 	public static void clearUI() {

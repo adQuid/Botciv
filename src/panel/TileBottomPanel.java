@@ -112,7 +112,7 @@ public class TileBottomPanel extends Panel{
 		}
 		
 		if(MainUI.getPlayer().getExploredTiles().contains(tile.getCoordinate()) 
-				&& !MainUI.getPlayer().equals(tile.getOwner())) {
+				&& tile.getOwner() == null) {
 			JButton claimButton = buttons.get(nextButtonIndex++);
 			claimButton.addActionListener(new ActionListener() {
 

@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.Controller;
 import game.Tile;
 import game.TileType;
 import game.Unit;
@@ -80,7 +81,7 @@ public class GameOptionsBottomPanel extends Panel{
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				MainUI.saveGame();
+				Controller.instance.saveGame();
 			}				
 		});
 		saveButton.setText("Save");

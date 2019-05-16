@@ -1,7 +1,13 @@
 package controller;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
 
 import aibrain.AIBrain;
 import aibrain.Action;
@@ -78,6 +84,20 @@ public class Controller {
 		AIBrain retval = unprocessedBrains.remove(0);
 		processedBrains.add(retval);
 		return retval;
+	}
+	
+	public void saveGame() {
+		Map<String,Object> saveState = activeGame.saveString();
+		Gson gson = new Gson();
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("saves/test.savegam"));
+			writer.write(gson.toJson(saveState));
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import game.BotcivGame;
 import game.BotcivPlayer;
 import game.ResourcePortfolio;
+import game.Tile;
 import map.Coordinate;
 import util.GameLogicUtilities;
 
@@ -32,9 +33,10 @@ public class ClaimTile extends BotcivAction{
 
 	@Override
 	public void doAction(BotcivGame game, BotcivPlayer player) {
-		if(GameLogicUtilities.tryTopay(player, 
+		Tile toClaim = game.world.getTileAt(coord);
+		if(toClaim.getOwner() == null && GameLogicUtilities.tryTopay(player, 
 				new ResourcePortfolio("{I:5}"))) {
-			game.world.getTileAt(coord).setOwner(player);
+			toClaim.setOwner(player);
 		}
 	}
 

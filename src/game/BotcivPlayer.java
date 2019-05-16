@@ -35,8 +35,9 @@ public class BotcivPlayer implements Player{
 	private Coordinate lastFocus = new Coordinate(0,0);
 	private static final String LAST_FOCUS_NAME = "f";
 	
-	public BotcivPlayer(String name) {
+	public BotcivPlayer(String name, boolean player) {
 		this.name = name;
+		this.player = player;
 		this.influence = 10;
 		this.labor = 1;
 		this.materials = 5;

@@ -24,9 +24,11 @@ public class BotcivIdeaGenerator implements IdeaGenerator{
 		
 		List<Coordinate> myTiles = game.world.tilesOwnedByPlayer(player);
 		
-		List<Action> buildAFarm = new ArrayList<Action>();
-		buildAFarm.add(new BuildUnit(myTiles.get(0),UnitType.TYPES.get("farm")));
-		retval.add(buildAFarm);
+		if(myTiles.size() > 0) {
+			List<Action> buildAFarm = new ArrayList<Action>();
+			buildAFarm.add(new BuildUnit(myTiles.get(0),UnitType.TYPES.get("farm")));
+			retval.add(buildAFarm);
+		}
 		
 		return retval;
 	}
@@ -36,4 +38,10 @@ public class BotcivIdeaGenerator implements IdeaGenerator{
 		return iteration < 2;
 	}
 
+	private List<Coordinate> explorableTiles(Game game) {
+		List<Coordinate> retval = new ArrayList<Coordinate>();
+		
+		return retval;
+	}
+	
 }

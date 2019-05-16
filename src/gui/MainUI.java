@@ -151,39 +151,7 @@ public class MainUI {
 	public static BotcivPlayer getPlayer() {
 		return imageGame.playerByName(playingAs.getName());
 	}
-	
-	public static Unit findMatching(Unit unit) {
-		Tile tile = getGame().world.getTileAt(unit.getLocation().getCoordinate());
-		
-		List<Unit> matchingUnitList = tile.getUnits().get(unit.getType());
-		
-		if(matchingUnitList == null) {
-			return null;
-		}
-		
-		for(Unit matchingUnit: matchingUnitList) {
-			if(matchingUnit.matches(unit)) {
-				return matchingUnit;
-			}
-		}
-		System.err.println("Failed to find matching unit!");
-		return null;
-	}
-	
-	public static void saveGame() {
-		Map<String,Object> saveState = getGame().saveString();
-		Gson gson = new Gson();
-		
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("saves/test.savegam"));
-			writer.write(gson.toJson(saveState));
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-		
+				
 	public static void addAction(Action action) {
 		actionsThisTurn.add(action);
 	}

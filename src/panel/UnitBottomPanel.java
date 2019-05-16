@@ -83,7 +83,7 @@ public class UnitBottomPanel extends Panel{
 		
 		int nextButtonIndex = 0;
 		//if we can't find a matching unit, we are assuming it's already migrated
-		if(unit.getType().has("migrates") && MainUI.findMatching(unit) != null) {
+		if(unit.getType().has("migrates") && MainUI.getGame().findMatching(unit) != null) {
 			JButton migrateButton = buttons.get(nextButtonIndex++);
 			migrateButton.addActionListener(new ActionListener() {
 

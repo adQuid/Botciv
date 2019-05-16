@@ -12,6 +12,8 @@ import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
+import game.BotcivPlayer;
+
 public class ImageUtilities {
 
 	private static Map<String,BufferedImage> cachedImages = new TreeMap<String,BufferedImage>();
@@ -130,13 +132,30 @@ public class ImageUtilities {
 	    return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 	
-	public static BufferedImage applyFactionColor(BufferedImage img) {
+	public static BufferedImage applyFactionColor(BufferedImage img, BotcivPlayer player) {
 		BufferedImage retval = cloneImage(img);
+		
+		int color = 0xFF000000;
+		if(player.getName().hashCode() % 5 == 0) {
+			color += 0xFF;
+		}
+		if(player.getName().hashCode() % 5 == 1) {
+			color += 0xFF00;
+		}
+		if(player.getName().hashCode() % 5 == 2) {
+			color += 0xFFFF;
+		}
+		if(player.getName().hashCode() % 5 == 3) {
+			color += 0xFF0000;
+		}
+		if(player.getName().hashCode() % 5 == 4) {
+			color += 0xFF00FF;
+		}
 		
 		for(int x=0; x<retval.getWidth(); x++) {
 			for(int y=0; y<retval.getHeight(); y++) {
 				if(retval.getRGB(x, y) == -65349) { //FF00BB
-					retval.setRGB(x, y, 0xFF00FF00);
+					retval.setRGB(x, y, color);
 				}
 			}
 		}

@@ -234,7 +234,7 @@ public class Tile {
 			}
 			for(UnitType current: displayCategories.get(0)) {
 				BufferedImage unit = ImageUtilities.importImage(current.getImage());
-				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit));
+				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit,units.get(current).get(0).getOwner()));
 			}
 			List<UnitType> layers = new ArrayList<UnitType>();
 			for(int i=1; i<10; i++) {
@@ -246,7 +246,7 @@ public class Tile {
 			Collections.reverse(layers);//the comparator is backwards 
 			for(UnitType type: layers) {
 				BufferedImage unit = ImageUtilities.importImage(type.getImage());
-				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit));	
+				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit,units.get(type).get(0).getOwner()));	
 			}
 			
 		}
@@ -255,19 +255,19 @@ public class Tile {
 		if(MainUI.visionDistance <= 20 && owner != null) {
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().left()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/West Border.png")));
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/West Border.png"),owner));
 			}
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().right()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/East Border.png")));
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/East Border.png"),owner));
 			}
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().up()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/North Border.png")));
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/North Border.png"),owner));
 			}
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().down()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/South Border.png")));
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/South Border.png"),owner));
 			}
 		}
 		

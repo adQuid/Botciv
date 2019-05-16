@@ -30,7 +30,7 @@ public class BotcivGame implements Game{
 		this.world = new World();
 		
 		for(int i=0; i<1; i++) {
-			BotcivPlayer toAdd = new BotcivPlayer("Player "+i);
+			BotcivPlayer toAdd = new BotcivPlayer("Player "+i,true);
 			
 			players.add(toAdd);
 		}
@@ -118,6 +118,22 @@ public class BotcivGame implements Game{
 				return (BotcivPlayer)current;
 			}
 		}
+		return null;
+	}
+	
+	public Unit findMatching(Unit unit) {
+		for(Tile tile: world.allTiles()) {
+			List<Unit> matchingUnitList = tile.getUnits().get(unit.getType());
+
+			if(matchingUnitList != null) {
+				for(Unit matchingUnit: matchingUnitList) {
+					if(matchingUnit.matches(unit)) {
+						return matchingUnit;
+					}
+				}
+			}
+		}
+		System.err.println("Failed to find matching unit!");
 		return null;
 	}
 	

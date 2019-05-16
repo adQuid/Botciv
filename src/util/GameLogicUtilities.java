@@ -121,4 +121,8 @@ public class GameLogicUtilities {
 		}
 		return retval;
 	}
+	
+	public static boolean unitCanTraverse(Unit unit, Tile destination) {
+		return destination.getType().landPassable;
+	}
 }

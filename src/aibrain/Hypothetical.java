@@ -142,7 +142,12 @@ class Hypothetical {
 							scoreToPass.decay(parent.getDecayRate()), iteration,ideaGenerator,planToPass).calculate(debug,script))
 					,combinedIdeas));	
 		}
-					
+
+		//debug
+		if(depthInForecast() == 0) {
+			System.out.println("debug");
+		}
+		
 		//pick best option
 		BigDecimal bestScore = new BigDecimal(0);
 		HypotheticalResult retval = null;
@@ -152,12 +157,7 @@ class Hypothetical {
 				retval = current;
 			}
 		}
-		
-		//debug
-		if(retval == null) {
-			System.out.println("debug");
-		}
-		
+				
 		return retval;
 	}
 		

@@ -3,9 +3,11 @@ package util;
 import java.util.Comparator;
 import java.util.Set;
 
+import game.BotcivGame;
 import game.Tile;
 import game.Unit;
 import game.UnitType;
+import gui.MainUI;
 
 public class Market {
 
@@ -29,7 +31,7 @@ public class Market {
 		}		
 	}
 	
-	public void tradeFood() {
+	public void tradeFood(BotcivGame game) {
 		double averageFood = 0.0;
 		for(Tile current: tiles) {
 			averageFood += current.food();
@@ -52,7 +54,7 @@ public class Market {
 					Unit toAdd = new Unit(pop,current.getOwner(),
 							Math.min(pop.getMaxHealth(), growthRate));
 					growthRate -= toAdd.getHealth();
-					current.addUnit(toAdd);
+					current.addUnit(toAdd, game);
 				}
 			}
 		}

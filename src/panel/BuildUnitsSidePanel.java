@@ -65,7 +65,7 @@ public class BuildUnitsSidePanel extends Panel{
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if(GameLogicUtilities.tryTopay(MainUI.getPlayer(), cost)) {
-						tile.addUnit(new Unit(current,MainUI.getPlayer()));
+						tile.addUnit(new Unit(current,MainUI.getPlayer()),MainUI.getGame());
 						MainUI.addAction(new BuildUnit(tile.getCoordinate(),current));
 						MainUIMapDisplay.repaintDisplay();
 						CornerDisplay.updateResourceDisplays();

@@ -16,7 +16,7 @@ public class Migrate implements MapAction{
 				MainUI.getGame().world.rangeBetween(unit.getLocation().getCoordinate(), coord) <= 1) {
 			MainUI.addAction(new MigrateUnit(MainUI.getGame().findMatching(unit), coord));
 			MapActionGlobalStore.selectedUnit.getLocation().removeUnit(unit);
-			MainUI.getGame().world.getTileAt(coord).addUnit(unit);
+			MainUI.getGame().world.getTileAt(coord).addUnit(unit,MainUI.getGame());
 			MainUIMapDisplay.repaintDisplay();		
 		} 
 		new FocusOnTile().doAction(unit.getLocation().getCoordinate());

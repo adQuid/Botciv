@@ -38,12 +38,13 @@ public class MigrateUnit extends BotcivAction{
 		unit = game.findMatching(unit);
 		Tile destination = game.world.getTileAt(location);
 		if(destination != null &&
+				unit.getOwner().equals(player) && 
 				game.world.rangeBetween(unit.getLocation().getCoordinate(), location) <= 1 &&
 				GameLogicUtilities.unitCanTraverse(unit, destination) &&
 				GameLogicUtilities.tryTopay(player, 
 						new ResourcePortfolio("{I:10}"))) {
 			game.world.getTileAt(unit.getLocation().getCoordinate()).removeUnit(unit);
-			game.world.getTileAt(location).addUnit(unit);
+			game.world.getTileAt(location).addUnit(unit,game);
 			player.addExploredTile(location);
 		}
 		

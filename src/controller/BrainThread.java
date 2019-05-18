@@ -2,6 +2,7 @@ package controller;
 
 import aibrain.AIBrain;
 import aibrain.HypotheticalResult;
+import game.BotcivGame;
 import game.BotcivPlayer;
 
 public class BrainThread implements Runnable{
@@ -12,7 +13,8 @@ public class BrainThread implements Runnable{
 			AIBrain brain = Controller.instance.getNextBrain();
 			
 			if(brain != null) {
-				HypotheticalResult hypothetical = brain.runAI(Controller.instance.getImageGame((BotcivPlayer)brain.getSelf()));
+				BotcivGame imageGame = Controller.instance.getImageGame((BotcivPlayer)brain.getSelf());
+				HypotheticalResult hypothetical = brain.runAI(imageGame);
 				Controller.instance.commitTurn(hypothetical.getImmediateActions(), (BotcivPlayer)brain.getSelf());
 			} else {
 				try {

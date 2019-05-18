@@ -93,7 +93,7 @@ public class GameLogicUtilities {
 		}
 		
 		for(Market current: markets) {
-			current.tradeFood();
+			current.tradeFood(game);
 		}
 		
 	}

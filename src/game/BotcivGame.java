@@ -1,8 +1,10 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import aibrain.Action;
@@ -26,17 +28,21 @@ public class BotcivGame implements Game{
 	public List<BotcivPlayer> players = new ArrayList<BotcivPlayer>(); //public to avoid casting madness
 	private static final String PLAYERS_NAME = "players";
 	
+	//This is a short list that isn't saved
+	private Set<Unit> units = new HashSet<Unit>();
+	
 	public BotcivGame() {
 		this.world = new World();
 		world.generateWorld();
 		
-		for(int i=0; i<1; i++) {
-			BotcivPlayer toAdd = new BotcivPlayer("Player "+i,true);
+		for(int i=0; i<2; i++) {
+			BotcivPlayer toAdd = new BotcivPlayer("Player "+i,i==0);
 			
 			players.add(toAdd);
 		}
 		
-		WorldGenerator.establishStartLocations(world, players);
+		WorldGenerator.establishStartLocations(world, players,this);
+		System.out.println(units.size());
 	}
 	
 	public BotcivGame(World world) {
@@ -50,6 +56,9 @@ public class BotcivGame implements Game{
 		this.world = new World(other.world,this);
 		this.turn = other.turn;
 		this.isLive = false;
+		if(units.size() == 1 && other.units.size() == 2) {
+			System.out.println(units.size());
+		}
 	}
 	
 	public BotcivGame(Map<String,Object> map) {
@@ -132,7 +141,7 @@ public class BotcivGame implements Game{
 
 			if(matchingUnitList != null) {
 				for(Unit matchingUnit: matchingUnitList) {
-					if(matchingUnit.matches(unit)) {
+					if(matchingUnit.equals(unit)) {
 						return matchingUnit;
 					}
 				}
@@ -176,6 +185,14 @@ public class BotcivGame implements Game{
 	public void setLive(boolean isLive) {
 		this.isLive = isLive;
 		
+	}
+	
+	public Set<Unit> getUnits() {
+		return units;
+	}
+	
+	public void addUnit(Unit unit) {
+		units.add(unit);
 	}
 	
 	public String getTurnName() {

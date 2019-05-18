@@ -55,14 +55,13 @@ public class Tile {
 		this.rainfall = other.rainfall;
 		
 		for(Entry<UnitType,List<Unit>> current: other.units.entrySet()) {
-			List<Unit> toAdd = new ArrayList<Unit>();
 			for(Unit unit: current.getValue()) {
-				toAdd.add(new Unit(unit,game));
-				toAdd.get(toAdd.size()-1).setLocation(this);
+				Unit toAdd = new Unit(unit,game);
+				toAdd.setLocation(this);
+				addUnit(toAdd,game);
 			}
-			this.units.put(current.getKey(), toAdd);
 		}
-		
+
 		this.owner = other.owner;
 	}
 	
@@ -76,7 +75,7 @@ public class Tile {
 		List<Map<String,Object>> unitList = (List<Map<String,Object>>)map.get(UNITS_NAME);
 		for(Map<String,Object> unitMap: unitList) {
 			Unit toAdd = new Unit(unitMap,game,this);
-			addUnit(toAdd);
+			addUnit(toAdd,game);
 		}
 		if(map.get(OWNER_NAME) != null) {
 			owner = game.playerByName(map.get(OWNER_NAME).toString());
@@ -167,7 +166,8 @@ public class Tile {
 		return units.get(type);
 	}
 	
-	public void addUnit(Unit toAdd) {
+	public void addUnit(Unit toAdd, BotcivGame game) {
+		game.addUnit(toAdd);
 		if(units.get(toAdd.getType()) == null) {
 			units.put(toAdd.getType(), new ArrayList<Unit>());
 		}

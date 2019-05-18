@@ -97,9 +97,13 @@ public class Unit {
 		this.health = health;
 	}
 
-	//doesn't quite meet the contract for equals
-	public boolean matches(Unit other) {
-		return id == other.id;
+	@Override
+	public boolean equals(Object other) {
+		if(other == null || !(other instanceof Unit)) {
+			return false;
+		}
+		Unit otherUnit = (Unit)other;
+		return id == otherUnit.id;
 	}
 	
 }

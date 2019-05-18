@@ -27,6 +27,10 @@ public class Launcher {
 		MainUI.setupGUI(player,false);
 	}
 	
+	public static BotcivGame newGame() {
+		return new BotcivGame();
+	}
+	
 	public static BotcivGame loadGame() {
 		try {
 			Scanner reader = new Scanner(new File("saves/test.savegam"));

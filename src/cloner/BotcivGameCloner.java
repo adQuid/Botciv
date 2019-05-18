@@ -9,7 +9,8 @@ public class BotcivGameCloner implements GameCloner{
 	@Override
 	public Game cloneGame(Game game) {
 		
-		return new BotcivGame((BotcivGame)game);
+		BotcivGame retval = new BotcivGame((BotcivGame)game);
+		return retval;
 	}
 
 }

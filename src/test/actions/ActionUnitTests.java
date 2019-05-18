@@ -33,7 +33,7 @@ public class ActionUnitTests {
 		Unit toMove = new Unit(UnitType.TYPES.get("population"),player);
 		
 		Tile tile = testGame.world.getTileAt(new Coordinate(5,5));
-		tile.addUnit(toMove);
+		tile.addUnit(toMove,testGame);
 		
 		MigrateUnit action = new MigrateUnit(toMove,new Coordinate(5,6));
 		

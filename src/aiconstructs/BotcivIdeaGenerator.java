@@ -10,8 +10,10 @@ import aibrain.Player;
 import game.BotcivGame;
 import game.BotcivPlayer;
 import game.Tile;
+import game.Unit;
 import game.UnitType;
 import game.actions.BuildUnit;
+import game.actions.ClaimTile;
 import map.Coordinate;
 
 public class BotcivIdeaGenerator implements IdeaGenerator{
@@ -24,9 +26,18 @@ public class BotcivIdeaGenerator implements IdeaGenerator{
 		
 		List<Coordinate> myTiles = game.world.tilesOwnedByPlayer(player);
 		
-		if(myTiles.size() > 0) {
+		for(Unit unit: game.getUnits()) {
+			if(unit.getOwner().equals(player) && 
+					game.world.getTileAt(unit.getLocation().getCoordinate()).getOwner() == null) {
+				List<Action> toAdd = new ArrayList<Action>();
+				toAdd.add(new ClaimTile(unit.getLocation().getCoordinate()));
+				retval.add(toAdd);
+			}
+		}
+		
+		for(Coordinate tile: myTiles) {
 			List<Action> buildAFarm = new ArrayList<Action>();
-			buildAFarm.add(new BuildUnit(myTiles.get(0),UnitType.TYPES.get("farm")));
+			buildAFarm.add(new BuildUnit(tile,UnitType.TYPES.get("farm")));
 			retval.add(buildAFarm);
 		}
 		

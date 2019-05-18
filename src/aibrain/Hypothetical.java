@@ -117,7 +117,6 @@ class Hypothetical {
 		//try adding a new action
 		List<HypotheticalResult> allOptions = new ArrayList<HypotheticalResult>();
 		for(List<Action> current: ideas) {
-
 			Score scoreToPass = new Score(scoreAccumulator);
 			Game branchGame = parent.getCloner().cloneGame(futureGame);
 			List<Action> combinedIdeas = ListUtils.combine(commitedActions.get(0),current);
@@ -126,7 +125,7 @@ class Hypothetical {
 			//skip a round when we are in loose forecasting
 			if(isInLooseForcastPhase()) {
 				scoreToPass.addLayer(new HypotheticalResult(branchGame, self,parent.getEvaluator()).getScore().decay(parent.getDecayRate()).getFirstLayer());
-				futureGame.endRound();
+				branchGame.endRound();
 			}
 			List<List<Action>> toPass = current.size()==0?passdownActions:ideaGenerator.generateIdeas(branchGame, self, iteration);
 			Plan planToPass = new Plan(plan);
@@ -141,11 +140,6 @@ class Hypothetical {
 							looseForcastLength,tail,self,
 							scoreToPass.decay(parent.getDecayRate()), iteration,ideaGenerator,planToPass).calculate(debug,script))
 					,combinedIdeas));	
-		}
-
-		//debug
-		if(depthInForecast() == 0) {
-			System.out.println("debug");
 		}
 		
 		//pick best option

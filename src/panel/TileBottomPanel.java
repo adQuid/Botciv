@@ -61,11 +61,13 @@ public class TileBottomPanel extends Panel{
 		
 		picture = ImageUtilities.scale(ImageUtilities.importImage("ui/selection.png"),(int)(super.basePanel.getHeight()*0.8),(int)(basePanel.getHeight()*0.8));
 
-		String ownerStr = tile.getOwner()!=null?tile.getOwner().getName()+"'s":"Unclaimed";
-		title.setText(ownerStr+" "+tile.getType().getName());
-		title.addMouseListener(new DescriptionListener("Altitude: "+tile.getAltitude()+" Temperature:"+tile.getTemperature()));
-		
-		super.basePanel.add(new JLabel(new ImageIcon(picture)), "0,0");
+		if(tile != null) {
+			String ownerStr = tile.getOwner()!=null?tile.getOwner().getName()+"'s":"Unclaimed";
+			title.setText(ownerStr+" "+tile.getType().getName());
+			title.addMouseListener(new DescriptionListener("Altitude: "+tile.getAltitude()+" Temperature:"+tile.getTemperature()));
+
+			super.basePanel.add(new JLabel(new ImageIcon(picture)), "0,0");
+		}
 		
 		double[][] rightSize = {{TableLayout.FILL},{0.5,0.5}};
 		JPanel rightPanel = new JPanel();
@@ -88,6 +90,10 @@ public class TileBottomPanel extends Panel{
 			buttons.set(i,new JButton(""));
 			buttonPanel.add(buttons.get(i),i+",0");
 		}		
+		
+		if(tile == null) {
+			return;
+		}
 		
 		int nextButtonIndex = 0;
 		if(tile.getType() == TileType.TYPES.get("Unexplored Tile")) {

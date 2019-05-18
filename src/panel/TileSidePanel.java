@@ -61,33 +61,35 @@ public class TileSidePanel extends Panel{
 		super.basePanel.add(otherObjectsTitle, "0,3");
 		super.basePanel.add(otherObjectListPanel,"0,4");
 		
-		title.setText(tile.getType().getName());
-		ownObjects.clear();
-		for(Entry<UnitType,List<Unit>> current: tile.getUnits().entrySet()) {
-			JButton toAdd = new JButton(current.getKey().getName()+" ("+current.getValue().size()+")");
-			toAdd.addActionListener(new ActionListener() {
+		if(tile != null) {
+			title.setText(tile.getType().getName());
+			ownObjects.clear();
+			for(Entry<UnitType,List<Unit>> current: tile.getUnits().entrySet()) {
+				JButton toAdd = new JButton(current.getKey().getName()+" ("+current.getValue().size()+")");
+				toAdd.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					if(lastSelected == null || lastIndex >= current.getValue().size()) {
-						lastIndex = 0;
-					}
-					lastSelected = current.getKey();
-					
-					BottomDisplay.focusOnUnit(tile, current.getValue().get(lastIndex++));
-				}				
-			});
-			ownObjects.add(toAdd);
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						if(lastSelected == null || lastIndex >= current.getValue().size()) {
+							lastIndex = 0;
+						}
+						lastSelected = current.getKey();
+
+						BottomDisplay.focusOnUnit(tile, current.getValue().get(lastIndex++));
+					}				
+				});
+				ownObjects.add(toAdd);
+			}
+			ownObjectLinList.updatePanel();
+
+			otherObjectLinList.updatePanel();
+
+			title.repaint();
+			ownObjectsTitle.repaint();
+			ownObjectListPanel.repaint();
+			otherObjectsTitle.repaint();
+			otherObjectListPanel.repaint();
 		}
-		ownObjectLinList.updatePanel();
-		
-		otherObjectLinList.updatePanel();
-		
-		title.repaint();
-		ownObjectsTitle.repaint();
-		ownObjectListPanel.repaint();
-		otherObjectsTitle.repaint();
-		otherObjectListPanel.repaint();
 		
 		super.basePanel.validate();
 	}

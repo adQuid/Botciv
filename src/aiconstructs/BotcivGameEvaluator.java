@@ -11,6 +11,7 @@ import aibrain.Player;
 import aibrain.Score;
 import game.BotcivGame;
 import game.BotcivPlayer;
+import game.Tile;
 import game.Unit;
 import game.UnitType;
 
@@ -25,6 +26,14 @@ public class BotcivGameEvaluator implements GameEvaluator{
 		
 		List<Unit> people = game.world.getAllUnitsOfTypeByPlayer(UnitType.TYPES.get("population"), player);
 		map.put("population",new BigDecimal(people.size()));
+		
+		int ownedTiles = 0;
+		for(Tile current: game.world.allTiles()) {
+			if(player.equals(current.getOwner())) {
+				ownedTiles++;
+			}
+		}
+		map.put("owned tiles", new BigDecimal(ownedTiles*0.1));
 		
 		return new Score(map);
 	}

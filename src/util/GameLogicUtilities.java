@@ -105,7 +105,7 @@ public class GameLogicUtilities {
 		retval.influence = 10;//for now all governments generate 10 influence
 				
 		for(Unit current: units) {
-			if(current.getHealth() == current.getType().getMaxHealth()) {
+			if(player.equals(current.getOwner()) && current.getHealth() == current.getType().getMaxHealth()) {
 				retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"));
 				retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"));
 				retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"));

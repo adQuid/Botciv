@@ -92,7 +92,9 @@ class Hypothetical {
 		List<List<Action>> passdownActions = ideaGenerator.generateIdeas(game, self, iteration);
 		
 		List<List<Action>> ideas = new ArrayList<List<Action>>();
-		if(script == null) {
+		if(script != null) {
+			ideas.add(script.remove(0));			
+		} else {
 			//remove all actions that the parent could have done, but didn't do
 			possibleParentActions.remove(usedParentActions);		
 			actionsToCheck.removeAll(possibleParentActions);
@@ -102,8 +104,6 @@ class Hypothetical {
 			ideas = actionsToCheck;
 			//always include the empty idea
 			ideas.add(0,new ArrayList<Action>());
-		} else {
-			ideas.add(script.remove(0));
 		}
 		//dangerously overwrite actionMemory
 		actionMemory.set(depthInForecast(), possibleActions);

@@ -87,7 +87,7 @@ public class AIBrain {
 			//is my last idea still working?
 			Score latestScore = runPath(trueGame, retval.getPlan()).getScore();
 			Score assumedScore = retval.getScore();
-			if(latestScore.totalScore().compareTo(assumedScore.totalScore()) < 0) {
+			if(true || latestScore.totalScore().compareTo(assumedScore.totalScore()) < 0) {
 				addLog("this plan got worse: "+latestScore+" vs "+assumedScore);
 				//forget what I decided not to do and look over all of it again
 				lastIdea.clearActionMemory();

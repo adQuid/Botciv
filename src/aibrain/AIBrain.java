@@ -93,6 +93,8 @@ public class AIBrain {
 				lastIdea.clearActionMemory();
 				retval = runIterations(trueGame, tightForecastLength);
 			} else {
+				//TODO: Decide if this still needs to be here. Right now the AI takes no shortcuts.
+				/*
 				addLog("this plan is just as good or better: "+latestScore.totalScore()+" vs "+assumedScore);				
 				
 				//now we add a new final step to keep the same length
@@ -112,6 +114,7 @@ public class AIBrain {
 					}
 					retval.getPlan().getPlannedActions().set(0, opportunityResult.getImmediateActions());
 				}
+				*/
 			}	
 		}
 

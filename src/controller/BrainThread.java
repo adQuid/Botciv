@@ -7,15 +7,21 @@ import game.BotcivPlayer;
 
 public class BrainThread implements Runnable{
 
+	Controller host;
+	
+	public BrainThread(Controller host) {
+		this.host = host;
+	}
+	
 	@Override
 	public void run() {
 		while(true) {
-			AIBrain brain = Controller.instance.getNextBrain();
+			AIBrain brain = host.getNextBrain();
 			
 			if(brain != null) {
-				BotcivGame imageGame = Controller.instance.getImageGame((BotcivPlayer)brain.getSelf());
+				BotcivGame imageGame = host.getImageGame((BotcivPlayer)brain.getSelf());
 				HypotheticalResult hypothetical = brain.runAI(imageGame);
-				Controller.instance.commitTurn(hypothetical.getImmediateActions(), (BotcivPlayer)brain.getSelf());
+				host.commitTurn(hypothetical.getImmediateActions(), (BotcivPlayer)brain.getSelf());
 			} else {
 				try {
 					Thread.sleep(200);

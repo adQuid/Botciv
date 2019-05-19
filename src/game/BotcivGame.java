@@ -35,7 +35,7 @@ public class BotcivGame implements Game{
 		this.world = new World();
 		world.generateWorld();
 		
-		for(int i=0; i<2; i++) {
+		for(int i=0; i<6; i++) {
 			BotcivPlayer toAdd = new BotcivPlayer("Player "+i,i==0);
 			
 			players.add(toAdd);
@@ -115,6 +115,7 @@ public class BotcivGame implements Game{
 			current.setEducation(port.education);
 		}
 		turn++;
+		recalculateUnitList();
 	}
 
 	@Override
@@ -193,6 +194,15 @@ public class BotcivGame implements Game{
 	
 	public void addUnit(Unit unit) {
 		units.add(unit);
+	}
+	
+	public void recalculateUnitList() {
+		units.clear();
+		for(Tile tile: world.allTiles()) {
+			for(Unit unit: tile.getAllUnits()) {
+				units.add(unit);
+			}
+		}
 	}
 	
 	public String getTurnName() {

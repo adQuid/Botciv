@@ -285,28 +285,9 @@ public class WorldGenerator {
 			}
 		}
 		
-		Coordinate startLocation = viableLocations.get(rand.nextInt(viableLocations.size()));
 		
-		players.get(0).setLastFocus(startLocation.left().left().up());
-		
-		world.getTileAt(startLocation).addUnit(new Unit(UnitType.TYPES.get("population"),players.get(0)),game);
-		players.get(0).addExploredTile(startLocation);
-		players.get(0).addExploredTile(new Coordinate(startLocation.x-1,startLocation.y));
-		players.get(0).addExploredTile(new Coordinate(startLocation.x+1,startLocation.y));
-		players.get(0).addExploredTile(new Coordinate(startLocation.x,startLocation.y-1));
-		players.get(0).addExploredTile(new Coordinate(startLocation.x,startLocation.y+1));
-		
-		players.get(1).setLastFocus(startLocation.left().left().up());
-		
-		world.getTileAt(startLocation.up()).addUnit(new Unit(UnitType.TYPES.get("population"),players.get(1)),game);
-		players.get(1).addExploredTile(startLocation.up());
-		players.get(1).addExploredTile(new Coordinate(startLocation.x-1,startLocation.y+1));
-		players.get(1).addExploredTile(new Coordinate(startLocation.x+1,startLocation.y+1));
-		players.get(1).addExploredTile(new Coordinate(startLocation.x,startLocation.y));
-		players.get(1).addExploredTile(new Coordinate(startLocation.x,startLocation.y+2));
-		
-		/*for(BotcivPlayer player: players) {
-			Coordinate startLocation = viableLocations.get(rand.nextInt(viableLocations.size()));
+	for(BotcivPlayer player: players) {
+			Coordinate startLocation = viableLocations.remove(rand.nextInt(viableLocations.size()));
 			player.setLastFocus(startLocation.left().left().up());
 			
 			world.getTileAt(startLocation).addUnit(new Unit(UnitType.TYPES.get("population"),player),game);
@@ -315,7 +296,7 @@ public class WorldGenerator {
 			player.addExploredTile(new Coordinate(startLocation.x+1,startLocation.y));
 			player.addExploredTile(new Coordinate(startLocation.x,startLocation.y-1));
 			player.addExploredTile(new Coordinate(startLocation.x,startLocation.y+1));
-		}*/
+		}
 	}
 	
 }

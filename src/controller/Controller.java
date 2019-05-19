@@ -25,6 +25,7 @@ public class Controller {
 
 	public static Controller instance = null;
 
+	private boolean test;
 	private BotcivGame activeGame;
 	
 	private List<AIBrain> unprocessedBrains = new ArrayList<AIBrain>();
@@ -33,7 +34,16 @@ public class Controller {
 	
 	private List<BotcivPlayer> playersWithTurnsSubmitted = new ArrayList<BotcivPlayer>();
 	
+	public static void setController(BotcivGame game) {
+		instance = new Controller(game,false);
+	}
+	
 	public Controller(BotcivGame game) {
+		this(game, true);
+	}
+	
+	private Controller(BotcivGame game, boolean test) {
+		this.test = test;
 		activeGame = game;
 		
 		for(BotcivPlayer current: game.players) {
@@ -41,8 +51,15 @@ public class Controller {
 				unprocessedBrains.add(new AIBrain(new BotcivPlayer(current), 6, 0, 10, new BotcivIdeaGenerator(), new BitcivContingencyGenerator(), new BotcivGameEvaluator(), new BotcivGameCloner()));
 			}
 		}
-		brainThreads.add(new Thread(new BrainThread()));
+		//hard-coded 4 threads for now, same as the UI
+		brainThreads.add(new Thread(new BrainThread(this)));
+		brainThreads.add(new Thread(new BrainThread(this)));
+		brainThreads.add(new Thread(new BrainThread(this)));
+		brainThreads.add(new Thread(new BrainThread(this)));
 		brainThreads.get(0).start();
+		brainThreads.get(1).start();
+		brainThreads.get(2).start();
+		brainThreads.get(3).start();
 	}
 	
 	public synchronized void commitTurn(List<Action> actions, BotcivPlayer player) {
@@ -60,7 +77,9 @@ public class Controller {
 		playersWithTurnsSubmitted.clear();
 		unprocessedBrains.addAll(processedBrains);
 		processedBrains.clear();
-		MainUI.updateGameDisplay();
+		if(!test) {
+			MainUI.updateGameDisplay();
+		}
 	}
 	
 	private boolean allPlayersHaveSubmittedTurns() {

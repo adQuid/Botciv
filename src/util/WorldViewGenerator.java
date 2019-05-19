@@ -16,6 +16,7 @@ public class WorldViewGenerator {
 				input.world.setTileAt(coord, new Tile(coord.x, coord.y, TileType.TYPES.get("Unexplored Tile")));
 			}
 		}
+		input.recalculateUnitList();
 	}
 	
 }

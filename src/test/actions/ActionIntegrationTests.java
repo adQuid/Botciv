@@ -37,7 +37,7 @@ public class ActionIntegrationTests {
 		Tile tile = baseGame.world.getTileAt(new Coordinate(5,5));
 		tile.addUnit(toMove,baseGame);
 		
-		Controller.instance = new Controller(baseGame);
+		Controller.setController(baseGame);
 		MainUI.setupGUI(player, true);
 		player = MainUI.getGame().playerByName("test");
 						

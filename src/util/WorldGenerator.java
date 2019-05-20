@@ -164,7 +164,7 @@ public class WorldGenerator {
 			}
 		}
 				
-		System.out.println(landTiles);
+		System.out.println(landTiles + " tiles of land");
 		return tiles;
 	}
 
@@ -187,15 +187,23 @@ public class WorldGenerator {
 		
 		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().left())) > 250) {
 			retval++;
+		}else if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().left())) < -250) {
+			retval--;
 		}
 		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().right())) > 250) {
 			retval++;
+		}else if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().right())) < -250) {
+			retval--;
 		}
 		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().up())) > 250) {
 			retval++;
+		}else if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().up())) < -250) {
+			retval--;
 		}
 		if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().down())) > 250) {
 			retval++;
+		}else if(tile.getAltitude() - altOrNull(tiles.get(tile.getCoordinate().down())) < -250) {
+			retval--;
 		}
 		
 		return retval;
@@ -245,13 +253,13 @@ public class WorldGenerator {
 						&& tiles.get(coord.left()).getType() != TileType.TYPES.get("Mountain")) {
 					addConditionally(tiles, size, arr.get(index+1),coord.left());
 				} else {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
+					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.15));
 				}
 				if(tiles.get(coord.right()) != null 
 						&& tiles.get(coord.right()).getType() != TileType.TYPES.get("Mountain")) {
 					addConditionally(tiles, size, arr.get(index+1),coord.right());
 				} else {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
+					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.05));
 				}
 
 				arr.get(index).remove(0);

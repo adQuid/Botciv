@@ -1,9 +1,14 @@
 package launcher;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Scanner;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
 import com.google.gson.Gson;
 
@@ -12,19 +17,27 @@ import game.BotcivGame;
 import game.BotcivPlayer;
 import game.TileType;
 import game.UnitType;
-import game.World;
-import gui.MainUI;
+import jme.gui.MainUI;
 
 public class Launcher {
 
 	public static void main(String[] args) {
-		UnitType.loadData();
-		TileType.loadData();
-		BotcivGame activeGame = loadGame();
-		BotcivPlayer player = (BotcivPlayer)activeGame.getPlayers().get(0);
-		Controller.setController(activeGame);
-		
-		MainUI.setupGUI(player,false);
+		JFrame test = new JFrame("hi");
+		test.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		try {
+			UnitType.loadData();
+			TileType.loadData();
+			BotcivGame activeGame = loadGame();
+			BotcivPlayer player = (BotcivPlayer)activeGame.getPlayers().get(0);
+			Controller.setController(activeGame);
+
+			MainUI.setupGUI(player,false);
+		}catch(Exception e) {
+			test.add(new JLabel(e.getMessage()),BorderLayout.CENTER);
+
+			test.pack();
+			test.setVisible(true);
+		}
 	}
 	
 	public static BotcivGame newGame() {

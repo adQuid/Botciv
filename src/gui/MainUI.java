@@ -69,7 +69,8 @@ public class MainUI {
 		    	  	if(e.getID() != KeyEvent.KEY_PRESSED) {
 		    	  		return false;
 		    	  	}
-		    	  	if(e.getKeyCode() == KeyEvent.VK_UP) {
+		    	  	if(e.getKeyCode() == KeyEvent.VK_UP ||
+							e.getKeyCode() == KeyEvent.VK_W) {
 		    	  		if(MainUIMapDisplay.focus.y > -5) {
 		    	  			for(int i = 0; i <= MainUI.visionDistance/10; i++) {
 		    	  				MainUIMapDisplay.focus = MainUIMapDisplay.focus.up();
@@ -77,7 +78,8 @@ public class MainUI {
 		    	  			MainUIMapDisplay.repaintDisplay();
 		    	  		}
 					}
-					if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					if(e.getKeyCode() == KeyEvent.VK_DOWN ||
+							e.getKeyCode() == KeyEvent.VK_S) {
 						if(MainUIMapDisplay.focus.y+MainUI.visionDistance < getGame().world.WORLD_SIZE + 5) {
 							for(int i = 0; i <= MainUI.visionDistance/10; i++) {
 								MainUIMapDisplay.focus = MainUIMapDisplay.focus.down();
@@ -85,13 +87,15 @@ public class MainUI {
 							MainUIMapDisplay.repaintDisplay();
 						}
 					}
-					if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+					if(e.getKeyCode() == KeyEvent.VK_LEFT ||
+							e.getKeyCode() == KeyEvent.VK_A) {
 						for(int i = 0; i <= MainUI.visionDistance/10; i++) {
 							MainUIMapDisplay.focus = MainUIMapDisplay.focus.left();
 						}
 						MainUIMapDisplay.repaintDisplay();
 					}
-					if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					if(e.getKeyCode() == KeyEvent.VK_RIGHT ||
+							e.getKeyCode() == KeyEvent.VK_D) {
 						for(int i = 0; i <= MainUI.visionDistance/10; i++) {
 							MainUIMapDisplay.focus = MainUIMapDisplay.focus.right();
 						}
@@ -159,6 +163,7 @@ public class MainUI {
 	}
 	
 	public static void commitTurn() {
+		BottomDisplay.waitForEndTurn();
 		Controller.instance.commitTurn(actionsThisTurn, playingAs);
 		actionsThisTurn.clear();
 	}

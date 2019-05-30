@@ -12,15 +12,18 @@ import layout.TableLayout;
 import panel.GameOptionsBottomPanel;
 import panel.TileBottomPanel;
 import panel.UnitBottomPanel;
+import panel.WaitingBottomPanel;
 
 public class BottomDisplay {
 
 	private static JLabel description = new JLabel(MainUI.getGame().getTurnName());
 	private static JPanel selectionFiller = new JPanel();
+	
 	private static UnitBottomPanel unitPanel = new UnitBottomPanel(selectionFiller);
 	private static TileBottomPanel tilePanel = new TileBottomPanel(selectionFiller);
 	private static GameOptionsBottomPanel gameOptionsPanel = new GameOptionsBottomPanel(selectionFiller);
-		
+	private static WaitingBottomPanel waitPanel = new WaitingBottomPanel(selectionFiller);	
+	
 	public static void setup() {
 		double[][] bigSplit = {{TableLayout.FILL},{0.2,0.8}};
 		MainUI.bottomPanel.setLayout(new TableLayout(bigSplit));
@@ -29,6 +32,7 @@ public class BottomDisplay {
 		descriptionPanel.add(description);
 		
 		gameOptionsPanel.setup();
+		waitPanel.setup();
 		unitPanel.setup();
 		tilePanel.setup();
 		
@@ -46,6 +50,10 @@ public class BottomDisplay {
 	
 	public static void openGameOptions() {
 		gameOptionsPanel.openGameOptions();
+	}
+	
+	public static void waitForEndTurn() {
+		waitPanel.display();
 	}
 	
 	public static void focusOnTile(Tile tile) {

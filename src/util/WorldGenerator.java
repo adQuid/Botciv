@@ -113,7 +113,7 @@ public class WorldGenerator {
 		//checking for rainfall
 		for(Tile tile: tiles.values()) {
 			if(tile.getAltitude() < 0 && tile.getTemperature() > -10) {
-				spreadRainfall(tile.getCoordinate(), tiles, world.WORLD_SIZE);
+				spreadRainfall(tile.getCoordinate(), tiles, world.WORLD_SIZE, Direction.NONE);
 			}
 		}
 			
@@ -146,11 +146,11 @@ public class WorldGenerator {
 				tile.setType(TileType.TYPES.get("Tundra"));
 			}else {
 				if(tile.getAltitude() > -1) {
-					if(tile.getRainfall() > 35 && tile.getTemperature() > 22) {
+					if(tile.getRainfall() - (Math.max(0,tile.getTemperature()/6)) > 35 && tile.getTemperature() > 22) {
 						tile.setType(TileType.TYPES.get("Jungle"));
 					}else if(tile.getRainfall() - (Math.max(0,tile.getTemperature()/6)) > 7) {
 						tile.setType(TileType.TYPES.get("Forest"));
-					} else if(tile.getRainfall() - (Math.max(0,tile.getTemperature())/7) > 3) {
+					} else if(tile.getRainfall() - (Math.max(0,tile.getTemperature())/7) > 4) {
 						tile.setType(TileType.TYPES.get("Grassland"));
 					} else if(tile.getRainfall() - (Math.max(0,tile.getTemperature())/8) > 0){
 						tile.setType(TileType.TYPES.get("Plain"));
@@ -164,7 +164,7 @@ public class WorldGenerator {
 			}
 		}
 				
-		System.out.println(landTiles + " tiles of land");
+		System.out.println(landTiles + " tiles of land, "+worldTemp+" max world temp");
 		return tiles;
 	}
 
@@ -218,48 +218,70 @@ public class WorldGenerator {
 		}
 	}
 	
-	private static void spreadRainfall(Coordinate start, Map<Coordinate,Tile> tiles, int size) {
-		List<List<Coordinate>> arr = new ArrayList<List<Coordinate>>(); 
-		for(int i=0; i <= 8; i++) {
-			arr.add(new ArrayList<Coordinate>());
+	private enum Direction{
+		UP,DOWN,LEFT,RIGHT,NONE
+	}
+	
+	private static class CoordinateDirectionPair{
+		public Coordinate coord;
+		public Direction direction;
+		public CoordinateDirectionPair(Coordinate coord, Direction direction) {
+			this.coord = coord;
+			this.direction = direction;
+		}
+		public boolean equals(Object other) { //super unsafe; I don't care
+			CoordinateDirectionPair otherPair = (CoordinateDirectionPair)other;
+			return this.coord.equals(otherPair.coord) && this.direction==otherPair.direction;
+		}
+	}
+	
+	private static void spreadRainfall(Coordinate start, Map<Coordinate,Tile> tiles, int size, Direction direction) {
+		List<List<CoordinateDirectionPair>> arr = new ArrayList<List<CoordinateDirectionPair>>(); 
+		int spread = 8;
+		for(int i=0; i <= spread; i++) {
+			arr.add(new ArrayList<CoordinateDirectionPair>());
 		}
 		
-		arr.get(0).add(start);
+		arr.get(0).add(new CoordinateDirectionPair(start,null));
 		
-		for(int index=0; index < 8; index++) {
+		for(int index=0; index < spread; index++) {
 			while(arr.get(index).size() > 0) {
-				Coordinate coord = arr.get(index).get(0).wrap(size);
+				Coordinate coord = arr.get(index).get(0).coord.wrap(size);
 
 				if(index == 7) {
 					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
 				}
 				
 				if(tiles.get(coord).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1), coord);
+					addConditionally(tiles, size, arr.get(index+1), coord, Direction.NONE);
 				}
-				if(tiles.get(coord.up()) != null 
+				if(direction != Direction.UP 
+						&& tiles.get(coord.up()) != null 
 						&& tiles.get(coord.up()).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1),coord.up());
+					addConditionally(tiles, size, arr.get(index+1),coord.up(), Direction.UP);
 				} else {
 					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
 				}
-				if(tiles.get(coord.down()) != null 
+				if(direction != Direction.DOWN 
+						&& tiles.get(coord.down()) != null 
 						&& tiles.get(coord.down()).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1),coord.down());
+					addConditionally(tiles, size, arr.get(index+1),coord.down(), Direction.DOWN);
 				} else {
 					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
 				}
-				if(tiles.get(coord.left()) != null 
+				if(direction != Direction.RIGHT
+						&& tiles.get(coord.left()) != null 
 						&& tiles.get(coord.left()).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1),coord.left());
+					addConditionally(tiles, size, arr.get(index+1),coord.left(), Direction.LEFT);
 				} else {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.15));
+					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
 				}
-				if(tiles.get(coord.right()) != null 
+				if(direction != Direction.LEFT
+						&& tiles.get(coord.right()) != null 
 						&& tiles.get(coord.right()).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1),coord.right());
+					addConditionally(tiles, size, arr.get(index+1),coord.right(), Direction.RIGHT);
 				} else {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.05));
+					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
 				}
 
 				arr.get(index).remove(0);
@@ -276,11 +298,21 @@ public class WorldGenerator {
 		}
 	}
 	
-	private static void addConditionally(Map<Coordinate,Tile> tiles, int size, List<Coordinate> list, Coordinate tile) {
-		if(tiles.get(tile.wrap(size)) != null ) {
-			if(!list.contains(tile)) {
-				list.add(tile);
-			}
+	private static void addConditionally(Map<Coordinate,Tile> tiles, int size, List<CoordinateDirectionPair> list, Coordinate tile, Direction direction) {
+		if(direction == Direction.LEFT && rand.nextDouble() < 0.35) {
+			return;
+		}
+		if(direction == Direction.RIGHT && rand.nextDouble() < 0.45) {
+			return;
+		}
+		if((direction == Direction.UP || direction == Direction.DOWN) && rand.nextDouble() < 0.4) {
+			return;
+		}
+		if(tiles.get(tile.wrap(size)) != null) {
+			CoordinateDirectionPair toAdd = new CoordinateDirectionPair(tile,direction);
+			if(!list.contains(toAdd)) {
+				list.add(toAdd);
+			} 
 		}			
 	}
 	

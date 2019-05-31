@@ -22,7 +22,7 @@ import jme.gui.MainUI;
 public class Launcher {
 
 	public static void main(String[] args) {
-		JFrame test = new JFrame("hi");
+		JFrame test = new JFrame("Error");
 		test.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		try {
 			UnitType.loadData();
@@ -33,7 +33,8 @@ public class Launcher {
 
 			MainUI.setupGUI(player,false);
 		}catch(Exception e) {
-			test.add(new JLabel(e.getMessage()),BorderLayout.CENTER);
+			e.printStackTrace();
+			test.add(new JLabel(e.getStackTrace()[0].toString()+":"+e.getClass()+(e.getMessage()!=null?":"+e.getMessage():"")),BorderLayout.CENTER);
 
 			test.pack();
 			test.setVisible(true);

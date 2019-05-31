@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jme.gui;
+package jme.gui.components;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -19,6 +19,7 @@ import de.lessvoid.nifty.controls.Parameters;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.input.NiftyInputEvent;
+import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.DefaultScreenController;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -63,10 +64,12 @@ public class BasicNifty extends BaseAppState implements ScreenController{
     	nifty.loadStyleFile("nifty-default-styles.xml");
     	nifty.loadControlFile("nifty-default-controls.xml");
 
+    	
+    	
     	// <screen>
     	nifty.addScreen("Screen_ID", new ScreenBuilder("Hello Nifty Screen"){{
     		controller(self); //whacky controller nonsense
-    		
+    		    		
     		layer(new LayerBuilder("Bottom_Layer") {{
     			childLayoutCenter();
 
@@ -86,6 +89,8 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         				panel(new PanelBuilder("Bottom_Panel") {{
         					childLayoutVertical(); 
         					height("20%");
+        					width("100%");
+        					backgroundColor("#0f08");
             				control(new ButtonBuilder("Button_1", "Button 1"){{
         						alignCenter();
         						valignBottom();
@@ -112,7 +117,13 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         				control(new ButtonBuilder("Button_2","Filler") {{
         					width("100%");
         					height("*");
-        				}});    					
+        				}});    
+        				
+        				panel(new PanelBuilder("CornerDisplay") {{
+        					childLayoutVertical();
+        					height("20%");
+        					panel(CornerDisplay.panel());
+        				}});
         			}});
     			}});
     		}});

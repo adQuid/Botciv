@@ -23,6 +23,7 @@ import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.DefaultScreenController;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import jme.gui.ButtonActions;
 
 /**
  *
@@ -31,6 +32,8 @@ import de.lessvoid.nifty.screen.ScreenController;
 public class BasicNifty extends BaseAppState implements ScreenController{
     
 	public static BasicNifty self = new BasicNifty();
+	
+	public static NiftyJmeDisplay niftyDisplay;
 	
     @Override
     protected void initialize(Application app) {
@@ -52,24 +55,25 @@ public class BasicNifty extends BaseAppState implements ScreenController{
     //graph attachment or input listener attachment.
     @Override
     protected void onEnable() {
-    	NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
+
+    	niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
     			getApplication().getAssetManager(),
     			getApplication().getInputManager(),
     			getApplication().getAudioRenderer(),
     			getApplication().getGuiViewPort());
-
+    	
     	Nifty nifty = niftyDisplay.getNifty();
     	getApplication().getGuiViewPort().addProcessor(niftyDisplay);
 
     	nifty.loadStyleFile("nifty-default-styles.xml");
     	nifty.loadControlFile("nifty-default-controls.xml");
-
-    	
     	
     	// <screen>
     	nifty.addScreen("Screen_ID", new ScreenBuilder("Hello Nifty Screen"){{
-    		controller(self); //whacky controller nonsense
+    		controller(ButtonActions.actions); //whacky controller nonsense
     		    		
+    		layer(EndHoverActionsLayer.getLayer());
+    		
     		layer(new LayerBuilder("Bottom_Layer") {{
     			childLayoutCenter();
 
@@ -88,22 +92,27 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         				
         				panel(new PanelBuilder("Bottom_Panel") {{
         					childLayoutVertical(); 
-        					height("20%");
+        					height("30%");
         					width("100%");
-        					backgroundColor("#0f08");
+        					backgroundColor("#777f");
         					
+        					panel(new PanelBuilder("") {{
+        						childLayoutVertical(); 
+        						height("20%");
+            					panel(DescriptionDisplay.panel());        						
+        					}});
         					
             				control(new ButtonBuilder("Button_1", "Button 1"){{
         						alignCenter();
         						valignBottom();
-        						height("50%");
+        						height("40%");
         						width("100%");
         					}});
 
         					control(new ButtonBuilder("Button_2", "Button 2"){{
         						alignCenter();
         						valignBottom();
-        						height("50%");
+        						height("40%");
         						width("100%");
         						interactOnClick("printstuff()");
         					}});
@@ -135,6 +144,10 @@ public class BasicNifty extends BaseAppState implements ScreenController{
     	nifty.gotoScreen("Screen_ID"); // start the screen
     }
 
+    public Screen getCurrentScreen() {
+    	return niftyDisplay.getNifty().getCurrentScreen();
+    }
+    
     @Override
     protected void onDisable() {
         //Called when the state was previously enabled but is now disabled
@@ -153,10 +166,6 @@ public class BasicNifty extends BaseAppState implements ScreenController{
 		
 	}
 	
-	public void printstuff() {
-		System.out.println("is this how we do this?");
-	}
-
 	@Override
 	public void bind(Nifty arg0, Screen arg1) {
 		// TODO Auto-generated method stub
@@ -168,5 +177,5 @@ public class BasicNifty extends BaseAppState implements ScreenController{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 }

@@ -17,9 +17,7 @@ import aiconstructs.BotcivIdeaGenerator;
 import cloner.BotcivGameCloner;
 import game.BotcivGame;
 import game.BotcivPlayer;
-import gui.BottomDisplay;
-import gui.MainUI;
-import map.MainUIMapDisplay;
+import jme.gui.MainUI;
 
 public class Controller {
 

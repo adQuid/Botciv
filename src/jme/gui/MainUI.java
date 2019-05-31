@@ -43,13 +43,14 @@ import launcher.Launcher;
 import map.Coordinate;
 import map.MainUIMapDisplay;
 
-/** Sample 3 - how to load an OBJ model, and OgreXML model,
- * a material/texture, or text. */
 public class MainUI extends SimpleApplication{
 
+	public static MainUI instance;
+	public static BasicNifty nifty = new BasicNifty();
+	
 	private static final int MAP_SIZE = 100;
 	public static float camHeight = 0.2f;
-	public static final float REDRAW_BOUNDRY = 10.0f;
+	public static final float REDRAW_BOUNDRY = 12.0f;
 
 	private static BotcivGame imageGame;
 	private static BotcivPlayer playingAs;
@@ -61,24 +62,22 @@ public class MainUI extends SimpleApplication{
 
 	private long lastInput = 0L;
 
-	private static String[] mappings = new String[] {
-			"RIGHT", "UP",  "LEFT", "DOWN", "ZOOM IN", "ZOOM OUT", "CLICK" };
+	private static String[] mappings = new String[] {"RIGHT", "UP",  "LEFT", "DOWN", "ZOOM IN", "ZOOM OUT", "CLICK"};
 
 	public MainUI(BotcivGame game) {
 		super(new StatsAppState(),new AudioListenerState());
-		this.imageGame = game;
 	}
 
 	public static void setupGUI(BotcivPlayer player, boolean testing) {
 
 		playingAs = player;
+		imageGame = Controller.instance.getImageGame(playingAs);
 		focus = player.getLastFocus();
 
 		if(!testing) {
-			MainUI app = new MainUI(Launcher.loadGame());
-			BasicNifty nifty = new BasicNifty();
-			app.stateManager.attach(nifty);
-			app.start();
+			instance = new MainUI(Launcher.loadGame());
+			instance.stateManager.attach(nifty);
+			instance.start();
 		}        
 	}	
 
@@ -135,15 +134,15 @@ public class MainUI extends SimpleApplication{
 	}
 	
 	public static void commitTurn() {
-		BottomDisplay.waitForEndTurn();
+		//BottomDisplay.waitForEndTurn();
 		Controller.instance.commitTurn(actionsThisTurn, playingAs);
 		actionsThisTurn.clear();
 	}
 	
 	public static void clearTurn() {
 		actionsThisTurn.clear();
-		imageGame = Controller.instance.getImageGame(playingAs);		
-		MainUIMapDisplay.repaintDisplay();
+		imageGame = Controller.instance.getImageGame(playingAs);	
+		updateGameDisplay();
 	}
 	
 	@Override
@@ -276,5 +275,11 @@ public class MainUI extends SimpleApplication{
 		} else {
 			return null;
 		}
+	}
+
+	public static void updateGameDisplay() {
+		imageGame = Controller.instance.getImageGame(playingAs);
+		instance.redraw(true);
+		
 	}
 }

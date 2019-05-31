@@ -18,33 +18,36 @@ public class CornerDisplay {
 				alignRight();
 				image(new ImageBuilder("Image") {{
 					height("100%");
-					width("16%");
+					width("15%");
 					filename("images/ui/labor.png");
 				}});
-				image(new ImageBuilder("Image") {{
+				text(new TextBuilder("laborText") {{
 					height("100%");
-					width("16%");
-					filename("images/ui/labor.png");
+					width("18%");
+					text("1234");
+					font("Interface/Fonts/Default.fnt");
 				}});
 				image(new ImageBuilder("Image") {{
 					height("100%");
-					width("16%");
+					width("15%");
 					filename("images/ui/materials.png");
 				}});
-				image(new ImageBuilder("Image") {{
+				text(new TextBuilder("laborText") {{
 					height("100%");
-					width("16%");
-					filename("images/ui/materials.png");
+					width("18%");
+					text("1234");
+					font("Interface/Fonts/Default.fnt");
 				}});
 				image(new ImageBuilder("Image") {{
 					height("100%");
-					width("16%");
+					width("15%");
 					filename("images/ui/wealth.png");
 				}});
-				image(new ImageBuilder("Image") {{
+				text(new TextBuilder("laborText") {{
 					height("100%");
-					width("16%");
-					filename("images/ui/wealth.png");
+					width("18%");
+					text("1234");
+					font("Interface/Fonts/Default.fnt");
 				}});
 			}});
 
@@ -53,23 +56,25 @@ public class CornerDisplay {
 				alignRight();
 				image(new ImageBuilder("Image") {{
 					height("100%");
-					width("16%");
+					width("15%");
 					filename("images/ui/influence.png");
 				}});
-				image(new ImageBuilder("Image") {{
+				text(new TextBuilder("laborText") {{
 					height("100%");
-					width("16%");
-					filename("images/ui/influence.png");
+					width("18%");
+					text("1234");
+					font("Interface/Fonts/Default.fnt");
 				}});
 				image(new ImageBuilder("Image") {{
 					height("100%");
-					width("16%");
+					width("15%");
 					filename("images/ui/education.png");
 				}});
-				image(new ImageBuilder("Image") {{
+				text(new TextBuilder("laborText") {{
 					height("100%");
-					width("16%");
-					filename("images/ui/education.png");
+					width("18%");
+					text("1234");
+					font("Interface/Fonts/Default.fnt");
 				}});
 				
 				text(new TextBuilder("RESOURCE_PLACEHOLDER") {{

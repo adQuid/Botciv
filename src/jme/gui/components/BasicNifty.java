@@ -91,6 +91,8 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         					height("20%");
         					width("100%");
         					backgroundColor("#0f08");
+        					
+        					
             				control(new ButtonBuilder("Button_1", "Button 1"){{
         						alignCenter();
         						valignBottom();
@@ -113,7 +115,8 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         				alignRight();
         				height("100%");
         				width("20%");
-
+    					backgroundColor("#c92f");
+        				
         				control(new ButtonBuilder("Button_2","Filler") {{
         					width("100%");
         					height("*");

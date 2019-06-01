@@ -11,6 +11,7 @@ import game.BotcivGame;
 import game.BotcivPlayer;
 import game.ResourcePortfolio;
 import game.Tile;
+import game.TileType;
 import game.Unit;
 import game.UnitType;
 import game.World;

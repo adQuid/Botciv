@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import gui.MainUI;
+import jme.gui.MainUI;
 import gui.UnitDisplayComparator;
 import map.Coordinate;
 import util.ImageUtilities;
@@ -213,15 +213,11 @@ public class Tile {
 	
 	public BufferedImage image(int width, int height) {
 		BufferedImage retval;
-		if(MainUI.visionDistance <= 15) {
-			retval = ImageUtilities.importImage(type.getImage());	
-		} else {
-			retval = ImageUtilities.importImage(type.getImage().substring(0, type.getImage().length()-4)+"-tiny.png");
-		}
+		retval = ImageUtilities.importImage(type.getImage());	
 		
 		retval = ImageUtilities.scale(retval, width, height);
 		
-		if(MainUI.visionDistance <= 10 && units.size() > 0) {
+		if(units.size() > 0) {
 			List<List<UnitType>> displayCategories = new ArrayList<List<UnitType>>();
 			for(int i=0; i<10; i++) {
 				displayCategories.add(new ArrayList<UnitType>());
@@ -252,7 +248,8 @@ public class Tile {
 		}
 			
 		//borders with other nations
-		if(MainUI.visionDistance <= 20 && owner != null) {
+		try {
+		if(owner != null) {
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().left()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 
 						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/West Border.png"),owner));
@@ -269,6 +266,12 @@ public class Tile {
 				retval = ImageUtilities.layerImageOnImage(retval, 
 						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/South Border.png"),owner));
 			}
+		}
+		} catch(Exception e) {
+			if(MainUI.getGame() == null) System.out.println("game is null");
+			if(MainUI.getGame().world == null) System.out.println("game is null");
+			if(this.getCoordinate().left() == null) System.out.println("left is null");
+			retval = ImageUtilities.importImage(TileType.TYPES.get("Sea").getImage());
 		}
 		
 		//selection

@@ -2,10 +2,9 @@ package mapActions;
 
 import game.Tile;
 import gui.BottomDisplay;
-import gui.MainUI;
+import jme.gui.MainUI;
 import gui.SideDisplay;
 import map.Coordinate;
-import map.MainUIMapDisplay;
 
 public class FocusOnTile implements MapAction{
 
@@ -14,9 +13,9 @@ public class FocusOnTile implements MapAction{
 		Tile select = MainUI.getGame().world.getTileAt(coord);
 		if(select != null) {
 			select.setSelected(true);
-			MainUIMapDisplay.repaintDisplay();
+			MainUI.updateGameDisplay();
 			SideDisplay.focusOnTile(MainUI.getGame().world.getTileAt(coord));
-			BottomDisplay.focusOnTile(select);
+			
 		}
 	}
 }

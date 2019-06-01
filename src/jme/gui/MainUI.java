@@ -1,25 +1,26 @@
 package jme.gui;
 
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.StatsAppState;
-import com.jme3.asset.AssetLocator;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.collision.CollisionResults;
-import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
+import com.jme3.system.AppSettings;
 
 import aibrain.Action;
 import controller.Controller;
@@ -30,18 +31,11 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 
-import de.lessvoid.nifty.Nifty;
 import game.BotcivGame;
 import game.BotcivPlayer;
-import game.TileType;
-import game.UnitType;
-import game.World;
-import game.actions.BotcivAction;
-import gui.BottomDisplay;
+import game.Tile;
 import jme.gui.components.BasicNifty;
-import launcher.Launcher;
 import map.Coordinate;
-import map.MainUIMapDisplay;
 
 public class MainUI extends SimpleApplication{
 
@@ -64,8 +58,8 @@ public class MainUI extends SimpleApplication{
 
 	private static String[] mappings = new String[] {"RIGHT", "UP",  "LEFT", "DOWN", "ZOOM IN", "ZOOM OUT", "CLICK"};
 
-	public MainUI(BotcivGame game) {
-		super(new StatsAppState(),new AudioListenerState());
+	public MainUI() {
+		super(new AudioListenerState());
 	}
 
 	public static void setupGUI(BotcivPlayer player, boolean testing) {
@@ -74,9 +68,22 @@ public class MainUI extends SimpleApplication{
 		imageGame = Controller.instance.getImageGame(playingAs);
 		focus = player.getLastFocus();
 
+		boolean debug = true;//TODO: Move this somewhere better
+
+		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		DisplayMode[] modes = device.getDisplayModes();
+				
+		AppSettings appSettings = new AppSettings(true);
+		appSettings.setWidth(modes[modes.length-1].getWidth());
+		appSettings.setHeight(modes[modes.length-1].getHeight());
+		appSettings.setFullscreen(!debug);
+		appSettings.setSamples(1);
+		
 		if(!testing) {
-			instance = new MainUI(Launcher.loadGame());
+			instance = new MainUI();
 			instance.stateManager.attach(nifty);
+			instance.setSettings(appSettings);
+			instance.setShowSettings(debug);
 			instance.start();
 		}        
 	}	
@@ -169,7 +176,7 @@ public class MainUI extends SimpleApplication{
 			for(int y = 0; y < MAP_SIZE; y++){
 				if(!selective || 
 						(Math.abs(cam.getLocation().x - x) < 10 && Math.abs(cam.getLocation().z - y) < 10)) {
-					map[x][y].draw(assetManager);
+					map[x][y].draw(imageGame.world.getTileAt(new Coordinate(x,y)),assetManager);
 
 					Spatial wall = map[x][y].getSpatial(assetManager);
 
@@ -245,7 +252,6 @@ public class MainUI extends SimpleApplication{
 			if (name.equals("ZOOM OUT")) {
 				pos.set(pos.x, Math.min((pos.y * 1.25f) + 0.05f, MAP_SIZE*1.15f), pos.z);
 				cam.setLocation(pos);
-
 			}
 
 			camHeight = cam.getLocation().y;
@@ -277,9 +283,19 @@ public class MainUI extends SimpleApplication{
 		}
 	}
 
-	public static void updateGameDisplay() {
+	public static void newTurn() {
 		imageGame = Controller.instance.getImageGame(playingAs);
-		instance.redraw(true);
-		
+		updateGameDisplay();
+	}
+	
+	public static void updateGameDisplay() {
+		if(instance != null) {
+			instance.enqueue(new Callable<Void>() {
+				public Void call() throws Exception {
+					instance.redraw(true);
+					return null;	            
+				}
+			});
+		}
 	}
 }

@@ -70,6 +70,11 @@ public class TileToken{
         draw(assetManager);
     }
     
+    public void draw(Tile tile, AssetManager assetManager) {
+    	this.tile = tile;
+    	draw(assetManager);
+    }
+    
     public void draw(AssetManager assetManager) {        
                 
         if(MainUI.camHeight > MainUI.REDRAW_BOUNDRY) {

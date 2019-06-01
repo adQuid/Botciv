@@ -19,6 +19,7 @@ public class UnitType {
 	public static Map<String,UnitType> TYPES = new TreeMap<String,UnitType>();
 
 	public static void loadData(){
+		System.out.println("Loading Unit Types");
 		Path unitTypeFile = Paths.get("./assets/data/unitTypes.json");
 		Gson gson = new Gson();		
 		Map<String, Object> map;

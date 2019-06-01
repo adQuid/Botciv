@@ -17,6 +17,7 @@ public class TileType {
 	public static Map<String,TileType> TYPES = new TreeMap<String,TileType>();
 	
 	public static void loadData(){
+		System.out.println("Loading Tile Types");
 		Path unitTypeFile = Paths.get("./assets/data/tileTypes.json");
 		Gson gson = new Gson();		
 		Map<String, Object> map;
@@ -55,7 +56,6 @@ public class TileType {
 		this.seaPassable = seaPassable;
 		this.suitableStart = suitableStart;
 		this.foodValue = foodValue;
-		System.out.println("Loading "+name);
 	}
 
 	public String getName() {

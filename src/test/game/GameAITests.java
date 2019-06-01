@@ -36,9 +36,7 @@ public class GameAITests {
 		BotcivPlayer gatePlayer = testGame.playerByName("gate");
 		
 		BotcivPlayer player1 = testGame.playerByName("test1");
-		player1.addExploredTile(new Coordinate(5,5));
-		player1.addInfluence(100);
-		
+				
 		Unit unit1 = new Unit(UnitType.TYPES.get("population"),player1);
 		
 		Tile tile1 = testGame.world.getTileAt(new Coordinate(5,5));
@@ -47,6 +45,7 @@ public class GameAITests {
 		//This starts four threads, which isn't IDEAL in a unit test...
 		Controller controller = new Controller(testGame);
 		
+		//Allows time for the AI to run in a different thread. Imperfect, but it also serves as a sanity performance test
 		Thread.sleep(500);
 		
 		//use this as a simple way to make the controller do only one action
@@ -78,6 +77,9 @@ public class GameAITests {
 		BotcivPlayer gatePlayer = new BotcivPlayer("gate",true);//used to keep brain threads from going mad
 		testGame.players.add(gatePlayer);
 		BotcivPlayer player1 = new BotcivPlayer("test1",false);
+		player1.addMaterials(20);
+		player1.addInfluence(100);
+		player1.addExploredTile(new Coordinate(5,5));
 		testGame.players.add(player1);
 		
 		return testGame;

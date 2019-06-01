@@ -127,7 +127,7 @@ class Hypothetical {
 				scoreToPass.addLayer(new HypotheticalResult(branchGame, self,parent.getEvaluator()).getScore().decay(parent.getDecayRate()).getFirstLayer());
 				branchGame.endRound();
 			}
-			List<List<Action>> toPass = current.size()==0?passdownActions:ideaGenerator.generateIdeas(branchGame, self, iteration);
+			List<List<Action>> toPass = current.size()==0?passdownActions:ideaGenerator.generateIdeas(futureGame, self, iteration);
 			Plan planToPass = new Plan(plan);
 			planToPass.addActionListToEnd(combinedIdeas);
 			allOptions.add(packResult((tightForcastLength == 0?

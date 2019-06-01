@@ -2,7 +2,7 @@ package mapActions;
 
 import game.Unit;
 import game.actions.MigrateUnit;
-import gui.MainUI;
+import jme.gui.MainUI;
 import map.Coordinate;
 import map.MainUIMapDisplay;
 
@@ -17,7 +17,6 @@ public class Migrate implements MapAction{
 			MainUI.addAction(new MigrateUnit(MainUI.getGame().findMatching(unit), coord));
 			MapActionGlobalStore.selectedUnit.getLocation().removeUnit(unit);
 			MainUI.getGame().world.getTileAt(coord).addUnit(unit,MainUI.getGame());
-			MainUIMapDisplay.repaintDisplay();		
 		} 
 		new FocusOnTile().doAction(unit.getLocation().getCoordinate());
 	}

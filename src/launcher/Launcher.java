@@ -47,6 +47,7 @@ public class Launcher {
 	
 	public static BotcivGame loadGame() {
 		try {
+			System.out.println("loading game");
 			Scanner reader = new Scanner(new File("saves/test.savegam"));
 			Gson gson = new Gson();
 			String saveState = reader.nextLine();

@@ -14,7 +14,7 @@ import game.Unit;
 import game.UnitType;
 import game.World;
 import game.actions.MigrateUnit;
-import gui.MainUI;
+import jme.gui.MainUI;
 import map.Coordinate;
 import mapActions.MapActionGlobalStore;
 import mapActions.Migrate;

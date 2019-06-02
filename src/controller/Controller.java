@@ -75,9 +75,9 @@ public class Controller {
 		playersWithTurnsSubmitted.clear();
 		unprocessedBrains.addAll(processedBrains);
 		processedBrains.clear();
-		System.out.println("round "+activeGame.turn+" complete");
+		System.out.println("round "+(activeGame.turn-1)+" complete");
 		if(!test) {
-			MainUI.updateGameDisplay();
+			MainUI.newTurn();
 		}
 	}
 	

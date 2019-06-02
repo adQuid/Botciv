@@ -44,12 +44,14 @@ public class GameAITests {
 		
 		//This starts four threads, which isn't IDEAL in a unit test...
 		Controller controller = new Controller(testGame);
-		
-		//Allows time for the AI to run in a different thread. Imperfect, but it also serves as a sanity performance test
-		Thread.sleep(500);
-		
+				
 		//use this as a simple way to make the controller do only one action
 		controller.commitTurn(new ArrayList<Action>(), gatePlayer);
+		
+		//since the AI is in a different thread, busy wait
+		while(testGame.turn < 2) {
+			Thread.sleep(100);
+		}
 		
 		assert(testGame.world.getTileAt(new Coordinate(5,5)).getOwner().equals(player1));
 		

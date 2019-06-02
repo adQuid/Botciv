@@ -298,6 +298,7 @@ public class MainUI extends SimpleApplication{
 			Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
 			nifty.removeChildren(bottomHolder);
 			BasicBottomPanels.onYourTurn().build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
+			nifty.cleanup();
 		}
 		
 		updateGameDisplay();

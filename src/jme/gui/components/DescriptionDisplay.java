@@ -5,6 +5,7 @@ import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.render.NiftyImage;
+import jme.gui.MainUI;
 
 public class DescriptionDisplay {
 
@@ -18,7 +19,7 @@ public class DescriptionDisplay {
 			text(new TextBuilder(descriptionID){{
 				height("100%");
 				width("100%");
-				text("Tets");
+				text(MainUI.getGame().getTurnName());
 				font("fonts/TimesNewRoman.fnt");	
 			
 				wrap(true);

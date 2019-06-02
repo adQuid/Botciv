@@ -54,6 +54,9 @@ public class Controller {
 		brainThreads.add(new Thread(new BrainThread(this)));
 		brainThreads.add(new Thread(new BrainThread(this)));
 		brainThreads.add(new Thread(new BrainThread(this)));
+	}
+	
+	public void startAIs() {
 		brainThreads.get(0).start();
 		brainThreads.get(1).start();
 		brainThreads.get(2).start();

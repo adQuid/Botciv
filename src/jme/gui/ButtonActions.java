@@ -46,7 +46,7 @@ public class ButtonActions implements ScreenController{
 	
 	public void clearDescription() {
 		Element elementToFill = MainUI.nifty.getCurrentScreen().findElementById(DescriptionDisplay.descriptionID);
-	    elementToFill.getRenderer(TextRenderer.class).setText("");
+	    elementToFill.getRenderer(TextRenderer.class).setText(MainUI.getGame().getTurnName());
 	}
 	
 	public void clearTurn() {

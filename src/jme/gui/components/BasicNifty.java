@@ -24,6 +24,7 @@ import de.lessvoid.nifty.screen.DefaultScreenController;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import jme.gui.ButtonActions;
+import jme.gui.MainUI;
 
 /**
  *
@@ -90,33 +91,14 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         					height("*");
         				}});
         				
-        				panel(new PanelBuilder("Bottom_Panel") {{
+        				panel(new PanelBuilder("Bottom_Button_Holder") {{
         					childLayoutVertical(); 
         					height("30%");
         					width("100%");
         					backgroundColor("#777f");
-        					
-        					panel(new PanelBuilder("") {{
-        						childLayoutVertical(); 
-        						height("20%");
-            					panel(DescriptionDisplay.panel());        						
-        					}});
-        					
-            				control(new ButtonBuilder("Button_1", "Button 1"){{
-        						alignCenter();
-        						valignBottom();
-        						height("40%");
-        						width("100%");
-        					}});
-
-        					control(new ButtonBuilder("Button_2", "Button 2"){{
-        						alignCenter();
-        						valignBottom();
-        						height("40%");
-        						width("100%");
-        						interactOnClick("printstuff()");
-        					}});
+            				panel(BasicBottomPanels.onYourTurn());
         				}});
+
     				}});
     				
         			panel(new PanelBuilder("Right_Button_List") {{
@@ -176,6 +158,12 @@ public class BasicNifty extends BaseAppState implements ScreenController{
 	public void onEndScreen() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void removeChildren(Element element) {
+		for(Element current: element.getChildren()) {
+			current.markForRemoval();
+		}
 	}
 	
 }

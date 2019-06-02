@@ -24,6 +24,9 @@ import com.jme3.system.AppSettings;
 
 import aibrain.Action;
 import controller.Controller;
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
@@ -34,11 +37,14 @@ import com.jme3.math.Ray;
 import game.BotcivGame;
 import game.BotcivPlayer;
 import game.Tile;
+import jme.gui.components.BasicBottomPanels;
 import jme.gui.components.BasicNifty;
+import jme.gui.components.DescriptionDisplay;
 import map.Coordinate;
 
 public class MainUI extends SimpleApplication{
 
+	private static boolean debug = false;//TODO: Move this somewhere better
 	public static MainUI instance;
 	public static BasicNifty nifty = new BasicNifty();
 	
@@ -67,8 +73,6 @@ public class MainUI extends SimpleApplication{
 		playingAs = player;
 		imageGame = Controller.instance.getImageGame(playingAs);
 		focus = player.getLastFocus();
-
-		boolean debug = true;//TODO: Move this somewhere better
 
 		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		DisplayMode[] modes = device.getDisplayModes();
@@ -141,7 +145,11 @@ public class MainUI extends SimpleApplication{
 	}
 	
 	public static void commitTurn() {
-		//BottomDisplay.waitForEndTurn();
+		if(instance != null) {
+			Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
+			nifty.removeChildren(bottomHolder);
+			BasicBottomPanels.waitingForTurn().build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
+		}		
 		Controller.instance.commitTurn(actionsThisTurn, playingAs);
 		actionsThisTurn.clear();
 	}
@@ -285,6 +293,13 @@ public class MainUI extends SimpleApplication{
 
 	public static void newTurn() {
 		imageGame = Controller.instance.getImageGame(playingAs);
+		
+		if(instance != null) {
+			Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
+			nifty.removeChildren(bottomHolder);
+			BasicBottomPanels.onYourTurn().build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
+		}
+		
 		updateGameDisplay();
 	}
 	

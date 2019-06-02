@@ -32,6 +32,8 @@ public class Launcher {
 			Controller.setController(activeGame);
 
 			MainUI.setupGUI(player,false);
+			
+			Controller.instance.startAIs();
 		}catch(Exception e) {
 			e.printStackTrace();
 			test.add(new JLabel(e.getStackTrace()[0].toString()+":"+e.getClass()+(e.getMessage()!=null?":"+e.getMessage():"")),BorderLayout.CENTER);

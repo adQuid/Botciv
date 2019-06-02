@@ -44,7 +44,8 @@ public class GameAITests {
 		
 		//This starts four threads, which isn't IDEAL in a unit test...
 		Controller controller = new Controller(testGame);
-				
+		controller.startAIs();		
+		
 		//use this as a simple way to make the controller do only one action
 		controller.commitTurn(new ArrayList<Action>(), gatePlayer);
 		

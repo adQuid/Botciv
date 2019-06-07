@@ -33,6 +33,7 @@ public class Launcher {
 
 			MainUI.setupGUI(player,false);
 			
+			Thread.sleep(2000);
 			Controller.instance.startAIs();
 		}catch(Exception e) {
 			e.printStackTrace();

@@ -44,7 +44,7 @@ import map.Coordinate;
 
 public class MainUI extends SimpleApplication{
 
-	private static boolean debug = false;//TODO: Move this somewhere better
+	private static boolean debug = true;//TODO: Move this somewhere better
 	public static MainUI instance;
 	public static BasicNifty nifty = new BasicNifty();
 	
@@ -61,8 +61,10 @@ public class MainUI extends SimpleApplication{
 	TileToken[][] map = new TileToken[(int)(MAP_SIZE*widthMult)][MAP_SIZE];    
 
 	private long lastInput = 0L;
+	private static int MIN_INPUT_INTERVAL = 20;
 
-	private static String[] mappings = new String[] {"RIGHT", "UP",  "LEFT", "DOWN", "ZOOM IN", "ZOOM OUT", "CLICK"};
+	private static String[] analogMappings = new String[] {"RIGHT", "UP",  "LEFT", "DOWN", "ZOOM IN", "ZOOM OUT"};
+	private static String[] actionMappings = new String[] {"QUIT", "CLICK"};
 
 	public MainUI() {
 		super(new AudioListenerState());
@@ -101,6 +103,7 @@ public class MainUI extends SimpleApplication{
 		cam.setLocation(new Vector3f(focus.x + 0.25f,1.2f,focus.y + 0.9f));
 		tiltCamera();
 
+		inputManager.clearMappings();//Apparently application start with mappings
 		inputManager.addMapping("QUIT", new KeyTrigger(KeyInput.KEY_ESCAPE));
 		inputManager.addMapping("LEFT", new KeyTrigger(KeyInput.KEY_A));
 		inputManager.addMapping("RIGHT", new KeyTrigger(KeyInput.KEY_D));
@@ -108,10 +111,10 @@ public class MainUI extends SimpleApplication{
 		inputManager.addMapping("DOWN", new KeyTrigger(KeyInput.KEY_W));
 		inputManager.addMapping("ZOOM IN", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
 		inputManager.addMapping("ZOOM OUT", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
-		inputManager.addMapping("CLICK", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+		//Because of the hover layer, click actions can't be mapped here
 
-		inputManager.addListener(actionListener, mappings);
-		inputManager.addListener(analogListener, mappings);
+		inputManager.addListener(actionListener, actionMappings);
+		inputManager.addListener(analogListener, analogMappings);
 
 		for(int x = 0; x < MAP_SIZE; x++){
 			for(int y = 0; y < MAP_SIZE; y++){
@@ -212,24 +215,19 @@ public class MainUI extends SimpleApplication{
 			if (name.equals("QUIT")) {
 				System.exit(0);
 			}
-			if (name.equals("CLICK") && keyPressed) {
-				Geometry geo = findClickedObject();
-
-			}
 		}
 	};
 
 	private final AnalogListener analogListener = new AnalogListener() {
 		@Override
 		public void onAnalog(String name, float value, float tpf) {
-
-			if(System.currentTimeMillis() - lastInput < 100) {
+			if(System.currentTimeMillis() - lastInput < MIN_INPUT_INTERVAL) {
 				return;
 			}
 			lastInput = System.currentTimeMillis();
 
 			Vector3f pos = cam.getLocation().clone();
-			float moveSpeed = 0.03f + (0.02f * (float)Math.pow(pos.y,1.5));
+			float moveSpeed = 0.05f + (0.02f * (float)Math.pow(pos.y,1.2));
 
 			Geometry geo = findClickedObject();
 			boolean zoomedOut = camHeight > REDRAW_BOUNDRY;
@@ -272,6 +270,18 @@ public class MainUI extends SimpleApplication{
 		}
 	};
 
+	public void click() {
+		Geometry geo = findClickedObject();
+		
+		for(TileToken[] row: map) {
+			for(TileToken token: row) {
+				if(token.geo == geo) {
+					System.out.println("Found geo");
+				}
+			}
+		}
+	}
+	
 	private Geometry findClickedObject() {
 		// Reset results list.
 		CollisionResults results = new CollisionResults();

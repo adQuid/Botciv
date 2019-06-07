@@ -57,6 +57,10 @@ public class ButtonActions implements ScreenController{
 		MainUI.commitTurn();
 	}
 	
+	public void click() {
+		MainUI.instance.click();
+	}
+	
 	@Override
 	public void bind(Nifty arg0, Screen arg1) {
 		// TODO Auto-generated method stub	

@@ -11,14 +11,14 @@ public class BasicBottomPanels {
 		return new PanelBuilder("Bottom_Panel") {{
 				childLayoutVertical(); 
 								
-				control(new ButtonBuilder("Button_1", "Button 1"){{
+				control(new ButtonBuilder("Button_1", "Filler part 1"){{
 					alignCenter();
 					valignBottom();
 					height("50%");
 					width("100%");
 				}});
 
-				control(new ButtonBuilder("Button_2", "Button 2"){{
+				control(new ButtonBuilder("Button_2", "Filler part 2"){{
 					alignCenter();
 					valignBottom();
 					height("50%");
@@ -32,7 +32,7 @@ public class BasicBottomPanels {
 		return new PanelBuilder("Bottom_Panel") {{
 			childLayoutVertical(); 
 
-			control(new ButtonBuilder("Button_2", "Waiting for other players..."){{
+			control(new ButtonBuilder("Waiting_Filler", "Waiting for other players..."){{
 				alignCenter();
 				valignBottom();
 				height("100%");

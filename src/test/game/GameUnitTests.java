@@ -83,6 +83,17 @@ public class GameUnitTests {
 		assert(copyGame.getUnits().size() == 2);
 		
 	}
+	
+	@Test
+	public void testSaveAndLoad() {
+		BotcivGame testGame = generateTestGame();
+		
+		BotcivGame loadGame = new BotcivGame(testGame.saveString());
+		
+		assert(testGame.world.getTileAt(new Coordinate(5,5)).getType()==(loadGame.world.getTileAt(new Coordinate(5,5)).getType()));
+		assert(testGame.world.getTileAt(new Coordinate(5,6)).getType()==(loadGame.world.getTileAt(new Coordinate(5,6)).getType()));
+
+	}
 
 	private BotcivGame generateTestGame() {
 		World testWorld = new World();

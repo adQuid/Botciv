@@ -35,7 +35,7 @@ import util.ImageUtilities;
  */
 public class TileToken{
     
-    private Tile tile;
+    public Tile tile;
     public Box box = null;
     public Geometry geo;
     public Material material;

@@ -31,10 +31,8 @@ public class GameAITests {
 	@Test
 	public void testClaimAndFarm() throws InterruptedException {
 
-		BotcivGame testGame = generateTestGame();
-		
-		BotcivPlayer gatePlayer = testGame.playerByName("gate");
-		
+		BotcivGame testGame = generateTestGame();		
+		BotcivPlayer gatePlayer = testGame.playerByName("gate");		
 		BotcivPlayer player1 = testGame.playerByName("test1");
 				
 		Unit unit1 = new Unit(UnitType.TYPES.get("population"),player1);
@@ -66,6 +64,53 @@ public class GameAITests {
 		assert(testGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() > 0);
 	}
 	
+	
+	//TODO: Start using brainthreads directly to rely less on multithreading
+	@Test
+	public void testPlansSameWithCopy() throws InterruptedException {
+
+		BotcivGame testGame = generateTestGame();		
+		BotcivPlayer gatePlayer = testGame.playerByName("gate");		
+		BotcivPlayer player1 = testGame.playerByName("test1");
+
+		BotcivGame copyGame = (BotcivGame)new BotcivGameCloner().cloneGame(testGame);
+		BotcivPlayer copyGatePlayer = testGame.playerByName("gate");		
+		BotcivPlayer copyPlayer1 = testGame.playerByName("test1");
+				
+		//This starts four threads, which isn't IDEAL in a unit test...
+		Controller controller1 = new Controller(testGame);
+		Controller controller2 = new Controller(copyGame);
+		controller1.startAIs();		
+		controller2.startAIs();		
+		
+		//use this as a simple way to make the controller do only one action
+		controller1.commitTurn(new ArrayList<Action>(), gatePlayer);
+		controller2.commitTurn(new ArrayList<Action>(), copyGatePlayer);
+		
+		//since the AI is in a different thread, busy wait
+		//8 threads are running here; this might take some time
+		while(testGame.turn < 2 || copyGame.turn < 2) {
+			Thread.sleep(100);
+		}
+		
+		assert(testGame.world.getTileAt(new Coordinate(5,5)).getOwner().equals(player1));
+		assert(testGame.world.getTileAt(new Coordinate(5,5)).getOwner().equals(copyPlayer1));
+		
+		player1 = testGame.playerByName("test1");
+		player1.addMaterials(100);
+		
+		copyPlayer1 = testGame.playerByName("test1");
+		copyPlayer1.addMaterials(100);
+		
+		//use this as a simple way to make the controller do only one action
+		controller1.commitTurn(new ArrayList<Action>(), gatePlayer);
+		controller2.commitTurn(new ArrayList<Action>(), copyGatePlayer);
+		
+		//being a little unspecific here in order to not be super volatile as unit rules change
+		assert(testGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() > 0);
+		assert(copyGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() > 0);
+	}
+	
 	private BotcivGame generateTestGame() {
 		World testWorld = new World();
 		
@@ -84,6 +129,9 @@ public class GameAITests {
 		player1.addInfluence(100);
 		player1.addExploredTile(new Coordinate(5,5));
 		testGame.players.add(player1);
+		
+		Unit unit1 = new Unit(UnitType.TYPES.get("population"),player1);
+		tile1.addUnit(unit1,testGame);	
 		
 		return testGame;
 	}

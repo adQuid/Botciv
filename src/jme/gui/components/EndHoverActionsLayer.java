@@ -9,7 +9,7 @@ public class EndHoverActionsLayer {
 			width("100%");
 			height("100%");
 			interactOnMouseOver("clearDescription()");
-			interactOnClick("click()");
+			interactOnRelease("click()");
 		}};
 	}
 	

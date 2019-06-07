@@ -40,6 +40,7 @@ import game.Tile;
 import jme.gui.components.BasicBottomPanels;
 import jme.gui.components.BasicNifty;
 import jme.gui.components.DescriptionDisplay;
+import jme.gui.mapActions.FocusOnTile;
 import map.Coordinate;
 
 public class MainUI extends SimpleApplication{
@@ -276,7 +277,8 @@ public class MainUI extends SimpleApplication{
 		for(TileToken[] row: map) {
 			for(TileToken token: row) {
 				if(token.geo == geo) {
-					System.out.println("Found geo");
+					Coordinate coord = token.tile.getCoordinate();
+					new FocusOnTile().doAction(coord);
 				}
 			}
 		}

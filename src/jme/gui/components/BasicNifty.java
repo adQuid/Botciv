@@ -98,11 +98,11 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         					panel(DescriptionDisplay.panel());        						
         				}});
         				
-        				panel(new PanelBuilder("Bottom_Button_Holder") {{
+        				panel(new PanelBuilder(BasicBottomPanels.BOTTOM_BUTTON_LABEL) {{
         					childLayoutVertical(); 
         					height("20%");
         					width("100%");
-        					backgroundColor("#777f");
+        					backgroundColor("#c92f");
             				panel(BasicBottomPanels.onYourTurn());
         				}});
 

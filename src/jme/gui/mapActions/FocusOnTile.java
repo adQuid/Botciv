@@ -2,6 +2,7 @@ package jme.gui.mapActions;
 
 import game.Tile;
 import jme.gui.MainUI;
+import jme.gui.components.BasicBottomPanels;
 import map.Coordinate;
 
 public class FocusOnTile implements MapAction{
@@ -13,7 +14,7 @@ public class FocusOnTile implements MapAction{
 			MainUI.getGame().world.clearSelections();
 			select.setSelected(true);
 			MainUI.updateGameDisplay();
-			
+			MainUI.updateBottomPanel(BasicBottomPanels.focusOnTile(select));
 		}
 	}
 }

@@ -25,6 +25,7 @@ import com.jme3.system.AppSettings;
 import aibrain.Action;
 import controller.Controller;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 
@@ -51,7 +52,7 @@ public class MainUI extends SimpleApplication{
 	
 	private static final int MAP_SIZE = 100;
 	public static float camHeight = 0.2f;
-	public static final float REDRAW_BOUNDRY = 12.0f;
+	public static final float REDRAW_BOUNDRY = 14.0f;
 
 	private static BotcivGame imageGame;
 	private static BotcivPlayer playingAs;
@@ -307,10 +308,7 @@ public class MainUI extends SimpleApplication{
 		imageGame = Controller.instance.getImageGame(playingAs);
 		
 		if(instance != null) {
-			Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
-			nifty.removeChildren(bottomHolder);
-			BasicBottomPanels.onYourTurn().build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
-			nifty.cleanup();
+			updateBottomPanel(BasicBottomPanels.onYourTurn());
 		}
 		
 		updateGameDisplay();
@@ -325,5 +323,12 @@ public class MainUI extends SimpleApplication{
 				}
 			});
 		}
+	}
+	
+	public static void updateBottomPanel(PanelBuilder newPanel) {
+		Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
+		nifty.removeChildren(bottomHolder);
+		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
+		nifty.cleanup();
 	}
 }

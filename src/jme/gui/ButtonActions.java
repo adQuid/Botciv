@@ -20,6 +20,7 @@ import jme.gui.descriptionwrappers.ExploreDescriptionWrapper;
 import jme.gui.descriptionwrappers.ClaimDescriptionWrapper;
 import jme.gui.descriptionwrappers.DescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceDescriptionWrapper;
+import jme.gui.descriptionwrappers.ResourceQuanityDescriptionWrapper;
 import map.MainUIMapDisplay;
 import util.GameLogicUtilities;
 
@@ -35,6 +36,11 @@ public class ButtonActions implements ScreenController{
 		wrappers.put("wealth", ResourceDescriptionWrapper.wealth);
 		wrappers.put("influence", ResourceDescriptionWrapper.influence);
 		wrappers.put("education", ResourceDescriptionWrapper.education);
+		wrappers.put("laborAmount", ResourceQuanityDescriptionWrapper.labor);
+		wrappers.put("materialsAmount", ResourceQuanityDescriptionWrapper.materials);
+		wrappers.put("wealthAmount", ResourceQuanityDescriptionWrapper.wealth);
+		wrappers.put("influenceAmount", ResourceQuanityDescriptionWrapper.influence);
+		wrappers.put("educationAmount", ResourceQuanityDescriptionWrapper.education);
 		wrappers.put("explore", ExploreDescriptionWrapper.explore);
 		wrappers.put("claim", ClaimDescriptionWrapper.claim);
 		

@@ -40,6 +40,7 @@ import game.BotcivPlayer;
 import game.Tile;
 import jme.gui.components.BasicBottomPanels;
 import jme.gui.components.BasicNifty;
+import jme.gui.components.CornerDisplay;
 import jme.gui.components.DescriptionDisplay;
 import jme.gui.mapActions.FocusOnTile;
 import map.Coordinate;
@@ -64,6 +65,7 @@ public class MainUI extends SimpleApplication{
 
 	private long lastInput = 0L;
 	private static int MIN_INPUT_INTERVAL = 20;
+	private boolean hasUpdatedResourceDisplays = false;
 
 	private static String[] analogMappings = new String[] {"RIGHT", "UP",  "LEFT", "DOWN", "ZOOM IN", "ZOOM OUT"};
 	private static String[] actionMappings = new String[] {"QUIT", "CLICK"};
@@ -181,6 +183,11 @@ public class MainUI extends SimpleApplication{
 		camHeight = cam.getLocation().y;
 
 		tiltCamera();
+		
+		if(!hasUpdatedResourceDisplays) {
+			updateResourceDisplays();
+			hasUpdatedResourceDisplays = true;
+		}
 	}
 
 	private void redraw(boolean selective) {
@@ -323,7 +330,21 @@ public class MainUI extends SimpleApplication{
 					return null;	            
 				}
 			});
+			updateResourceDisplays();
 		}
+	}
+	
+	private static void updateResourceDisplays() {
+		Element elementToFill = MainUI.nifty.getCurrentScreen().findElementById(CornerDisplay.LABOR);
+	    elementToFill.getRenderer(TextRenderer.class).setText((int)getGame().players.get(0).getLabor()+"");
+	    elementToFill = MainUI.nifty.getCurrentScreen().findElementById(CornerDisplay.MATERIALS);
+	    elementToFill.getRenderer(TextRenderer.class).setText((int)getGame().players.get(0).getMaterials()+"");
+	    elementToFill = MainUI.nifty.getCurrentScreen().findElementById(CornerDisplay.WEALTH);
+	    elementToFill.getRenderer(TextRenderer.class).setText((int)getGame().players.get(0).getWealth()+"");
+	    elementToFill = MainUI.nifty.getCurrentScreen().findElementById(CornerDisplay.INFLUENCE);
+	    elementToFill.getRenderer(TextRenderer.class).setText((int)getGame().players.get(0).getInfluence()+"");
+	    elementToFill = MainUI.nifty.getCurrentScreen().findElementById(CornerDisplay.EDUCATION);
+	    elementToFill.getRenderer(TextRenderer.class).setText((int)getGame().players.get(0).getEducation()+"");
 	}
 	
 	public static void updateBottomPanel(PanelBuilder newPanel) {

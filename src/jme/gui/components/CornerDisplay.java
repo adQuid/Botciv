@@ -9,6 +9,12 @@ import de.lessvoid.nifty.render.NiftyImage;
 
 public class CornerDisplay {
 
+	public static final String LABOR = "Labor_Text";
+	public static final String MATERIALS = "Materials_Text";
+	public static final String WEALTH = "Wealth_Text";
+	public static final String INFLUENCE = "Influence_Text";
+	public static final String EDUCATION = "Education_Text";
+	
 	public static PanelBuilder panel() {
 		return new PanelBuilder("Bottom_Button_List"){{
 			childLayoutVertical(); 
@@ -23,11 +29,12 @@ public class CornerDisplay {
 					filename("images/ui/labor.png");
 					interactOnMouseOver("updateDescription(labor)");
 				}});
-				text(new TextBuilder("laborText") {{
+				text(new TextBuilder(LABOR) {{
 					height("100%");
 					width("18%");
-					text("1234");
+					text("Undefined");
 					font("Interface/Fonts/Default.fnt");
+					interactOnMouseOver("updateDescription(laborAmount)");
 				}});
 				image(new ImageBuilder("Image") {{
 					height("100%");
@@ -35,11 +42,12 @@ public class CornerDisplay {
 					filename("images/ui/materials.png");
 					interactOnMouseOver("updateDescription(materials)");
 				}});
-				text(new TextBuilder("laborText") {{
+				text(new TextBuilder(MATERIALS) {{
 					height("100%");
 					width("18%");
 					text("1234");
 					font("Interface/Fonts/Default.fnt");
+					interactOnMouseOver("updateDescription(materialsAmount)");
 					
 				}});
 				image(new ImageBuilder("Image") {{
@@ -48,11 +56,12 @@ public class CornerDisplay {
 					filename("images/ui/wealth.png");
 					interactOnMouseOver("updateDescription(wealth)");
 				}});
-				text(new TextBuilder("laborText") {{
+				text(new TextBuilder(WEALTH) {{
 					height("100%");
 					width("18%");
 					text("1234");
 					font("Interface/Fonts/Default.fnt");
+					interactOnMouseOver("updateDescription(wealthAmount)");
 				}});
 			}});
 
@@ -65,11 +74,12 @@ public class CornerDisplay {
 					filename("images/ui/influence.png");
 					interactOnMouseOver("updateDescription(influence)");
 				}});
-				text(new TextBuilder("laborText") {{
+				text(new TextBuilder(INFLUENCE) {{
 					height("100%");
 					width("18%");
 					text("1234");
 					font("Interface/Fonts/Default.fnt");
+					interactOnMouseOver("updateDescription(influenceAmount)");
 				}});
 				image(new ImageBuilder("Image") {{
 					height("100%");
@@ -77,11 +87,12 @@ public class CornerDisplay {
 					filename("images/ui/education.png");
 					interactOnMouseOver("updateDescription(education)");
 				}});
-				text(new TextBuilder("laborText") {{
+				text(new TextBuilder(EDUCATION) {{
 					height("100%");
 					width("18%");
 					text("1234");
 					font("Interface/Fonts/Default.fnt");
+					interactOnMouseOver("updateDescription(educationAmount)");
 				}});
 				
 				text(new TextBuilder("RESOURCE_PLACEHOLDER") {{

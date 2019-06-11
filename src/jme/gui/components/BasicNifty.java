@@ -113,7 +113,7 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         				alignRight();
         				height("100%");
         				width("20%");
-    					backgroundColor("#c92f");
+    					backgroundColor("#850f");
         				
         				control(new ButtonBuilder("Button_2","Filler") {{
         					width("100%");

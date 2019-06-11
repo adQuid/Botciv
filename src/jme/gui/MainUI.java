@@ -306,6 +306,7 @@ public class MainUI extends SimpleApplication{
 
 	public static void newTurn() {
 		imageGame = Controller.instance.getImageGame(playingAs);
+		GlobalContext.clear();
 		
 		if(instance != null) {
 			updateBottomPanel(BasicBottomPanels.onYourTurn());

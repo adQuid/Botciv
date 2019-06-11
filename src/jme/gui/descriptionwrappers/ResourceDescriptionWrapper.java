@@ -1,4 +1,4 @@
-package descriptionwrappers;
+package jme.gui.descriptionwrappers;
 
 public class ResourceDescriptionWrapper extends DescriptionWrapper{
 

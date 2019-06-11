@@ -1,4 +1,4 @@
-package descriptionwrappers;
+package jme.gui.descriptionwrappers;
 
 import gui.MainUI;
 

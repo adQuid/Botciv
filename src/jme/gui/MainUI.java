@@ -153,6 +153,7 @@ public class MainUI extends SimpleApplication{
 	}
 	
 	public static void commitTurn() {
+		GlobalContext.waitingForPlayers = true;
 		if(instance != null) {
 			Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
 			nifty.removeChildren(bottomHolder);

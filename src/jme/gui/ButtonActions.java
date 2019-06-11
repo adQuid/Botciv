@@ -62,15 +62,21 @@ public class ButtonActions implements ScreenController{
 	}
 	
 	public void clearTurn() {
-		MainUI.clearTurn();
+		if(!GlobalContext.waitingForPlayers) {
+			MainUI.clearTurn();
+		}
 	}
 	
 	public void commitTurn() {
-		MainUI.commitTurn();
+		if(!GlobalContext.waitingForPlayers) {
+			MainUI.commitTurn();
+		}
 	}
 	
 	public void click() {
-		MainUI.instance.click();
+		if(!GlobalContext.waitingForPlayers) {
+			MainUI.instance.click();
+		}
 	}
 	
 	public void exploreTile() {

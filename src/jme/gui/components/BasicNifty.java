@@ -69,8 +69,7 @@ public class BasicNifty extends BaseAppState implements ScreenController{
     	nifty.loadStyleFile("nifty-default-styles.xml");
     	nifty.loadControlFile("nifty-default-controls.xml");
     	
-    	// <screen>
-    	nifty.addScreen("Screen_ID", new ScreenBuilder("Hello Nifty Screen"){{
+    	nifty.addScreen("Main_Screen", new ScreenBuilder("Hello Nifty Screen"){{
     		controller(ButtonActions.actions); //whacky controller nonsense
     		    		
     		layer(EndHoverActionsLayer.getLayer());
@@ -130,7 +129,7 @@ public class BasicNifty extends BaseAppState implements ScreenController{
     		}});
     	}}.build(nifty));
 
-    	nifty.gotoScreen("Screen_ID"); // start the screen
+    	nifty.gotoScreen("Main_Screen"); // start the screen
     }
 
     public Screen getCurrentScreen() {

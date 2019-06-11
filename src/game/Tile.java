@@ -250,13 +250,14 @@ public class Tile {
 		//borders with other nations
 		try {
 		if(owner != null) {
+			//Yes, east and west are backwards. This is required by JMonkey for some reason
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().left()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/West Border.png"),owner));
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/East Border.png"),owner));
 			}
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().right()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/East Border.png"),owner));
+						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/West Border.png"),owner));
 			}
 			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().up()).getOwner())) {
 				retval = ImageUtilities.layerImageOnImage(retval, 

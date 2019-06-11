@@ -56,7 +56,7 @@ public class TileFocusBottomPanels {
 					height("20%");
 					width("100%");
 					if(tile.getOwner() == null) {
-						text("Unclaimed "+tile.getType().getName());
+						text("Unclaimed "+tile.getType().getName()+" "+tile.getCoordinate());
 					} else {
 						text(tile.getOwner().getName()+"'s "+tile.getType().getName());
 					}

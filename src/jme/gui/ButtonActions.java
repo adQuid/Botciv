@@ -21,7 +21,6 @@ import jme.gui.descriptionwrappers.ClaimDescriptionWrapper;
 import jme.gui.descriptionwrappers.DescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceDescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceQuanityDescriptionWrapper;
-import map.MainUIMapDisplay;
 import util.GameLogicUtilities;
 
 public class ButtonActions implements ScreenController{
@@ -101,7 +100,7 @@ public class ButtonActions implements ScreenController{
 				|| tile.getUnits().get(UnitType.TYPES.get("claim")).size() == 0) 
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:5}"))) {
 			tile.addUnit(new Unit(UnitType.TYPES.get("claim"), MainUI.getPlayer()),MainUI.getGame());
-			MainUIMapDisplay.repaintDisplay();
+			MainUI.updateGameDisplay();
 			MainUI.addAction(new ClaimTile(tile.getCoordinate()));
 		}
 	}

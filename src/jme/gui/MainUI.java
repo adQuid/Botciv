@@ -32,6 +32,7 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.math.FastMath;
+import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 
@@ -60,7 +61,7 @@ public class MainUI extends SimpleApplication{
 	private static List<Action> actionsThisTurn = new ArrayList<Action>();
 	public static Coordinate focus = new Coordinate(0,0);
 
-	float widthMult = 3.0f;
+	int widthMult = 3;
 	TileToken[][] map = new TileToken[(int)(MAP_SIZE*widthMult)][MAP_SIZE];    
 
 	private long lastInput = 0L;
@@ -188,6 +189,7 @@ public class MainUI extends SimpleApplication{
 			updateResourceDisplays();
 			hasUpdatedResourceDisplays = true;
 		}
+		
 	}
 
 	private void redraw(boolean selective) {
@@ -203,10 +205,10 @@ public class MainUI extends SimpleApplication{
 					wall.setLocalTranslation(x,-2.0f,y);
 					/* This quaternion stores a 90 degree rolling rotation */
 					Quaternion roll = new Quaternion();
-					roll.fromAngleAxis( FastMath.PI/2, new Vector3f(0,1,0) );
+					roll.fromAngleAxis( FastMath.PI/2.0f, new Vector3f(0,1,0) );
 					/* The rotation is applied: The object rolls by 180 degrees. */
-					wall.setLocalRotation( roll );
-
+					wall.setLocalRotation(roll);
+								
 					rootNode.attachChild(wall);
 				}
 			}

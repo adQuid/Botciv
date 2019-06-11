@@ -91,6 +91,7 @@ public class TileToken{
         	box = new Box(0.5f,Math.max(1.0f + (0.0003f * tile.getAltitude()),1.00f),0.5f);
              
         	this.geo = new Geometry("name", box);
+
         }
     }
         

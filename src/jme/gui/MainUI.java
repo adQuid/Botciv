@@ -24,6 +24,7 @@ import com.jme3.system.AppSettings;
 
 import aibrain.Action;
 import controller.Controller;
+import controller.Settings;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.elements.Element;
@@ -48,7 +49,6 @@ import map.Coordinate;
 
 public class MainUI extends SimpleApplication{
 
-	private static boolean debug = true;//TODO: Move this somewhere better
 	public static MainUI instance;
 	public static BasicNifty nifty = new BasicNifty();
 	
@@ -87,14 +87,14 @@ public class MainUI extends SimpleApplication{
 		AppSettings appSettings = new AppSettings(true);
 		appSettings.setWidth(modes[modes.length-1].getWidth());
 		appSettings.setHeight(modes[modes.length-1].getHeight());
-		appSettings.setFullscreen(!debug);
+		appSettings.setFullscreen(!Settings.debug());
 		appSettings.setSamples(1);
 		
 		if(!testing) {
 			instance = new MainUI();
 			instance.stateManager.attach(nifty);
 			instance.setSettings(appSettings);
-			instance.setShowSettings(debug);
+			instance.setShowSettings(Settings.debug());
 			instance.start();
 		}        
 	}	

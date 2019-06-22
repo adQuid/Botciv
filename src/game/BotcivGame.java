@@ -13,9 +13,9 @@ import aibrain.Player;
 import game.actions.BotcivAction;
 import map.Coordinate;
 import util.WorldViewGenerator;
+import worldgen.WorldGenerator;
 import util.GameLogicUtilities;
 import util.MiscUtilities;
-import util.WorldGenerator;
 
 public class BotcivGame implements Game{
 

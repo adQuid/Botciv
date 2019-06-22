@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import map.Coordinate;
-import util.WorldGenerator;
+import worldgen.WorldGenerator;
 
 public class World {
 
@@ -148,6 +148,14 @@ public class World {
 			}
 		}
 		return -1;
+	}
+	
+	public static int lattitude(Coordinate coord) {
+		int retval = (int)(Math.abs(coord.y-(0.5*WORLD_SIZE))/(0.5*WORLD_SIZE) * 90.0);
+		if(retval > 90 || retval < 0) {
+			System.out.println("coord "+coord+" has lat "+retval);
+		}
+		return retval;
 	}
 	
 }

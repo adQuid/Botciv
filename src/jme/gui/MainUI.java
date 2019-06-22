@@ -56,6 +56,8 @@ public class MainUI extends SimpleApplication{
 	public static float camHeight = 0.2f;
 	public static final float REDRAW_BOUNDRY = 14.0f;
 
+	private static Vector2f lastRedraw;
+
 	private static BotcivGame imageGame;
 	private static BotcivPlayer playingAs;
 	private static List<Action> actionsThisTurn = new ArrayList<Action>();
@@ -276,7 +278,10 @@ public class MainUI extends SimpleApplication{
 			if(camHeight > REDRAW_BOUNDRY && !zoomedOut) {
 				redraw(false);
 			}
-			if(camHeight < REDRAW_BOUNDRY) {
+			if(camHeight < REDRAW_BOUNDRY && (zoomedOut
+					|| lastRedraw == null
+					|| new Vector2f(cam.getLocation().x, cam.getLocation().z).distance(lastRedraw)>4.0f)) {
+				lastRedraw = new Vector2f(cam.getLocation().x,cam.getLocation().z);
 				redraw(true);
 			}
 		}
@@ -329,7 +334,11 @@ public class MainUI extends SimpleApplication{
 		if(instance != null) {
 			instance.enqueue(new Callable<Void>() {
 				public Void call() throws Exception {
-					instance.redraw(true);
+					if(instance.cam.getLocation().clone().getY() < REDRAW_BOUNDRY) {
+						instance.redraw(true);
+					} else {
+						instance.redraw(false);
+					}
 					return null;	            
 				}
 			});

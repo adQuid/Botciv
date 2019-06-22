@@ -1,4 +1,4 @@
-package util;
+package worldgen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +25,9 @@ public class WorldGenerator {
 	
 	public static Map<Coordinate,Tile> generateTerrain(World world) {
 		
+		System.out.println("Building World...");
+		// In the beginning God created the heaven and the earth.
+		Atmosphere atmosphere = new Atmosphere(world);
 		Map<Coordinate,Tile> tiles = new HashMap<Coordinate,Tile>();
 		int worldTemp = 26 + rand.nextInt(24);
 		
@@ -113,7 +116,7 @@ public class WorldGenerator {
 		//checking for rainfall
 		for(Tile tile: tiles.values()) {
 			if(tile.getAltitude() < 0 && tile.getTemperature() > -10) {
-				spreadRainfall(tile.getCoordinate(), tiles, world.WORLD_SIZE, Direction.NONE);
+				atmosphere.spreadRainfall(tile.getCoordinate(), tiles, world.WORLD_SIZE, Direction.NONE, rand);
 			}
 		}
 			
@@ -129,38 +132,17 @@ public class WorldGenerator {
 		
 		//flow temperature
 		for(Tile tile: tiles.values()) {
-			flowTempurature(tile,tiles.get(tile.getCoordinate().left()));
-			flowTempurature(tile,tiles.get(tile.getCoordinate().right()));
-			flowTempurature(tile,tiles.get(tile.getCoordinate().up()));
-			flowTempurature(tile,tiles.get(tile.getCoordinate().down()));
+			atmosphere.flowTempurature(tile,tiles.get(tile.getCoordinate().left()));
+			atmosphere.flowTempurature(tile,tiles.get(tile.getCoordinate().right()));
+			atmosphere.flowTempurature(tile,tiles.get(tile.getCoordinate().up()));
+			atmosphere.flowTempurature(tile,tiles.get(tile.getCoordinate().down()));
 		}
 		
 		//final decisions
 		for(Tile tile: tiles.values()) {
-			if(tile.getType() == TileType.TYPES.get("Mountain")) {
-				continue;
-			}
-			if(tile.getTemperature() < -10) {
-				tile.setType(TileType.TYPES.get("Ice Cap"));
-			} else if(tile.getAltitude() > 0 && tile.getTemperature() < 5 && tile.getRainfall() > 0){
-				tile.setType(TileType.TYPES.get("Tundra"));
-			}else {
-				if(tile.getAltitude() > -1) {
-					if(tile.getRainfall() - (Math.max(0,tile.getTemperature()/6)) > 35 && tile.getTemperature() > 22) {
-						tile.setType(TileType.TYPES.get("Jungle"));
-					}else if(tile.getRainfall() - (Math.max(0,tile.getTemperature()/6)) > 7) {
-						tile.setType(TileType.TYPES.get("Forest"));
-					} else if(tile.getRainfall() - (Math.max(0,tile.getTemperature())/7) > 4) {
-						tile.setType(TileType.TYPES.get("Grassland"));
-					} else if(tile.getRainfall() - (Math.max(0,tile.getTemperature())/8) > 0){
-						tile.setType(TileType.TYPES.get("Plain"));
-					} else {
-						tile.setType(TileType.TYPES.get("Desert"));
-					}
-					landTiles++;
-				} else {
-
-				}
+			calculateBiome(tile);
+			if(tile.getAltitude() > -1) {
+				landTiles++;
 			}
 		}
 				
@@ -217,103 +199,31 @@ public class WorldGenerator {
 			tile.setAltitude(tile.getAltitude() + (other.getAltitude() - tile.getAltitude())/5);
 		}
 	}
-	
-	private enum Direction{
-		UP,DOWN,LEFT,RIGHT,NONE
-	}
-	
-	private static class CoordinateDirectionPair{
-		public Coordinate coord;
-		public Direction direction;
-		public CoordinateDirectionPair(Coordinate coord, Direction direction) {
-			this.coord = coord;
-			this.direction = direction;
-		}
-		public boolean equals(Object other) { //super unsafe; I don't care
-			CoordinateDirectionPair otherPair = (CoordinateDirectionPair)other;
-			return this.coord.equals(otherPair.coord) && this.direction==otherPair.direction;
-		}
-	}
-	
-	private static void spreadRainfall(Coordinate start, Map<Coordinate,Tile> tiles, int size, Direction direction) {
-		List<List<CoordinateDirectionPair>> arr = new ArrayList<List<CoordinateDirectionPair>>(); 
-		int spread = 8;
-		for(int i=0; i <= spread; i++) {
-			arr.add(new ArrayList<CoordinateDirectionPair>());
-		}
+			
+	private static void calculateBiome(Tile tile) {
 		
-		arr.get(0).add(new CoordinateDirectionPair(start,null));
-		
-		for(int index=0; index < spread; index++) {
-			while(arr.get(index).size() > 0) {
-				Coordinate coord = arr.get(index).get(0).coord.wrap(size);
-
-				if(index == 7) {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
-				}
-				
-				if(tiles.get(coord).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1), coord, Direction.NONE);
-				}
-				if(direction != Direction.UP 
-						&& tiles.get(coord.up()) != null 
-						&& tiles.get(coord.up()).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1),coord.up(), Direction.UP);
-				} else {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
-				}
-				if(direction != Direction.DOWN 
-						&& tiles.get(coord.down()) != null 
-						&& tiles.get(coord.down()).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1),coord.down(), Direction.DOWN);
-				} else {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
-				}
-				if(direction != Direction.RIGHT
-						&& tiles.get(coord.left()) != null 
-						&& tiles.get(coord.left()).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1),coord.left(), Direction.LEFT);
-				} else {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
-				}
-				if(direction != Direction.LEFT
-						&& tiles.get(coord.right()) != null 
-						&& tiles.get(coord.right()).getType() != TileType.TYPES.get("Mountain")) {
-					addConditionally(tiles, size, arr.get(index+1),coord.right(), Direction.RIGHT);
-				} else {
-					tiles.get(coord).setRainfall(tiles.get(coord).getRainfall() + (int)Math.round(rand.nextDouble()+0.1));
-				}
-
-				arr.get(index).remove(0);
-			}
-		}				
-	}
-	
-	private static void flowTempurature(Tile tile, Tile other) {
-		if(other == null) {
+		if(tile.getType() == TileType.TYPES.get("Mountain")) {
 			return;
 		}
-		if(Math.abs(other.getTemperature() - tile.getTemperature()) > 5) {
-			tile.setTemperature(tile.getTemperature() + (other.getTemperature() - tile.getTemperature())/5);
-		}
-	}
-	
-	private static void addConditionally(Map<Coordinate,Tile> tiles, int size, List<CoordinateDirectionPair> list, Coordinate tile, Direction direction) {
-		if(direction == Direction.LEFT && rand.nextDouble() < 0.35) {
-			return;
-		}
-		if(direction == Direction.RIGHT && rand.nextDouble() < 0.45) {
-			return;
-		}
-		if((direction == Direction.UP || direction == Direction.DOWN) && rand.nextDouble() < 0.4) {
-			return;
-		}
-		if(tiles.get(tile.wrap(size)) != null) {
-			CoordinateDirectionPair toAdd = new CoordinateDirectionPair(tile,direction);
-			if(!list.contains(toAdd)) {
-				list.add(toAdd);
+		if(tile.getTemperature() < -10) {
+			tile.setType(TileType.TYPES.get("Ice Cap"));
+		} else if(tile.getAltitude() > 0 && tile.getTemperature() < 5 && tile.getRainfall() > 0){
+			tile.setType(TileType.TYPES.get("Tundra"));
+		}else {
+			if(tile.getAltitude() > -1) {
+				if(tile.getRainfall() - (Math.max(0,tile.getTemperature()/6)) > 65 && tile.getTemperature() > 19) {
+					tile.setType(TileType.TYPES.get("Jungle"));
+				}else if(tile.getRainfall() - (Math.max(0,tile.getTemperature()/6)) > 48) {
+					tile.setType(TileType.TYPES.get("Forest"));
+				} else if(tile.getRainfall() - (Math.max(0,tile.getTemperature())/7) > 15) {
+					tile.setType(TileType.TYPES.get("Grassland"));
+				} else if(tile.getRainfall() - (Math.max(0,tile.getTemperature())/8) > 2){
+					tile.setType(TileType.TYPES.get("Plain"));
+				} else {
+					tile.setType(TileType.TYPES.get("Desert"));
+				}
 			} 
-		}			
+		}
 	}
 	
 	public static void establishStartLocations(World world, List<BotcivPlayer> players, BotcivGame game) {

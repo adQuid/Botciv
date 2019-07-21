@@ -1,3 +1,5 @@
 {
-	debug:true
+	debug:true,
+	rightPanelColor:"#850f",
+	bottomPanelColor:"#c92f"
 }

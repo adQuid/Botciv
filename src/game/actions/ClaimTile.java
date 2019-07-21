@@ -32,7 +32,7 @@ public class ClaimTile extends BotcivAction{
 	}
 
 	@Override
-	public void doAction(BotcivGame game, BotcivPlayer player) {
+	public void doAction(BotcivGame game, BotcivPlayer player) {	
 		Tile toClaim = game.world.getTileAt(coord);
 		if(toClaim.getOwner() == null && GameLogicUtilities.tryTopay(player, 
 				new ResourcePortfolio("{I:5}"))) {

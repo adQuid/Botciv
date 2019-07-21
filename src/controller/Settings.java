@@ -13,6 +13,9 @@ public class Settings {
 
 	private static boolean debug;
 	
+	private static String rightPanelColor;
+	private static String bottomPanelColor;
+	
 	static {
 		System.out.println("Loading Settings");
 		Path unitTypeFile = Paths.get("./settings.txt");
@@ -21,6 +24,8 @@ public class Settings {
 		try {
 			map = gson.fromJson(new String(Files.readAllBytes(unitTypeFile)),Map.class);
 			debug = (Boolean)map.get("debug");
+			rightPanelColor = (String)map.get("rightPanelColor");
+			bottomPanelColor = (String)map.get("bottomPanelColor");
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -33,5 +38,13 @@ public class Settings {
 	
 	public static boolean debug() {
 		return debug;
+	}
+	
+	public static String rightPanelColor() {
+		return rightPanelColor;
+	}
+	
+	public static String bottomPanelColor() {
+		return bottomPanelColor;
 	}
 }

@@ -365,4 +365,11 @@ public class MainUI extends SimpleApplication{
 		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
 		nifty.cleanup();
 	}
+	
+	public static void updateSidePanel(PanelBuilder newPanel) {
+		Element sideHolder = nifty.getCurrentScreen().findElementById("Right_Panel_Holder");
+		nifty.removeChildren(sideHolder);
+		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), sideHolder);
+		nifty.cleanup();
+	}
 }

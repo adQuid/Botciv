@@ -16,6 +16,7 @@ import game.actions.ClaimTile;
 import game.actions.ExploreTile;
 import jme.gui.MainUI;
 import jme.gui.components.DescriptionDisplay;
+import jme.gui.components.ScrollList;
 import jme.gui.descriptionwrappers.ExploreDescriptionWrapper;
 import jme.gui.descriptionwrappers.ClaimDescriptionWrapper;
 import jme.gui.descriptionwrappers.DescriptionWrapper;
@@ -109,6 +110,12 @@ public class ButtonActions implements ScreenController{
 			MainUI.updateGameDisplay();
 			MainUI.addAction(new ClaimTile(tile.getCoordinate()));
 		}
+	}
+	
+	public void scroll(String code) {
+		String[] splitCode = code.split(":");
+		ScrollList list = ScrollList.listDictionary.get(splitCode[0]);
+		list.scroll(Integer.parseInt(splitCode[1]));
 	}
 	
 	@Override

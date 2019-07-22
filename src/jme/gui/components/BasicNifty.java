@@ -74,7 +74,7 @@ public class BasicNifty extends BaseAppState implements ScreenController{
     		    		
     		layer(EndHoverActionsLayer.getLayer());
     		
-    		layer(new LayerBuilder("Bottom_Layer") {{
+    		layer(new LayerBuilder("Base_Layer") {{
     			childLayoutCenter();
 
     			panel(new PanelBuilder("Main_Panel") {{
@@ -114,9 +114,11 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         				width("20%");
     					backgroundColor("#850f");
         				
-        				control(new ButtonBuilder("Button_2","Filler") {{
+        				panel(new PanelBuilder("Right_Panel_Holder") {{
+        					childLayoutVertical(); 
+        					height("80%");
         					width("100%");
-        					height("*");
+        					panel(RightPanel.rightPanel());
         				}});    
         				
         				panel(new PanelBuilder("CornerDisplay") {{
@@ -127,6 +129,7 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         			}});
     			}});
     		}});
+    		
     	}}.build(nifty));
 
     	nifty.gotoScreen("Main_Screen"); // start the screen

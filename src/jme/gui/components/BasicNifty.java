@@ -87,7 +87,7 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         				valignBottom();
 
         				text(new TextBuilder("MAP_PLACEHOLDER") {{
-        					height("*");
+        					height("*");        					
         				}});
         				
         				panel(new PanelBuilder("") {{

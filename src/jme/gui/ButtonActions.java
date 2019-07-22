@@ -22,6 +22,8 @@ import jme.gui.descriptionwrappers.ClaimDescriptionWrapper;
 import jme.gui.descriptionwrappers.DescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceDescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceQuanityDescriptionWrapper;
+import jme.gui.mapActions.ZoomMap;
+import jme.gui.mouseactions.ScrollAction;
 import util.GameLogicUtilities;
 
 public class ButtonActions implements ScreenController{
@@ -57,9 +59,13 @@ public class ButtonActions implements ScreenController{
 	    elementToFill.getRenderer(TextRenderer.class).setText(text);
 	}
 	
-	public void clearDescription() {
+	public void endHoverActions() {
+		//clear description
 		Element elementToFill = MainUI.nifty.getCurrentScreen().findElementById(DescriptionDisplay.descriptionID);
 	    elementToFill.getRenderer(TextRenderer.class).setText(MainUI.getGame().getTurnName());
+	    
+	    //set scroll to zoom
+	    setScroll("zoom");
 	}
 	
 	public void clearTurn() {
@@ -112,10 +118,29 @@ public class ButtonActions implements ScreenController{
 		}
 	}
 	
-	public void scroll(String code) {
-		String[] splitCode = code.split(":");
-		ScrollList list = ScrollList.listDictionary.get(splitCode[0]);
-		list.scroll(Integer.parseInt(splitCode[1]));
+	public void setScroll(String action) {
+		ScrollAction newAction = null;
+		if(action.startsWith(ScrollList.PREFIX)) {
+			 newAction = ScrollList.listDictionary.get(action).getScroll();
+		}
+		
+		if(action.equals("zoom")) {
+			newAction = new ZoomMap();
+		}
+		
+		if(newAction == null) {
+			System.err.println("Scroll action "+action+" not found!");
+		} else {
+			GlobalContext.scrollAction = newAction;
+		}
+		
+	}
+	
+	public void scroll(String direction) {
+		scroll(Integer.parseInt(direction));
+	}	
+	public void scroll(int direction) {
+		GlobalContext.scrollAction.doAction(direction);
 	}
 	
 	@Override

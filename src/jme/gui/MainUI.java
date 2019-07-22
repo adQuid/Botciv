@@ -264,14 +264,10 @@ public class MainUI extends SimpleApplication{
 				cam.setLocation(pos);
 			} 
 			if (name.equals("ZOOM IN")) {
-				if(geo != null){
-					pos.set(pos.x * 0.7f + geo.getLocalTranslation().x * 0.3f, Math.max(pos.y / 1.25f,0.2f), pos.z * 0.7f + geo.getLocalTranslation().z * 0.3f + 0.1f);
-					cam.setLocation(pos);
-				}
+				ButtonActions.actions.scroll(1);
 			} 
 			if (name.equals("ZOOM OUT")) {
-				pos.set(pos.x, Math.min((pos.y * 1.25f) + 0.05f, MAP_SIZE*1.15f), pos.z);
-				cam.setLocation(pos);
+				ButtonActions.actions.scroll(-1);
 			}
 
 			camHeight = cam.getLocation().y;
@@ -343,6 +339,23 @@ public class MainUI extends SimpleApplication{
 				}
 			});
 			updateResourceDisplays();
+		}
+	}
+	
+	public void zoom(int amount) {
+		Vector3f pos = cam.getLocation().clone();
+
+		Geometry geo = findClickedObject();
+		
+		if (amount > 0) {
+			if(geo != null){
+				pos.set(pos.x * 0.7f + geo.getLocalTranslation().x * 0.3f, Math.max(pos.y / 1.25f,0.2f), pos.z * 0.7f + geo.getLocalTranslation().z * 0.3f + 0.1f);
+				cam.setLocation(pos);
+			}
+		} 
+		if (amount < 0) {
+			pos.set(pos.x, Math.min((pos.y * 1.25f) + 0.05f, MAP_SIZE*1.15f), pos.z);
+			cam.setLocation(pos);
 		}
 	}
 	

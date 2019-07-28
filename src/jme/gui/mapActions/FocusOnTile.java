@@ -18,7 +18,7 @@ public class FocusOnTile extends MapAction{
 			select.setSelected(true);
 			MainUI.updateGameDisplay();
 			MainUI.updateBottomPanel(TileFocusBottomPanels.focusOnTile(select));
-			MainUI.updateSidePanel(RightPanel.listRightPanel(select));
+			MainUI.updateSidePanel(RightPanel.tileFocusRightPanel(select));
 		}
 	}
 

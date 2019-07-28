@@ -12,12 +12,16 @@ import game.ResourcePortfolio;
 import game.Tile;
 import game.Unit;
 import game.UnitType;
+import game.actions.BuildUnit;
 import game.actions.ClaimTile;
 import game.actions.ExploreTile;
+import jme.gui.components.CornerDisplay;
 import jme.gui.MainUI;
 import jme.gui.components.DescriptionDisplay;
+import jme.gui.components.RightPanel;
 import jme.gui.components.ScrollList;
 import jme.gui.descriptionwrappers.ExploreDescriptionWrapper;
+import jme.gui.descriptionwrappers.BuildDescriptionWrapper;
 import jme.gui.descriptionwrappers.ClaimDescriptionWrapper;
 import jme.gui.descriptionwrappers.DescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceDescriptionWrapper;
@@ -45,6 +49,7 @@ public class ButtonActions implements ScreenController{
 		wrappers.put("educationAmount", ResourceQuanityDescriptionWrapper.education);
 		wrappers.put("explore", ExploreDescriptionWrapper.explore);
 		wrappers.put("claim", ClaimDescriptionWrapper.claim);
+		wrappers.put("build", BuildDescriptionWrapper.build);
 		
 	}
 	
@@ -115,6 +120,21 @@ public class ButtonActions implements ScreenController{
 			tile.addUnit(new Unit(UnitType.TYPES.get("claim"), MainUI.getPlayer()),MainUI.getGame());
 			MainUI.updateGameDisplay();
 			MainUI.addAction(new ClaimTile(tile.getCoordinate()));
+		}
+	}
+	
+	public void displayUnitBuildList() {
+		MainUI.updateSidePanel(RightPanel.buildListRightPanel(GameLogicUtilities.unitsBuildableAtTile(MainUI.getPlayer(), GlobalContext.selectedTile)));
+	}
+	
+	public void buildUnit(String type) {
+		UnitType toBuild = UnitType.TYPES.get(type);
+		if(GameLogicUtilities.tryTopay(MainUI.getPlayer(), toBuild.getCost())) {
+			GlobalContext.selectedTile.addUnit(new Unit(toBuild,MainUI.getPlayer()),MainUI.getGame());
+			MainUI.addAction(new BuildUnit(GlobalContext.selectedTile.getCoordinate(),toBuild));
+			MainUI.updateGameDisplay();
+		} else {
+			System.out.println("you can't afford this");
 		}
 	}
 	

@@ -111,6 +111,21 @@ public class UnitType {
 		return (Boolean)attributes.get(key);
 	}
 	
+	public ResourcePortfolio getCost() {
+		ResourcePortfolio retval = new ResourcePortfolio();
+		if(has("laborCost")) {
+			retval.labor = (Double)getAttribute("laborCost");
+		}
+		if(has("materialsCost")) {
+			retval.materials = (Double)getAttribute("materialsCost");
+		}
+		if(has("wealthCost")) {
+			retval.wealth = (Double)getAttribute("wealthCost");
+		}
+		
+		return retval;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

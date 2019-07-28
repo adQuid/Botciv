@@ -381,8 +381,7 @@ public class MainUI extends SimpleApplication{
 	}
 	
 	public static void updateSidePanel() {
-		//TODO: Add real logic for what should display here
-		updateSidePanel(RightPanel.listRightPanel(GlobalContext.selectedTile));
+		updateSidePanel(RightPanel.currentPanel());
 	}
 	
 	public static void updateSidePanel(PanelBuilder newPanel) {

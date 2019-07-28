@@ -106,22 +106,17 @@ public class TileFocusBottomPanels {
 				interactOnMouseOver("updateDescription(claim)");
 			}});
 		}
-		
-		return retval;
-		
-		/*
+			
 		List<UnitType> buildableUnits = GameLogicUtilities.unitsBuildableAtTile(MainUI.getPlayer(), tile);
 		if(tile.getOwner() != null && tile.getOwner().equals(MainUI.getPlayer()) && buildableUnits.size() > 0) {
-			JButton claimButton = buttons.get(nextButtonIndex++);
-			claimButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					SideDisplay.showBuildableUnits(tile, buildableUnits);
-				}				
-			});
-			claimButton.setText("Build");
-			claimButton.addMouseListener(new DescriptionListener("Construct new units at this tile."));
-		}*/
+			retval.add(new ButtonBuilder("Tile_Build_Button","Build Unit") {{
+				height("100%");
+				width("20%");
+				interactOnClick("displayUnitBuildList()");
+				interactOnMouseOver("updateDescription(build)");
+			}});
+		}
+		
+		return retval;
 	}
 }

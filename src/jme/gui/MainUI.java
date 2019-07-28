@@ -44,6 +44,7 @@ import jme.gui.components.BasicBottomPanels;
 import jme.gui.components.BasicNifty;
 import jme.gui.components.CornerDisplay;
 import jme.gui.components.DescriptionDisplay;
+import jme.gui.components.RightPanel;
 import jme.gui.mapActions.FocusOnTile;
 import map.Coordinate;
 
@@ -377,6 +378,11 @@ public class MainUI extends SimpleApplication{
 		nifty.removeChildren(bottomHolder);
 		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
 		nifty.cleanup();
+	}
+	
+	public static void updateSidePanel() {
+		//TODO: Add real logic for what should display here
+		updateSidePanel(RightPanel.listRightPanel(GlobalContext.selectedTile));
 	}
 	
 	public static void updateSidePanel(PanelBuilder newPanel) {

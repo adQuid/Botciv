@@ -118,7 +118,7 @@ public class BasicNifty extends BaseAppState implements ScreenController{
         					childLayoutVertical(); 
         					height("80%");
         					width("100%");
-        					panel(RightPanel.rightPanel());
+        					panel(RightPanel.defaultRightPanel());
         				}});    
         				
         				panel(new PanelBuilder("CornerDisplay") {{

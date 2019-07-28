@@ -73,7 +73,7 @@ public class TileFocusBottomPanels {
 						if(i < populatedButtons.size()) {
 							control(populatedButtons.get(i));
 						}else {
-							control(new ButtonBuilder("Dummy_Button","") {{
+							control(new ButtonBuilder("Dummy_Button_"+i,"") {{
 								height("100%");
 								width("20%");
 							}});

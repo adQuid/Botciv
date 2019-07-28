@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.lessvoid.nifty.builder.PanelBuilder;
+import de.lessvoid.nifty.builder.TextBuilder;
 
 public class RightPanel {
 
 	private enum PanelStatus{
-		DEFAULT,TILE_FOCUS,BUILD_LIST;
+		DEFAULT,WAIT_FOR_TURN,TILE_FOCUS,BUILD_LIST;
 	}
 	
 	private static PanelStatus status;
@@ -27,9 +28,9 @@ public class RightPanel {
 		case DEFAULT:
 			return defaultRightPanel();
 		case TILE_FOCUS:
-			return tileFocusRightPanel(GlobalContext.selectedTile);
+			return tileFocusRightPanel(GlobalContext.getSelectedTile());
 		case BUILD_LIST:
-			return buildListRightPanel(GameLogicUtilities.unitsBuildableAtTile(MainUI.getPlayer(), GlobalContext.selectedTile));
+			return buildListRightPanel(GameLogicUtilities.unitsBuildableAtTile(MainUI.getPlayer(), GlobalContext.getSelectedTile()));
 		}
 		
 		return null;
@@ -46,7 +47,24 @@ public class RightPanel {
 		}};
 	}
 	
+	public static PanelBuilder waitingForTurn() {
+		status = PanelStatus.WAIT_FOR_TURN;
+		return new PanelBuilder("Waiting_Holder") {{
+			childLayoutVertical();
+			text(new TextBuilder("Waiting_Text") {{
+				height("100%");
+				width("100%");
+				text("Waiting for Other Players...");
+				font("fonts/TimesNewRoman.fnt");
+			}});
+		}};
+	}
+	
 	public static PanelBuilder tileFocusRightPanel(Tile tile) {
+		if(tile == null) {
+			return defaultRightPanel();
+		}
+		
 		status = PanelStatus.TILE_FOCUS;
 		List<String> labels = new ArrayList<String>();
 		for(Unit current: tile.getAllUnits()) {
@@ -54,10 +72,23 @@ public class RightPanel {
 		}
 		
 		list.setup(labels, new ArrayList<String>());
-		
-		return new PanelBuilder("Unit_List_Holder") {{
+
+		return new PanelBuilder("Tile_Focus_Right") {{
 			childLayoutVertical();
-			panel(list.getPanel());
+			
+			text(new TextBuilder("Unit_List_Label") {{
+				height("10%");
+				width("100%");
+				text("Your Units Here");
+				font("fonts/TimesNewRoman.fnt");
+			}});
+			panel(new PanelBuilder("Unit_List_Holder") {{
+				width("100%");
+				height("80%");
+				childLayoutVertical();
+				panel(list.getPanel());
+			}});
+
 		}};
 	}
 	

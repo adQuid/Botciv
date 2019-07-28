@@ -160,7 +160,8 @@ public class MainUI extends SimpleApplication{
 		if(instance != null) {
 			Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
 			nifty.removeChildren(bottomHolder);
-			BasicBottomPanels.waitingForTurn().build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
+			updateBottomPanel(BasicBottomPanels.waitingForTurn());
+			updateSidePanel(RightPanel.waitingForTurn());
 		}		
 		Controller.instance.commitTurn(actionsThisTurn, playingAs);
 		actionsThisTurn.clear();
@@ -319,6 +320,7 @@ public class MainUI extends SimpleApplication{
 	public static void newTurn() {
 		imageGame = Controller.instance.getImageGame(playingAs);
 		GlobalContext.clear();
+		RightPanel.defaultRightPanel();
 		
 		if(instance != null) {
 			updateBottomPanel(BasicBottomPanels.onYourTurn());
@@ -340,6 +342,7 @@ public class MainUI extends SimpleApplication{
 				}
 			});
 			updateResourceDisplays();
+			updateSidePanel();
 		}
 	}
 	

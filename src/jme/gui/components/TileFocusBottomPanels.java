@@ -28,7 +28,7 @@ import util.GameLogicUtilities;
 public class TileFocusBottomPanels {
 	public static PanelBuilder focusOnTile(Tile tile) {
 		
-		GlobalContext.selectedTile = tile;
+		GlobalContext.selectedCoord = tile.getCoordinate();
 		
 		return new PanelBuilder("Bottom_Panel") {{
 			childLayoutHorizontal(); 

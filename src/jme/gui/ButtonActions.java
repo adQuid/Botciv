@@ -92,11 +92,11 @@ public class ButtonActions implements ScreenController{
 	}
 	
 	public void exploreTile() {
-		if(GlobalContext.selectedTile == null) {
+		if(GlobalContext.getSelectedTile() == null) {
 			System.err.println("Explore Tile selected, but no tile was selected!");
 			return;
 		} 
-		Tile tile = GlobalContext.selectedTile;
+		Tile tile = GlobalContext.getSelectedTile();
 		if((tile.getUnits().get(UnitType.TYPES.get("explorer")) == null 
 				|| tile.getUnits().get(UnitType.TYPES.get("explorer")).size() == 0)
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:1,M:2}"))) {
@@ -109,11 +109,11 @@ public class ButtonActions implements ScreenController{
 	}
 	
 	public void claimTile() {
-		if(GlobalContext.selectedTile == null) {
+		if(GlobalContext.getSelectedTile() == null) {
 			System.err.println("Claim Tile selected, but no tile was selected!");
 			return;
 		} 
-		Tile tile = GlobalContext.selectedTile;
+		Tile tile = GlobalContext.getSelectedTile();
 		if((tile.getUnits().get(UnitType.TYPES.get("claim")) == null 
 				|| tile.getUnits().get(UnitType.TYPES.get("claim")).size() == 0) 
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:5}"))) {
@@ -124,14 +124,14 @@ public class ButtonActions implements ScreenController{
 	}
 	
 	public void displayUnitBuildList() {
-		MainUI.updateSidePanel(RightPanel.buildListRightPanel(GameLogicUtilities.unitsBuildableAtTile(MainUI.getPlayer(), GlobalContext.selectedTile)));
+		MainUI.updateSidePanel(RightPanel.buildListRightPanel(GameLogicUtilities.unitsBuildableAtTile(MainUI.getPlayer(), GlobalContext.getSelectedTile())));
 	}
 	
 	public void buildUnit(String type) {
 		UnitType toBuild = UnitType.TYPES.get(type);
 		if(GameLogicUtilities.tryTopay(MainUI.getPlayer(), toBuild.getCost())) {
-			GlobalContext.selectedTile.addUnit(new Unit(toBuild,MainUI.getPlayer()),MainUI.getGame());
-			MainUI.addAction(new BuildUnit(GlobalContext.selectedTile.getCoordinate(),toBuild));
+			GlobalContext.getSelectedTile().addUnit(new Unit(toBuild,MainUI.getPlayer()),MainUI.getGame());
+			MainUI.addAction(new BuildUnit(GlobalContext.getSelectedTile().getCoordinate(),toBuild));
 			MainUI.updateGameDisplay();
 		} else {
 			System.out.println("you can't afford this");

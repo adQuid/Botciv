@@ -46,6 +46,11 @@ public class GameLogicUtilities {
 	}	
 	
 	public static List<UnitType> unitsBuildableAtTile(BotcivPlayer player, Tile tile) {
+		if(player == null || tile == null) {
+			return new ArrayList<UnitType>();
+		}
+		
+		
 		List<Unit> unitsThatCouldBuild = new ArrayList<Unit>();
 		for(List<Unit> unitList: tile.getUnits().values()) {
 			if(unitList.get(0).getOwner() == player) {

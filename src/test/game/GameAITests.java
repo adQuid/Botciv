@@ -35,7 +35,7 @@ public class GameAITests {
 		BotcivPlayer gatePlayer = testGame.playerByName("gate");		
 		BotcivPlayer player1 = testGame.playerByName("test1");
 				
-		Unit unit1 = new Unit(UnitType.TYPES.get("population"),player1);
+		Unit unit1 = new Unit(testGame, UnitType.TYPES.get("population"),player1);
 		
 		Tile tile1 = testGame.world.getTileAt(new Coordinate(5,5));
 		tile1.addUnit(unit1,testGame);		
@@ -130,7 +130,7 @@ public class GameAITests {
 		player1.addExploredTile(new Coordinate(5,5));
 		testGame.players.add(player1);
 		
-		Unit unit1 = new Unit(UnitType.TYPES.get("population"),player1);
+		Unit unit1 = new Unit(testGame, UnitType.TYPES.get("population"),player1);
 		tile1.addUnit(unit1,testGame);	
 		
 		return testGame;

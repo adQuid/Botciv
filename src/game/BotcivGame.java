@@ -1,17 +1,16 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import aibrain.Action;
 import aibrain.Game;
 import aibrain.Player;
 import game.actions.BotcivAction;
-import map.Coordinate;
 import util.WorldViewGenerator;
 import worldgen.WorldGenerator;
 import util.GameLogicUtilities;
@@ -29,7 +28,7 @@ public class BotcivGame implements Game{
 	private static final String PLAYERS_NAME = "players";
 	
 	//This is a short list that isn't saved
-	private Set<Unit> units = new HashSet<Unit>();
+	private Map<Long,Unit> units = new HashMap<Long,Unit>();
 	
 	public BotcivGame() {
 		this.world = new World();
@@ -56,9 +55,6 @@ public class BotcivGame implements Game{
 		this.world = new World(other.world,this);
 		this.turn = other.turn;
 		this.isLive = false;
-		if(units.size() == 1 && other.units.size() == 2) {
-			System.out.println(units.size());
-		}
 	}
 	
 	public BotcivGame(Map<String,Object> map) {
@@ -188,19 +184,23 @@ public class BotcivGame implements Game{
 		
 	}
 	
-	public Set<Unit> getUnits() {
-		return units;
+	public Collection<Unit> getUnits() {
+		return units.values();
+	}
+	
+	public Unit getUnit(long id) {
+		return units.get(id);
 	}
 	
 	public void addUnit(Unit unit) {
-		units.add(unit);
+		units.put(unit.getId(), unit);
 	}
 	
 	public void recalculateUnitList() {
 		units.clear();
 		for(Tile tile: world.allTiles()) {
 			for(Unit unit: tile.getAllUnits()) {
-				units.add(unit);
+				units.put(unit.getId(), unit);
 			}
 		}
 	}

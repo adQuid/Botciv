@@ -167,7 +167,6 @@ public class Tile {
 	}
 	
 	public void addUnit(Unit toAdd, BotcivGame game) {
-		game.addUnit(toAdd);
 		if(units.get(toAdd.getType()) == null) {
 			units.put(toAdd.getType(), new ArrayList<Unit>());
 		}

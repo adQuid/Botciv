@@ -20,6 +20,8 @@ import jme.gui.MainUI;
 import jme.gui.components.DescriptionDisplay;
 import jme.gui.components.RightPanel;
 import jme.gui.components.ScrollList;
+import jme.gui.components.TileFocusBottomPanels;
+import jme.gui.components.UnitFocusBottomPanels;
 import jme.gui.descriptionwrappers.ExploreDescriptionWrapper;
 import jme.gui.descriptionwrappers.BuildDescriptionWrapper;
 import jme.gui.descriptionwrappers.ClaimDescriptionWrapper;
@@ -91,6 +93,10 @@ public class ButtonActions implements ScreenController{
 		}
 	}
 	
+	public void focusOnUnit(String id) {
+		MainUI.updateBottomPanel(UnitFocusBottomPanels.focusOnUnit(MainUI.getGame().getUnit(Long.parseLong(id))));
+	}
+	
 	public void exploreTile() {
 		if(GlobalContext.getSelectedTile() == null) {
 			System.err.println("Explore Tile selected, but no tile was selected!");
@@ -102,7 +108,7 @@ public class ButtonActions implements ScreenController{
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:1,M:2}"))) {
 			
 			MainUI.addAction(new ExploreTile(tile.getCoordinate()));
-			tile.addUnit(new Unit(UnitType.TYPES.get("explorer"), MainUI.getPlayer()),MainUI.getGame());
+			tile.addUnit(new Unit(MainUI.getGame(), UnitType.TYPES.get("explorer"), MainUI.getPlayer()),MainUI.getGame());
 			MainUI.updateGameDisplay();
 			
 		}
@@ -117,7 +123,7 @@ public class ButtonActions implements ScreenController{
 		if((tile.getUnits().get(UnitType.TYPES.get("claim")) == null 
 				|| tile.getUnits().get(UnitType.TYPES.get("claim")).size() == 0) 
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:5}"))) {
-			tile.addUnit(new Unit(UnitType.TYPES.get("claim"), MainUI.getPlayer()),MainUI.getGame());
+			tile.addUnit(new Unit(MainUI.getGame(), UnitType.TYPES.get("claim"), MainUI.getPlayer()),MainUI.getGame());
 			MainUI.updateGameDisplay();
 			MainUI.addAction(new ClaimTile(tile.getCoordinate()));
 		}
@@ -130,7 +136,7 @@ public class ButtonActions implements ScreenController{
 	public void buildUnit(String type) {
 		UnitType toBuild = UnitType.TYPES.get(type);
 		if(GameLogicUtilities.tryTopay(MainUI.getPlayer(), toBuild.getCost())) {
-			GlobalContext.getSelectedTile().addUnit(new Unit(toBuild,MainUI.getPlayer()),MainUI.getGame());
+			GlobalContext.getSelectedTile().addUnit(new Unit(MainUI.getGame(), toBuild,MainUI.getPlayer()),MainUI.getGame());
 			MainUI.addAction(new BuildUnit(GlobalContext.getSelectedTile().getCoordinate(),toBuild));
 			MainUI.updateGameDisplay();
 		} else {

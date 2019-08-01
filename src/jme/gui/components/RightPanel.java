@@ -67,11 +67,13 @@ public class RightPanel {
 		
 		status = PanelStatus.TILE_FOCUS;
 		List<String> labels = new ArrayList<String>();
+		List<String> actions = new ArrayList<String>();
 		for(Unit current: tile.getAllUnits()) {
 			labels.add(current.getType().getName());
+			actions.add("focusOnUnit("+current.getId()+")");
 		}
 		
-		list.setup(labels, new ArrayList<String>());
+		list.setup(labels, actions);
 
 		return new PanelBuilder("Tile_Focus_Right") {{
 			childLayoutVertical();

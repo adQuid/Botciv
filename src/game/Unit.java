@@ -7,9 +7,8 @@ import map.Coordinate;
 import util.MiscUtilities;
 
 public class Unit {
-
-	private static long nextID = 1;
 	
+	private static long nextID = 1;
 	private long id; 
 	private static final String ID_NAME = "id";
 	private UnitType type;
@@ -20,24 +19,27 @@ public class Unit {
 	private static final String HEALTH_NAME = "h";
 	private int health;
 	
-	public Unit(UnitType type, BotcivPlayer owner) {
+	public Unit(BotcivGame parent, UnitType type, BotcivPlayer owner) {
+		this.id = nextID++;
 		this.type = type;
 		this.owner = owner;
-		this.id = nextID++;
 		this.health = type.getMaxHealth();
+		parent.addUnit(this);
 	}
 	
-	public Unit(UnitType type, BotcivPlayer owner, int health) {
+	public Unit(BotcivGame parent, UnitType type, BotcivPlayer owner, int health) {
+		this.id = nextID++;
 		this.type = type;
 		this.owner = owner;
-		this.id = nextID++;
 		this.health = health;
+		parent.addUnit(this);
 	}
 	
 	public Unit(Unit other, BotcivGame game) {
+		this.id = other.id;
 		this.type=other.type;
 		this.owner = game.playerByName(other.owner.getName());
-		this.id = other.id;
+		game.addUnit(this);
 		this.health = other.health;
 	}
 	
@@ -95,6 +97,14 @@ public class Unit {
 
 	public void setHealth(int health) {
 		this.health = health;
+	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	@Override

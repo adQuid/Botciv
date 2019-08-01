@@ -51,7 +51,7 @@ public class Market {
 			}
 			if(growth >= 10) {
 				while(growthRate > 0) {
-					Unit toAdd = new Unit(pop,current.getOwner(),
+					Unit toAdd = new Unit(game, pop,current.getOwner(),
 							Math.min(pop.getMaxHealth(), growthRate));
 					growthRate -= toAdd.getHealth();
 					current.addUnit(toAdd, game);

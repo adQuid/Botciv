@@ -40,7 +40,7 @@ public class BuildUnit extends BotcivAction{
 		ResourcePortfolio cost = new ResourcePortfolio();
 		cost.materials = MiscUtilities.extractDouble(type.getAttribute("materialsCost"));
 		if(GameLogicUtilities.tryTopay(player, cost)) {
-			game.world.getTileAt(coord).addUnit(new Unit(type,player),game);
+			game.world.getTileAt(coord).addUnit(new Unit(game, type, player), game);
 		}
 	}
 

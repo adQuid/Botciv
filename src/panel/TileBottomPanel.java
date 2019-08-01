@@ -107,7 +107,7 @@ public class TileBottomPanel extends Panel{
 							&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:1,M:2}"))) {
 						
 						MainUI.addAction(new ExploreTile(tile.getCoordinate()));
-						tile.addUnit(new Unit(UnitType.TYPES.get("explorer"), MainUI.getPlayer()),MainUI.getGame());
+						//tile.addUnit(new Unit(UnitType.TYPES.get("explorer"), MainUI.getPlayer()),MainUI.getGame());
 						MainUIMapDisplay.repaintDisplay();
 						
 					}
@@ -127,7 +127,7 @@ public class TileBottomPanel extends Panel{
 					if((tile.getUnits().get(UnitType.TYPES.get("claim")) == null 
 							|| tile.getUnits().get(UnitType.TYPES.get("claim")).size() == 0) 
 							&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:5}"))) {
-						tile.addUnit(new Unit(UnitType.TYPES.get("claim"), MainUI.getPlayer()),MainUI.getGame());
+						//tile.addUnit(new Unit(UnitType.TYPES.get("claim"), MainUI.getPlayer()),MainUI.getGame());
 						MainUIMapDisplay.repaintDisplay();
 						MainUI.addAction(new ClaimTile(tile.getCoordinate()));
 					}

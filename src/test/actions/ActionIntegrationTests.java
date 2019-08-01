@@ -33,7 +33,7 @@ public class ActionIntegrationTests {
 		BotcivGame baseGame = generateTestGame();		
 		BotcivPlayer player = baseGame.playerByName("test");
 		
-		Unit toMove = new Unit(UnitType.TYPES.get("population"),player);		
+		Unit toMove = new Unit(baseGame, UnitType.TYPES.get("population"),player);		
 		Tile tile = baseGame.world.getTileAt(new Coordinate(5,5));
 		tile.addUnit(toMove,baseGame);
 		

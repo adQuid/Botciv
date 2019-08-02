@@ -53,7 +53,7 @@ data:[
 		tooltip:"Produces food when at least one population is available to work it.",
 		displayClass:1,
 		displayImportance:2,
-		image:"units/Farm.png",
+		image:"units/farm.png",
 		maxHealth:8,
 		attributes:{
 			laborCost:1,

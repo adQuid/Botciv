@@ -39,8 +39,8 @@ public class Unit {
 		this.id = other.id;
 		this.type=other.type;
 		this.owner = game.playerByName(other.owner.getName());
-		game.addUnit(this);
 		this.health = other.health;
+		game.addUnit(this);
 	}
 	
 	public Unit(Map<String,Object> map, BotcivGame game, Tile parent) {
@@ -49,6 +49,7 @@ public class Unit {
 		owner = game.playerByName(map.get(OWNER_NAME).toString());
 		health = MiscUtilities.extractInt(map.get(HEALTH_NAME).toString());
 		location = parent;
+		game.addUnit(this);
 	}
 
 	public Map<String,Object> toSaveString() {

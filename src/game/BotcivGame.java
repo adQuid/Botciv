@@ -133,6 +133,9 @@ public class BotcivGame implements Game{
 	}
 	
 	public Unit findMatching(Unit unit) {
+		if(unit == null) {
+			return null;
+		}
 		for(Tile tile: world.allTiles()) {
 			List<Unit> matchingUnitList = tile.getUnits().get(unit.getType());
 

@@ -292,7 +292,7 @@ public class MainUI extends SimpleApplication{
 			for(TileToken token: row) {
 				if(token.geo == geo) {
 					Coordinate coord = token.tile.getCoordinate();
-					new FocusOnTile().doAction(coord);
+					GlobalContext.clickAction.doAction(coord);
 				}
 			}
 		}

@@ -64,7 +64,7 @@ public class ScrollList {
 
 		@Override
 		public void doAction(int scroll) {
-			position = Math.min(Math.max(position - scroll, 0), labels.size() - 1);
+			position = Math.max(Math.min(position - scroll, labels.size() - 1), 0);
 			MainUI.updateSidePanel();
 		}
 		

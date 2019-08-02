@@ -1,9 +1,14 @@
 package jme.gui.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import game.Unit;
+import jme.gui.MainUI;
 
 public class UnitFocusBottomPanels {
 	public static PanelBuilder focusOnUnit(Unit unit) {
@@ -41,7 +46,7 @@ public class UnitFocusBottomPanels {
 					height("80%");
 					width("100%");
 
-					/*List<ButtonBuilder> populatedButtons = populateButtons(tile);
+					List<ButtonBuilder> populatedButtons = populateButtons(unit);
 					for(int i = 0; i < Math.max(5,populatedButtons.size()); i++) {
 						if(i < populatedButtons.size()) {
 							control(populatedButtons.get(i));
@@ -51,17 +56,17 @@ public class UnitFocusBottomPanels {
 								width("20%");
 							}});
 						}
-					}*/
+					}
 				}});
 			}});
 		}};
 	}
 	
-	/*private static List<ButtonBuilder> populateButtons(Tile tile){
+	private static List<ButtonBuilder> populateButtons(Unit unit){
 
-		//if we can't find a matching unit, we are assuming it's already migrated
-		if(unit.getOwner().equals(MainUI.getPlayer()) && unit.getType().has("migrates") && MainUI.getGame().findMatching(unit) != null) {
-			JButton migrateButton = buttons.get(nextButtonIndex++);
+		List<ButtonBuilder> retval = new ArrayList<ButtonBuilder>();
+		
+					/*JButton migrateButton = buttons.get(nextButtonIndex++);
 			migrateButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -77,8 +82,18 @@ public class UnitFocusBottomPanels {
 			});		
 			migrateButton.setText("Migrate");
 			migrateButton.addMouseListener(new DescriptionListener("Take one movement point into a tile you own, an unclaimed tile, or a tile belonging to someone you have migration permissoins with."));
+		*/
+		
+		//if we can't find a matching unit, we are assuming it's already migrated
+		if(unit.getOwner().equals(MainUI.getPlayer()) && unit.getType().has("migrates") && MainUI.getGame().findMatching(unit) != null) {
+			retval.add(new ButtonBuilder("Migrate_Button","Migrate") {{
+				height("100%");
+				width("20%");
+				interactOnClick("showMigrationOptions("+unit.getId()+")");
+				interactOnMouseOver("updateDescription(migrate)");
+			}});
 		}
-
+		
 		return retval;
-	}*/
+	}
 }

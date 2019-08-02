@@ -1,6 +1,7 @@
 package jme.gui;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.lessvoid.nifty.Nifty;
@@ -23,13 +24,16 @@ import jme.gui.components.ScrollList;
 import jme.gui.components.TileFocusBottomPanels;
 import jme.gui.components.UnitFocusBottomPanels;
 import jme.gui.descriptionwrappers.ExploreDescriptionWrapper;
+import jme.gui.descriptionwrappers.GenericDescriptionWrapper;
 import jme.gui.descriptionwrappers.BuildDescriptionWrapper;
 import jme.gui.descriptionwrappers.ClaimDescriptionWrapper;
 import jme.gui.descriptionwrappers.DescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceDescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceQuanityDescriptionWrapper;
+import jme.gui.mapActions.Migrate;
 import jme.gui.mapActions.ZoomMap;
 import jme.gui.mouseactions.ScrollAction;
+import map.Coordinate;
 import util.GameLogicUtilities;
 
 public class ButtonActions implements ScreenController{
@@ -52,7 +56,7 @@ public class ButtonActions implements ScreenController{
 		wrappers.put("explore", ExploreDescriptionWrapper.explore);
 		wrappers.put("claim", ClaimDescriptionWrapper.claim);
 		wrappers.put("build", BuildDescriptionWrapper.build);
-		
+		wrappers.put("migrate",new GenericDescriptionWrapper("Move this unit one tile"));
 	}
 	
 	public void printstuff() {
@@ -94,7 +98,9 @@ public class ButtonActions implements ScreenController{
 	}
 	
 	public void focusOnUnit(String id) {
-		MainUI.updateBottomPanel(UnitFocusBottomPanels.focusOnUnit(MainUI.getGame().getUnit(Long.parseLong(id))));
+		Unit unit = MainUI.getGame().getUnit(Long.parseLong(id));
+		GlobalContext.setSelectedUnit(unit);
+		MainUI.updateBottomPanel(UnitFocusBottomPanels.focusOnUnit(unit));
 	}
 	
 	public void exploreTile() {
@@ -142,6 +148,17 @@ public class ButtonActions implements ScreenController{
 		} else {
 			System.out.println("you can't afford this");
 		}
+	}
+	
+	public void showMigrationOptions(String unitID) {
+		Unit unit = MainUI.getGame().getUnit(Long.parseLong(unitID));
+		
+		List<Coordinate> inRange = MainUI.getGame().world.tilesWithinRange(unit.getLocation().getCoordinate(), 1);
+		for(Coordinate current: inRange) {
+			MainUI.getGame().world.getTileAt(current).setSelected(true);
+		}
+		MainUI.updateGameDisplay();
+		GlobalContext.clickAction = new Migrate();
 	}
 	
 	public void setScroll(String action) {

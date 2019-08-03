@@ -14,10 +14,10 @@ import game.Unit;
 import game.UnitType;
 import game.World;
 import game.actions.MigrateUnit;
+import jme.gui.GlobalContext;
 import jme.gui.MainUI;
 import map.Coordinate;
-import mapActions.MapActionGlobalStore;
-import mapActions.Migrate;
+import jme.gui.mapActions.Migrate;
 
 public class ActionIntegrationTests {
 
@@ -44,7 +44,7 @@ public class ActionIntegrationTests {
 		//TODO: Make this use the UI methods
 		Unit selected = MainUI.getGame().findMatching(toMove);
 		Migrate mapAction = new Migrate();
-		MapActionGlobalStore.selectedUnit = selected;
+		GlobalContext.setSelectedUnit(selected);
 		mapAction.doAction(new Coordinate(5,6));
 		
 		MainUI.commitTurn();

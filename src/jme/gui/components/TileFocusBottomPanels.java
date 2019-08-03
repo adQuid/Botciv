@@ -18,11 +18,8 @@ import game.Unit;
 import game.UnitType;
 import game.actions.ClaimTile;
 import game.actions.ExploreTile;
-import gui.DescriptionListener;
-import gui.SideDisplay;
 import jme.gui.GlobalContext;
 import jme.gui.MainUI;
-import map.MainUIMapDisplay;
 import util.GameLogicUtilities;
 
 public class TileFocusBottomPanels {

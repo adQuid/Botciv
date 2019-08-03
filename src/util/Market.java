@@ -7,7 +7,6 @@ import game.BotcivGame;
 import game.Tile;
 import game.Unit;
 import game.UnitType;
-import gui.MainUI;
 
 public class Market {
 

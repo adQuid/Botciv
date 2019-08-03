@@ -15,7 +15,6 @@ import game.TileType;
 import game.Unit;
 import game.UnitType;
 import game.World;
-import gui.MainUI;
 import map.Coordinate;
 
 public class WorldGenerator {

@@ -1,4 +1,4 @@
-package mapActions;
+package jme.gui.mapActions;
 
 import map.Coordinate;
 

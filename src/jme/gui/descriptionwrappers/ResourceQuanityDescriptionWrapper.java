@@ -3,13 +3,15 @@ package jme.gui.descriptionwrappers;
 import java.text.DecimalFormat;
 
 import game.ResourcePortfolio;
-import gui.BottomDisplay;
-import gui.ResourceDisplay.ResourceType;
 import jme.gui.MainUI;
 import util.GameLogicUtilities;
 
 public class ResourceQuanityDescriptionWrapper extends DescriptionWrapper{
 
+	public enum ResourceType{
+		labor,materials,influence,wealth,education;
+	}
+	
 	private ResourceType type;
 	
 	public static ResourceQuanityDescriptionWrapper labor = new ResourceQuanityDescriptionWrapper(ResourceType.labor);

@@ -3,13 +3,13 @@ package game;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import jme.gui.MainUI;
-import gui.UnitDisplayComparator;
 import map.Coordinate;
 import util.ImageUtilities;
 import util.MiscUtilities;
@@ -17,6 +17,13 @@ import util.MiscUtilities;
 //this kind of belongs in the game package as well
 public class Tile {
 
+	private class UnitDisplayComparator implements Comparator<UnitType>{
+		@Override
+		public int compare(UnitType arg0, UnitType arg1) {
+			// backwards so we can just grab element 0
+			return arg1.getDisplayImportance() - arg0.getDisplayImportance();
+		}
+	}
 	
 	//STATEFUL VALUES THAT ARE SAVED
 	private int x;

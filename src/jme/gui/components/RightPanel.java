@@ -69,8 +69,10 @@ public class RightPanel {
 		List<String> labels = new ArrayList<String>();
 		List<String> actions = new ArrayList<String>();
 		for(Unit current: tile.getAllUnits()) {
-			labels.add(current.getType().getName());
-			actions.add("focusOnUnit("+current.getId()+")");
+			if(!current.getType().has("displayOnly")) {
+				labels.add(current.getType().getName());
+				actions.add("focusOnUnit("+current.getId()+")");
+			}
 		}
 		
 		list.setup(labels, actions);

@@ -8,7 +8,9 @@ data:[
 		displayImportance:10,
 		image:"units/explorer.png",
 		maxHealth:1,
-		attributes:{}
+		attributes:{
+			displayOnly:true
+		}
 	},
 	{
 		id:"claim",
@@ -18,7 +20,9 @@ data:[
 		displayImportance:10,
 		image:"units/claim.png",
 		maxHealth:1,
-		attributes:{}
+		attributes:{
+			displayOnly:true
+		}
 	},
 	{
 		id:"population",

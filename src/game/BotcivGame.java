@@ -137,14 +137,13 @@ public class BotcivGame implements Game{
 			return null;
 		}
 		for(Tile tile: world.allTiles()) {
-			List<Unit> matchingUnitList = tile.getUnits().get(unit.getType());
+			Unit matchingUnit = tile.getUnitByType(unit.getType());
 
-			if(matchingUnitList != null) {
-				for(Unit matchingUnit: matchingUnitList) {
-					if(matchingUnit.equals(unit)) {
-						return matchingUnit;
-					}
+			if(matchingUnit != null) {
+				if(matchingUnit.equals(unit)) {
+					return matchingUnit;
 				}
+
 			}
 		}
 		System.err.println("Failed to find matching unit!");
@@ -202,7 +201,7 @@ public class BotcivGame implements Game{
 	public void recalculateUnitList() {
 		units.clear();
 		for(Tile tile: world.allTiles()) {
-			for(Unit unit: tile.getAllUnits()) {
+			for(Unit unit: tile.getUnits()) {
 				units.put(unit.getId(), unit);
 			}
 		}

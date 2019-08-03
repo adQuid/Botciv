@@ -39,8 +39,8 @@ public class ActionUnitTests {
 		
 		action.doAction(testGame, player);
 		
-		assert(testGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() == 0);
-		assert(testGame.world.getTileAt(new Coordinate(5,6)).getAllUnits().size() == 1);
+		assert(testGame.world.getTileAt(new Coordinate(5,5)).getUnits().size() == 0);
+		assert(testGame.world.getTileAt(new Coordinate(5,6)).getUnits().size() == 1);
 	}
 
 	private BotcivGame generateTestGame() {

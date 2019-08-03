@@ -25,7 +25,11 @@ public class BotcivGameEvaluator implements GameEvaluator{
 		Map<String,BigDecimal> map = new HashMap<String,BigDecimal>();
 		
 		List<Unit> people = game.world.getAllUnitsOfTypeByPlayer(UnitType.TYPES.get("population"), player);
-		map.put("population",new BigDecimal(people.size()));
+		int totalPopulation = 0;
+		for(Unit unit: people) {
+			totalPopulation += unit.getStackSize();
+		}
+		map.put("population",new BigDecimal(totalPopulation));
 		
 		map.put("explored tiles", new BigDecimal(player.getExploredTiles().size()));
 		

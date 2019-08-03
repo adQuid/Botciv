@@ -42,8 +42,8 @@ public class GameUnitTests {
 		
 		BotcivGame copyGame = (BotcivGame)(new BotcivGameCloner().cloneGame(testGame));
 		
-		assert(copyGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() == 1);
-		assert(copyGame.world.getTileAt(new Coordinate(5,6)).getAllUnits().size() == 1);
+		assert(copyGame.world.getTileAt(new Coordinate(5,5)).getUnits().size() == 1);
+		assert(copyGame.world.getTileAt(new Coordinate(5,6)).getUnits().size() == 1);
 		assert(copyGame.getUnits().size() == 2);
 	}
 	
@@ -70,16 +70,16 @@ public class GameUnitTests {
 		BotcivGame imageGame2 = (BotcivGame)testGame.imageForPlayer(player2);
 		BotcivGame copyGame = (BotcivGame)(new BotcivGameCloner()).cloneGame(testGame);
 		
-		assert(imageGame1.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() == 1);
-		assert(imageGame1.world.getTileAt(new Coordinate(5,6)).getAllUnits().size() == 1);
+		assert(imageGame1.world.getTileAt(new Coordinate(5,5)).getUnits().size() == 1);
+		assert(imageGame1.world.getTileAt(new Coordinate(5,6)).getUnits().size() == 1);
 		assert(imageGame1.getUnits().size() == 2);
 		
 		assert(imageGame2.world.getTileAt(new Coordinate(5,5)).getType() == TileType.TYPES.get("Unexplored Tile"));
 		assert(imageGame2.world.getTileAt(new Coordinate(5,6)).getType() == TileType.TYPES.get("Unexplored Tile"));
 		assert(imageGame2.getUnits().size() == 0);
 		
-		assert(copyGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() == 1);
-		assert(copyGame.world.getTileAt(new Coordinate(5,6)).getAllUnits().size() == 1);
+		assert(copyGame.world.getTileAt(new Coordinate(5,5)).getUnits().size() == 1);
+		assert(copyGame.world.getTileAt(new Coordinate(5,6)).getUnits().size() == 1);
 		assert(copyGame.getUnits().size() == 2);
 		
 	}

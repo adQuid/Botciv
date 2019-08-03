@@ -68,9 +68,9 @@ public class RightPanel {
 		status = PanelStatus.TILE_FOCUS;
 		List<String> labels = new ArrayList<String>();
 		List<String> actions = new ArrayList<String>();
-		for(Unit current: tile.getAllUnits()) {
+		for(Unit current: tile.getUnits()) {
 			if(!current.getType().has("displayOnly")) {
-				labels.add(current.getType().getName());
+				labels.add(current.getType().getName()+" ("+current.getStackSize()+")");
 				actions.add("focusOnUnit("+current.getId()+")");
 			}
 		}

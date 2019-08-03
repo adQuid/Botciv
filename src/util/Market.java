@@ -29,25 +29,25 @@ public class Market {
 			return (int) (o1.hub.tradePower() - o2.hub.tradePower());
 		}		
 	}
-	
+
 	public void tradeFood(BotcivGame game) {
 		double averageFood = 0.0;
 		for(Tile current: tiles) {
 			averageFood += current.food();
 		}
 		averageFood /= tiles.size();
-		
+
 		UnitType pop = UnitType.TYPES.get("population");
 		for(Tile current: tiles) {
 			int growth = (int)((averageFood - current.population()) * pop.getMaxHealth());
-			
+
 			int growthRate = Math.min(growth, current.population()*2);
-			for(Unit unit: current.getUnitsByType(pop)) {
-				while(growthRate > 0 && unit.getHealth() < unit.getType().getMaxHealth()) {
-					unit.setHealth(unit.getHealth()+1);
-					growthRate--;
-				}
+			Unit unit = current.getUnitByType(pop);
+			while(growthRate > 0 && unit.getHealth() < unit.getType().getMaxHealth()) {
+				unit.setHealth(unit.getHealth()+1);
+				growthRate--;
 			}
+
 			if(growth >= 10) {
 				while(growthRate > 0) {
 					Unit toAdd = new Unit(game, pop,current.getOwner(),

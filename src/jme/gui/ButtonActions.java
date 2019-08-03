@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controller.Controller;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
@@ -91,6 +92,10 @@ public class ButtonActions implements ScreenController{
 		}
 	}
 	
+	public void saveGame() {
+		Controller.instance.saveGame();
+	}
+	
 	public void click() {
 		if(!GlobalContext.waitingForPlayers) {
 			MainUI.instance.click();
@@ -109,8 +114,8 @@ public class ButtonActions implements ScreenController{
 			return;
 		} 
 		Tile tile = GlobalContext.getSelectedTile();
-		if((tile.getUnits().get(UnitType.TYPES.get("explorer")) == null 
-				|| tile.getUnits().get(UnitType.TYPES.get("explorer")).size() == 0)
+		if((tile.getUnitByType(UnitType.TYPES.get("explorer")) == null 
+				|| tile.getUnitByType(UnitType.TYPES.get("explorer")).getStackSize() == 0)
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:1,M:2}"))) {
 			
 			MainUI.addAction(new ExploreTile(tile.getCoordinate()));
@@ -126,8 +131,8 @@ public class ButtonActions implements ScreenController{
 			return;
 		} 
 		Tile tile = GlobalContext.getSelectedTile();
-		if((tile.getUnits().get(UnitType.TYPES.get("claim")) == null 
-				|| tile.getUnits().get(UnitType.TYPES.get("claim")).size() == 0) 
+		if((tile.getUnitByType(UnitType.TYPES.get("claim")) == null 
+				|| tile.getUnitByType(UnitType.TYPES.get("claim")).getStackSize() == 0) 
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:5}"))) {
 			tile.addUnit(new Unit(MainUI.getGame(), UnitType.TYPES.get("claim"), MainUI.getPlayer()),MainUI.getGame());
 			MainUI.updateGameDisplay();

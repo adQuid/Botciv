@@ -237,7 +237,7 @@ public class WorldGenerator {
 		
 	for(BotcivPlayer player: players) {
 			Coordinate startLocation = viableLocations.remove(rand.nextInt(viableLocations.size()));
-			player.setLastFocus(startLocation.left().left().up());
+			player.setLastFocus(startLocation);
 			
 			world.getTileAt(startLocation).addUnit(new Unit(game, UnitType.TYPES.get("population"),player),game);
 			player.addExploredTile(startLocation);

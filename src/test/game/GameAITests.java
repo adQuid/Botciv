@@ -61,7 +61,7 @@ public class GameAITests {
 		controller.commitTurn(new ArrayList<Action>(), gatePlayer);
 		
 		//being a little unspecific here in order to not be super volatile as unit rules change
-		assert(testGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() > 0);
+		assert(testGame.world.getTileAt(new Coordinate(5,5)).getUnits().size() > 0);
 	}
 	
 	
@@ -107,8 +107,8 @@ public class GameAITests {
 		controller2.commitTurn(new ArrayList<Action>(), copyGatePlayer);
 		
 		//being a little unspecific here in order to not be super volatile as unit rules change
-		assert(testGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() > 0);
-		assert(copyGame.world.getTileAt(new Coordinate(5,5)).getAllUnits().size() > 0);
+		assert(testGame.world.getTileAt(new Coordinate(5,5)).getUnits().size() > 0);
+		assert(copyGame.world.getTileAt(new Coordinate(5,5)).getUnits().size() > 0);
 	}
 	
 	private BotcivGame generateTestGame() {

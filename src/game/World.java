@@ -81,13 +81,11 @@ public class World {
 	 */
 	public List<Unit> getAllUnitsOfTypeByPlayer(UnitType type, BotcivPlayer player){
 		List<Unit> retval = new ArrayList<Unit>();
-		
+
 		for(Tile current: tiles.values()) {
-			for(List<Unit> unitList: current.getUnits().values()) {
-				for(Unit unit: unitList) {
-					if(type == null || unit.getType() == type) {
-						retval.add(unit);
-					}
+			for(Unit unit: current.getUnits()) {
+				if(type == null || unit.getType() == type) {
+					retval.add(unit);
 				}
 			}
 		}

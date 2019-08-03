@@ -52,9 +52,9 @@ public class GameLogicUtilities {
 		
 		
 		List<Unit> unitsThatCouldBuild = new ArrayList<Unit>();
-		for(List<Unit> unitList: tile.getUnits().values()) {
-			if(unitList.get(0).getOwner() == player) {
-				unitsThatCouldBuild.add(unitList.get(0));
+		for(Unit unitList: tile.getUnits()) {
+			if(unitList.getOwner() == player) {
+				unitsThatCouldBuild.add(unitList);
 			}
 		}
 

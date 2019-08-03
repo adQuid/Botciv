@@ -36,7 +36,7 @@ public class UnitFocusBottomPanels {
 					if(unit.getOwner() == null) {
 						text(unit.getType().getName());
 					} else {
-						text(unit.getOwner().getName()+"'s "+unit.getType().getName());
+						text(unit.getOwner().getName()+"'s "+unit.getType().getName()+" ("+unit.getHealth()+"/"+unit.getType().getMaxHealth()+" HP)");
 					}
 					font("Interface/Fonts/Default.fnt");
 				}});
@@ -86,7 +86,7 @@ public class UnitFocusBottomPanels {
 		
 		//if we can't find a matching unit, we are assuming it's already migrated
 		if(unit.getOwner().equals(MainUI.getPlayer()) && unit.getType().has("migrates") && MainUI.getGame().findMatching(unit) != null) {
-			retval.add(new ButtonBuilder("Migrate_Button","Migrate") {{
+			retval.add(new ButtonBuilder("Migrate_Button","Order Migration") {{
 				height("100%");
 				width("20%");
 				interactOnClick("showMigrationOptions("+unit.getId()+")");

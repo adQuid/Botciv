@@ -25,6 +25,23 @@ public class GameUnitTests {
 	}
 	
 	@Test
+	public void testSplit() {
+		BotcivGame testGame = generateTestGame();
+		
+		BotcivPlayer player1 = testGame.playerByName("test1");
+		
+		Unit unit1 = new Unit(testGame, UnitType.TYPES.get("population"), player1);
+		unit1.setStackSize(10);
+		
+		Unit unit2 = unit1.split(3, testGame);
+		assert(unit1.getStackSize() == 7);
+		assert(unit2.getStackSize() == 3);
+		
+		unit2.append(unit1);
+		assert(unit2.getStackSize() == 10);
+	}
+	
+	@Test
 	public void testCopy() {
 
 		BotcivGame testGame = generateTestGame();

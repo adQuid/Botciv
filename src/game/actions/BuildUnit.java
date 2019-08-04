@@ -44,4 +44,9 @@ public class BuildUnit extends BotcivAction{
 		}
 	}
 
+	@Override
+	public int priority() {
+		return 2;
+	}
+
 }

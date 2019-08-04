@@ -17,6 +17,7 @@ import game.UnitType;
 import game.actions.BuildUnit;
 import game.actions.ClaimTile;
 import game.actions.ExploreTile;
+import game.actions.SplitUnit;
 import jme.gui.components.CornerDisplay;
 import jme.gui.MainUI;
 import jme.gui.components.DescriptionDisplay;
@@ -36,6 +37,7 @@ import jme.gui.mapActions.ZoomMap;
 import jme.gui.mouseactions.ScrollAction;
 import map.Coordinate;
 import util.GameLogicUtilities;
+import util.MiscUtilities;
 
 public class ButtonActions implements ScreenController{
 
@@ -103,9 +105,20 @@ public class ButtonActions implements ScreenController{
 	}
 	
 	public void focusOnUnit(String id) {
-		Unit unit = MainUI.getGame().getUnit(Long.parseLong(id));
+		Unit unit = MainUI.getGame().getUnit(id);
 		GlobalContext.setSelectedUnit(unit);
 		MainUI.updateBottomPanel(UnitFocusBottomPanels.focusOnUnit(unit));
+	}
+	
+	public void splitSelected(String split) {
+		int splitAmount = MiscUtilities.extractInt(split);
+		
+		MainUI.addAction(new SplitUnit(GlobalContext.getSelectedUnit(), splitAmount));
+		Tile location = GlobalContext.getSelectedUnit().getLocation();
+		Unit newUnit = GlobalContext.getSelectedUnit().split(splitAmount, MainUI.getGame());
+		location.addSplitUnit(newUnit, MainUI.getGame());
+		GlobalContext.setSelectedUnit(newUnit);
+		MainUI.updateGameDisplay();
 	}
 	
 	public void exploreTile() {
@@ -114,8 +127,8 @@ public class ButtonActions implements ScreenController{
 			return;
 		} 
 		Tile tile = GlobalContext.getSelectedTile();
-		if((tile.getUnitByType(UnitType.TYPES.get("explorer")) == null 
-				|| tile.getUnitByType(UnitType.TYPES.get("explorer")).getStackSize() == 0)
+		if((tile.getUnitsByType(UnitType.TYPES.get("explorer")).size() == 0 
+				|| tile.getUnitsByType(UnitType.TYPES.get("explorer")).size() == 0)
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:1,M:2}"))) {
 			
 			MainUI.addAction(new ExploreTile(tile.getCoordinate()));
@@ -131,8 +144,8 @@ public class ButtonActions implements ScreenController{
 			return;
 		} 
 		Tile tile = GlobalContext.getSelectedTile();
-		if((tile.getUnitByType(UnitType.TYPES.get("claim")) == null 
-				|| tile.getUnitByType(UnitType.TYPES.get("claim")).getStackSize() == 0) 
+		if((tile.getUnitsByType(UnitType.TYPES.get("claim")).size() == 0 
+				|| tile.getUnitsByType(UnitType.TYPES.get("claim")).size() == 0) 
 				&& GameLogicUtilities.tryTopay(MainUI.getPlayer(), new ResourcePortfolio("{I:5}"))) {
 			tile.addUnit(new Unit(MainUI.getGame(), UnitType.TYPES.get("claim"), MainUI.getPlayer()),MainUI.getGame());
 			MainUI.updateGameDisplay();
@@ -156,7 +169,7 @@ public class ButtonActions implements ScreenController{
 	}
 	
 	public void showMigrationOptions(String unitID) {
-		Unit unit = MainUI.getGame().getUnit(Long.parseLong(unitID));
+		Unit unit = MainUI.getGame().getUnit(unitID);
 		
 		List<Coordinate> inRange = MainUI.getGame().world.tilesWithinRange(unit.getLocation().getCoordinate(), 1);
 		for(Coordinate current: inRange) {

@@ -50,4 +50,8 @@ public class MigrateUnit extends BotcivAction{
 		
 	}
 
+	@Override
+	public int priority() {
+		return 7;
+	}
 }

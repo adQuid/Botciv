@@ -180,21 +180,25 @@ public class MainUI extends SimpleApplication{
 
 	@Override
 	public void simpleUpdate(float tpf) {
-		if(cam.getLocation().x < 1.0f * MAP_SIZE){
-			cam.setLocation(cam.getLocation().add(new Vector3f(MAP_SIZE,0,0)));
-		}
-		if(cam.getLocation().x > 2.0f * MAP_SIZE){
-			cam.setLocation(cam.getLocation().add(new Vector3f(-MAP_SIZE,0,0)));
-		}
-		camHeight = cam.getLocation().y;
+		try {
+			if(cam.getLocation().x < 1.0f * MAP_SIZE){
+				cam.setLocation(cam.getLocation().add(new Vector3f(MAP_SIZE,0,0)));
+			}
+			if(cam.getLocation().x > 2.0f * MAP_SIZE){
+				cam.setLocation(cam.getLocation().add(new Vector3f(-MAP_SIZE,0,0)));
+			}
+			camHeight = cam.getLocation().y;
 
-		tiltCamera();
-		
-		if(!hasUpdatedResourceDisplays) {
-			updateResourceDisplays();
-			hasUpdatedResourceDisplays = true;
+			tiltCamera();
+
+			if(!hasUpdatedResourceDisplays) {
+				updateResourceDisplays();
+				hasUpdatedResourceDisplays = true;
+			}
+		} catch (Exception e) {
+			System.err.println("Something went wrong!");
+			e.printStackTrace();
 		}
-		
 	}
 
 	private void redraw(boolean selective) {
@@ -379,8 +383,9 @@ public class MainUI extends SimpleApplication{
 	public static void updateBottomPanel(PanelBuilder newPanel) {
 		Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
 		nifty.removeChildren(bottomHolder);
-		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
 		nifty.cleanup();
+		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
+		
 	}
 	
 	public static void updateSidePanel() {
@@ -390,7 +395,8 @@ public class MainUI extends SimpleApplication{
 	public static void updateSidePanel(PanelBuilder newPanel) {
 		Element sideHolder = nifty.getCurrentScreen().findElementById("Right_Panel_Holder");
 		nifty.removeChildren(sideHolder);
-		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), sideHolder);
 		nifty.cleanup();
+		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), sideHolder);
+		
 	}
 }

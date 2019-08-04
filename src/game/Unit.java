@@ -8,8 +8,24 @@ import util.MiscUtilities;
 
 public class Unit {
 	
-	private static long nextID = 1;
-	private long id; 
+	public static class IDGenerator {	
+		
+		static long nextID = 1;
+		
+		public static String nextID(BotcivGame game, String parent) {
+			if(parent == null) {
+				return ""+nextID++;
+			} else {
+				int append = 1;
+				while(game.getUnit(parent+"s"+append) != null) {
+					append++;
+				}
+				return parent+"s"+append;
+			}
+		}
+	}
+	
+	private String id; 
 	private static final String ID_NAME = "id";
 	private UnitType type;
 	private static final String TYPE_NAME = "t";
@@ -23,7 +39,7 @@ public class Unit {
 	private int health; 
 	
 	public Unit(BotcivGame parent, UnitType type, BotcivPlayer owner) {
-		this.id = nextID++;
+		this.id = IDGenerator.nextID(parent,null);
 		this.type = type;
 		this.stackSize = 1;
 		this.owner = owner;
@@ -32,7 +48,7 @@ public class Unit {
 	}
 	
 	public Unit(BotcivGame parent, UnitType type, BotcivPlayer owner, int health) {
-		this.id = nextID++;
+		this.id = IDGenerator.nextID(parent,null);
 		this.type = type;
 		this.stackSize = 1;
 		this.owner = owner;
@@ -40,8 +56,21 @@ public class Unit {
 		parent.addUnit(this);
 	}
 	
-	public Unit(Unit other, BotcivGame game) {
+	//makes a read-only copy of a unit. Might make this into a different class
+	public Unit(Unit other) {
 		this.id = other.id;
+		this.type=other.type;
+		this.stackSize = other.stackSize;
+		this.owner = other.owner;
+		this.health = other.health;
+	}
+	
+	public Unit(Unit other, BotcivGame game, boolean isSplit) {
+		if(isSplit) {
+			this.id = IDGenerator.nextID(game,other.id);
+		} else {
+			this.id = other.id;
+		}
 		this.type=other.type;
 		this.stackSize = other.stackSize;
 		this.owner = game.playerByName(other.owner.getName());
@@ -50,7 +79,7 @@ public class Unit {
 	}
 	
 	public Unit(Map<String,Object> map, BotcivGame game, Tile parent) {
-		id = MiscUtilities.extractInt(map.get(ID_NAME));
+		id = (String)map.get(ID_NAME);
 		type = UnitType.TYPES.get(map.get(TYPE_NAME).toString());
 		stackSize = MiscUtilities.extractInt(map.get(STACK_SIZE_NAME));
 		owner = game.playerByName(map.get(OWNER_NAME).toString());
@@ -73,8 +102,10 @@ public class Unit {
 	}
 	
 	public void append(Unit other) {
+		//I don't like that it fails silently, but I don't really want to deal with the exception passing
 		if(!other.getType().equals(this.getType())) {
 			System.err.println("Mismatched Types: "+getType()+" vs "+other.getType());
+			return;
 		}
 		
 		this.stackSize += other.stackSize;
@@ -86,6 +117,19 @@ public class Unit {
 			newHealth += maxHealth;
 		}
 		setHealth(newHealth);
+	}
+	
+	public Unit split(int splitSize, BotcivGame game) {
+		if(splitSize >= this.stackSize) {
+			return this;
+		}
+		
+		Unit retval = new Unit(this, game, true);		
+		retval.setStackSize(splitSize);
+		retval.setHealth(type.getMaxHealth());
+		this.setStackSize(stackSize - splitSize);
+		
+		return retval;
 	}
 	
 	public String toString() {
@@ -132,11 +176,11 @@ public class Unit {
 		this.health = Math.min(health, getType().getMaxHealth());
 	}
 	
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -146,7 +190,7 @@ public class Unit {
 			return false;
 		}
 		Unit otherUnit = (Unit)other;
-		return id == otherUnit.id;
+		return id.equals(otherUnit.id);
 	}
 	
 }

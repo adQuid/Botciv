@@ -38,4 +38,8 @@ public class ExploreTile extends BotcivAction{
 		}
 	}
 
+	@Override
+	public int priority() {
+		return 6;
+	}	
 }

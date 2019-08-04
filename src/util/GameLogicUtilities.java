@@ -111,12 +111,20 @@ public class GameLogicUtilities {
 		retval.influence = 10;//for now all governments generate 10 influence
 				
 		for(Unit current: units) {
-			if(player.equals(current.getOwner()) && current.getHealth() == current.getType().getMaxHealth()) {
-				retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"));
-				retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"));
-				retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"));
-				retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"));
-				retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"));
+			if(player.equals(current.getOwner())) {
+				if( current.getHealth() == current.getType().getMaxHealth()) {
+					retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"),current.getStackSize());
+					retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"),current.getStackSize());
+					retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"),current.getStackSize());
+					retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"),current.getStackSize());
+					retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"),current.getStackSize());
+				} else {
+					retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"),current.getStackSize()-1);
+					retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"),current.getStackSize()-1);
+					retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"),current.getStackSize()-1);
+					retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"),current.getStackSize()-1);
+					retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"),current.getStackSize()-1);
+				}
 			}
 		}
 		

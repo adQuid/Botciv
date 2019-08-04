@@ -40,4 +40,8 @@ public class ClaimTile extends BotcivAction{
 		}
 	}
 
+	@Override
+	public int priority() {
+		return 4;
+	}	
 }

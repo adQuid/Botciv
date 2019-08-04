@@ -62,7 +62,7 @@ public class Tile {
 		this.rainfall = other.rainfall;
 		
 		for(Unit unit: other.units) {
-			Unit toAdd = new Unit(unit,game);
+			Unit toAdd = new Unit(unit,game,false);
 			toAdd.setLocation(this);
 			addUnit(toAdd,game);
 		}
@@ -154,12 +154,13 @@ public class Tile {
 		return units;
 	}
 		
-	public Unit getUnitByType(UnitType type) {
-		Unit retval = null;
+	//if there's more than one stack, it will combine them
+	public List<Unit> getUnitsByType(UnitType type) {
+		List<Unit> retval = new ArrayList<Unit>();
 		
 		for(Unit unit: units) {
 			if(unit.getType().equals(type)) {
-				retval = unit;
+				retval.add(unit);
 			}
 		}
 		
@@ -167,17 +168,30 @@ public class Tile {
 	}
 	
 	public void addUnit(Unit toAdd, BotcivGame game) {
-		if(getUnitByType(toAdd.getType()) == null) {
+		if(getUnitsByType(toAdd.getType()).size() == 0) {
 			units.add(toAdd);
 		} else {
-			getUnitByType(toAdd.getType()).append(toAdd);
+			//we just add it to the first one. Will probably bite me later
+			getUnitsByType(toAdd.getType()).get(0).append(toAdd);
 		}
 		toAdd.setLocation(this);
 	}
 	
+	public void addSplitUnit(Unit toAdd, BotcivGame game) {
+		units.add(toAdd);
+		toAdd.setLocation(this);
+	}
+	
 	public void removeUnit(Unit toRemove) {
-		Unit match = getUnitByType(toRemove.getType());
-		if(match == toRemove) {
+		Unit match = null;
+		
+		for(Unit current: units) {
+			if(current.getId().equals(toRemove.getId())) {
+				match = current;
+			}
+		}
+		
+		if(match != null) {
 			units.remove(match);
 		} else {
 			System.err.println("Tried to remove unit "+toRemove.getId()+", but it doesn't exist!");
@@ -227,7 +241,7 @@ public class Tile {
 			}
 			for(UnitType current: displayCategories.get(0)) {
 				BufferedImage unit = ImageUtilities.importImage(current.getImage());
-				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit,getUnitByType(current).getOwner()));
+				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit,getUnitsByType(current).get(0).getOwner()));
 			}
 			List<UnitType> layers = new ArrayList<UnitType>();
 			for(int i=1; i<10; i++) {
@@ -239,7 +253,7 @@ public class Tile {
 			Collections.reverse(layers);//the comparator is backwards 
 			for(UnitType type: layers) {
 				BufferedImage unit = ImageUtilities.importImage(type.getImage());
-				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit,getUnitByType(type).getOwner()));	
+				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit,getUnitsByType(type).get(0).getOwner()));	
 			}
 			
 		}
@@ -308,9 +322,14 @@ public class Tile {
 	}
 	
 	public int population() {
-		if(getUnitByType(UnitType.TYPES.get("population")) == null) {
-			return 0;
-		}
-		return getUnitByType(UnitType.TYPES.get("population")).getStackSize();
+		int retval = 0;		
+		for(Unit current: getUnitsByType(UnitType.TYPES.get("population"))) {
+			if(current.getHealth() == current.getType().getMaxHealth()) {
+				retval += current.getStackSize();
+			} else {
+				retval += current.getStackSize()-1;
+			}
+		}		
+		return retval;
 	}
 }

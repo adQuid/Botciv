@@ -3,9 +3,9 @@ package util;
 
 public class MiscUtilities {
 
-	public static double addTo(double base, Object addTo) {
+	public static double addTo(double base, Object addTo, double multiplier) {
 		try {
-			return base+(double)addTo;
+			return base+(double)addTo * multiplier;
 		} catch(Exception e) {
 			return base;
 		}

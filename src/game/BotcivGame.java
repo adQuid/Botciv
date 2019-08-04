@@ -28,7 +28,7 @@ public class BotcivGame implements Game{
 	private static final String PLAYERS_NAME = "players";
 	
 	//This is a short list that isn't saved
-	private Map<Long,Unit> units = new HashMap<Long,Unit>();
+	private Map<String,Unit> units = new HashMap<String,Unit>();
 	
 	public BotcivGame() {
 		this.world = new World();
@@ -92,7 +92,8 @@ public class BotcivGame implements Game{
 	public void endRound() {
 
 		for(BotcivPlayer player: players) {
-			for(BotcivAction action: player.getActions()) {
+			player.getActions().sort(new BotcivAction.BotcivActionComparator());
+			for(BotcivAction action: player.getActions()) {				
 				action.doAction(this,player);
 			}
 			player.setActions(new ArrayList<BotcivAction>());
@@ -137,13 +138,14 @@ public class BotcivGame implements Game{
 			return null;
 		}
 		for(Tile tile: world.allTiles()) {
-			Unit matchingUnit = tile.getUnitByType(unit.getType());
+			for(Unit matchingUnit: tile.getUnitsByType(unit.getType())) {
 
-			if(matchingUnit != null) {
-				if(matchingUnit.equals(unit)) {
-					return matchingUnit;
+				if(matchingUnit != null) {
+					if(matchingUnit.equals(unit)) {
+						return matchingUnit;
+					}
+
 				}
-
 			}
 		}
 		System.err.println("Failed to find matching unit!");
@@ -190,7 +192,7 @@ public class BotcivGame implements Game{
 		return units.values();
 	}
 	
-	public Unit getUnit(long id) {
+	public Unit getUnit(String id) {
 		return units.get(id);
 	}
 	

@@ -42,7 +42,7 @@ public class Market {
 			int growth = (int)((averageFood - current.population()) * pop.getMaxHealth());
 
 			int growthRate = Math.min(growth, current.population()*2);
-			Unit unit = current.getUnitByType(pop);
+			Unit unit = current.getUnitsByType(pop).get(0);
 			while(growthRate > 0 && unit.getHealth() < unit.getType().getMaxHealth()) {
 				unit.setHealth(unit.getHealth()+1);
 				growthRate--;

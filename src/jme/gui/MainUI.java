@@ -333,7 +333,7 @@ public class MainUI extends SimpleApplication{
 		updateGameDisplay();
 	}
 	
-	public static void updateGameDisplay() {
+	public static synchronized void updateGameDisplay() {
 		if(instance != null) {
 			instance.enqueue(new Callable<Void>() {
 				public Void call() throws Exception {
@@ -380,7 +380,8 @@ public class MainUI extends SimpleApplication{
 	    elementToFill.getRenderer(TextRenderer.class).setText((int)getGame().players.get(0).getEducation()+"");
 	}
 	
-	public static void updateBottomPanel(PanelBuilder newPanel) {
+	
+	public static synchronized void updateBottomPanel(PanelBuilder newPanel) {
 		Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
 		nifty.removeChildren(bottomHolder);
 		nifty.cleanup();
@@ -388,11 +389,11 @@ public class MainUI extends SimpleApplication{
 		
 	}
 	
-	public static void updateSidePanel() {
+	public static synchronized void updateSidePanel() {
 		updateSidePanel(RightPanel.currentPanel());
 	}
 	
-	public static void updateSidePanel(PanelBuilder newPanel) {
+	public static synchronized void updateSidePanel(PanelBuilder newPanel) {
 		Element sideHolder = nifty.getCurrentScreen().findElementById("Right_Panel_Holder");
 		nifty.removeChildren(sideHolder);
 		nifty.cleanup();

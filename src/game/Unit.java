@@ -133,7 +133,7 @@ public class Unit {
 	}
 	
 	public String toString() {
-		return type.getName();
+		return type.getName()+" "+id;
 	}
 
 	public UnitType getType() {

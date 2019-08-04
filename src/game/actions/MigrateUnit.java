@@ -36,6 +36,10 @@ public class MigrateUnit extends BotcivAction{
 	@Override
 	public void doAction(BotcivGame game, BotcivPlayer player) {
 		unit = game.findMatching(unit);
+		if(unit == null) {
+			System.err.println("Unit "+unit.getId()+" not Found!");
+			return;
+		}
 		Tile destination = game.world.getTileAt(location);
 		if(destination != null &&
 				unit.getOwner().equals(player) && 
@@ -46,8 +50,7 @@ public class MigrateUnit extends BotcivAction{
 			game.world.getTileAt(unit.getLocation().getCoordinate()).removeUnit(unit);
 			game.world.getTileAt(location).addUnit(unit,game);
 			player.addExploredTile(location);
-		}
-		
+		}		
 	}
 
 	@Override

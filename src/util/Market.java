@@ -1,6 +1,7 @@
 package util;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 import game.BotcivGame;
@@ -38,24 +39,36 @@ public class Market {
 		averageFood /= tiles.size();
 
 		UnitType pop = UnitType.TYPES.get("population");
+		
+		int totalGrowth = 0;
 		for(Tile current: tiles) {
 			int growth = (int)((averageFood - current.population()) * pop.getMaxHealth());
 
-			int growthRate = Math.min(growth, current.population()*2);
-			Unit unit = current.getUnitsByType(pop).get(0);
-			while(growthRate > 0 && unit.getHealth() < unit.getType().getMaxHealth()) {
-				unit.setHealth(unit.getHealth()+1);
-				growthRate--;
-			}
-
-			if(growth >= 10) {
-				while(growthRate > 0) {
-					Unit toAdd = new Unit(game, pop,current.getOwner(),
-							Math.min(pop.getMaxHealth(), growthRate));
-					growthRate -= toAdd.getHealth();
-					current.addUnit(toAdd, game);
+			totalGrowth += Math.min(growth, current.population()*2);	
+		}
+		
+		for(Tile current: tiles) {
+			int growthRate = (int)Math.round(totalGrowth * migrationPreference());
+			List<Unit> unitList = current.getUnitsByType(pop);
+			if(unitList.size() > 0) {
+				Unit unit = unitList.get(0);
+				totalGrowth -= growthRate;
+				while(growthRate > 0 && unit.getHealth() < unit.getType().getMaxHealth()) {
+					unit.setHealth(unit.getHealth()+1);
+					growthRate--;
 				}
 			}
+
+			while(growthRate > 0) {
+				Unit toAdd = new Unit(game, pop,current.getOwner(),
+						Math.min(pop.getMaxHealth(), growthRate));
+				growthRate -= toAdd.getHealth();
+				current.addUnit(toAdd, game);
+			}
 		}
+	}
+	
+	private double migrationPreference() {
+		return 1.0 / tiles.size();
 	}
 }

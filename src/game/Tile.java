@@ -302,6 +302,16 @@ public class Tile {
 		return retval;
 	}
 	
+	public double moveCost() {
+		double retval = 1;		
+		for(Unit current: getUnits()) {
+			if(current.getType().has("moveCost") && MiscUtilities.extractDouble(current.getType().getAttribute("moveCost")) < retval) {
+				retval = MiscUtilities.extractDouble(current.getType().getAttribute("moveCost"));
+			}
+		}		
+		return retval;
+	}
+	
 	public double food() {
 		List<Double> foodValues = new ArrayList<Double>();
 		for(Unit current: getUnits()) {

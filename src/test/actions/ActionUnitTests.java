@@ -79,10 +79,10 @@ public class ActionUnitTests {
 		SplitUnit split1 = new SplitUnit(toMove1,1);
 		SplitUnit split2 = new SplitUnit(toMove2,5);
 		
-		Unit dummy1 = new Unit(toMove1);//doesn't matter I just need to mess with ids
-		dummy1.setId("1s1");
-		Unit dummy2 = new Unit(toMove1);//doesn't matter I just need to mess with ids
-		dummy2.setId("2s1");
+		Unit dummy1 = new Unit(toMove1);//very fragile way to simulate what the UI is doing
+		dummy1.setId(toMove1.getId()+"s1");
+		Unit dummy2 = new Unit(toMove2);//very fragile way to simulate what the UI is doing
+		dummy2.setId(toMove2.getId()+"s1");
 		
 		MigrateUnit migrate1 = new MigrateUnit(dummy1, new Coordinate(5,6));
 		MigrateUnit migrate2 = new MigrateUnit(dummy2, new Coordinate(6,6));

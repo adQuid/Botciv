@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import map.Coordinate;
+import util.DistanceCalculator;
 import worldgen.WorldGenerator;
 
 public class World {
@@ -106,39 +107,11 @@ public class World {
 	}
 	
 	public List<Coordinate> tilesWithinRange(Coordinate tile, int range){
-		List<Coordinate> retval = new ArrayList<Coordinate>();
-		List<List<Coordinate>> arr = new ArrayList<List<Coordinate>>(); 
-		for(int i=0; i <= range; i++) {
-			arr.add(new ArrayList<Coordinate>());
-		}
+		DistanceCalculator calc = new DistanceCalculator(this);
 		
-		arr.get(0).add(tile);
+		return calc.coordinatesInRange(tile, range);
+	}
 		
-		for(int index=0; index < range; index++) {
-			while(arr.get(index).size() > 0) {
-				Coordinate coord = arr.get(index).get(0);
-
-				addConditionally(arr.get(index+1), coord);
-				addConditionally(arr.get(index+1),coord.up());
-				addConditionally(arr.get(index+1),coord.down());
-				addConditionally(arr.get(index+1),coord.left());
-				addConditionally(arr.get(index+1),coord.right());
-
-				arr.get(index).remove(0);
-			}
-		}
-				
-		return arr.get(range);		
-	}
-	
-	private void addConditionally(List<Coordinate> list, Coordinate tile) {
-		if(getTileAt(tile) != null ) {
-			if(!list.contains(tile)) {
-				list.add(tile);
-			}
-		}			
-	}
-	
 	public int rangeBetween(Coordinate c1, Coordinate c2) {
 		for(int retval = 0; retval < WORLD_SIZE; retval++) {
 			if(tilesWithinRange(c1,retval).contains(c2)) {

@@ -75,7 +75,7 @@ public class GameLogicUtilities {
 	private static class MarketTileComparator implements Comparator<Tile> {
 		@Override
 		public int compare(Tile arg0, Tile arg1) {
-			return (int)(arg0.tradePower() - arg1.tradePower());
+			return (int)(arg1.tradePower() - arg0.tradePower());
 		}		
 	}
 	
@@ -89,9 +89,10 @@ public class GameLogicUtilities {
 			if(current.getOwner() != null && !tilesInMarket.contains(current)) {
 				Set<Tile> newArea = new HashSet<Tile>();
 				for(Coordinate coord: game.world.tilesWithinRange(current.getCoordinate(), (int)current.tradePower())) {
-					if(!tilesInMarket.contains(game.world.getTileAt(coord))) {
-						newArea.add(current);
-						tilesInMarket.add(current);
+					Tile tile = game.world.getTileAt(coord);
+					if(!tilesInMarket.contains(game.world.getTileAt(coord)) && current.getOwner().equals(tile.getOwner())) {
+						newArea.add(game.world.getTileAt(coord));
+						tilesInMarket.add(game.world.getTileAt(coord));
 					}
 				}
 				markets.add(new Market(current,newArea));

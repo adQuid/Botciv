@@ -32,19 +32,20 @@ public class Market {
 	}
 
 	public void tradeFood(BotcivGame game) {
+		UnitType pop = UnitType.TYPES.get("population");
 		double averageFood = 0.0;
+		int totalPopulation = 0;
 		for(Tile current: tiles) {
 			averageFood += current.food();
+			totalPopulation += current.population();
 		}
-		averageFood /= tiles.size();
-
-		UnitType pop = UnitType.TYPES.get("population");
+			
+		int totalGrowth = Math.max(0, Math.min((int)((averageFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2)); 
 		
-		int totalGrowth = 0;
-		for(Tile current: tiles) {
-			int growth = (int)((averageFood - current.population()) * pop.getMaxHealth());
+		averageFood /= tiles.size();	
 
-			totalGrowth += Math.min(growth, current.population()*2);	
+		if(game.isLive() && hub.getX() == 21 && hub.getY() == 56) {
+			System.out.println("hook");
 		}
 		
 		for(Tile current: tiles) {

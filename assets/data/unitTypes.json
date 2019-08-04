@@ -49,6 +49,7 @@ data:[
 		image:"units/Dirt Road.png",
 		maxHealth:4,
 		attributes:{
+			alwaysBuildable:true,
 			materialsCost:15,
 			moveCost:0.5
 		}

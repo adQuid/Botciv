@@ -297,7 +297,7 @@ public class Tile {
 	public double tradePower() {
 		double retval = 0;		
 		for(Unit current: getUnits()) {
-			retval += MiscUtilities.extractDouble(current.getType().getAttribute("tradePower"));
+			retval += current.getStackSize() * MiscUtilities.extractDouble(current.getType().getAttribute("tradePower"));
 		}		
 		return retval;
 	}

@@ -50,6 +50,14 @@ public class GameLogicUtilities {
 			return new ArrayList<UnitType>();
 		}
 		
+		List<UnitType> retval = new ArrayList<UnitType>();
+		if(player.equals(tile.getOwner())) {
+			for(UnitType type: UnitType.TYPES.values()) {
+				if(type.has("alwaysBuildable")) {
+					retval.add(type);
+				}
+			}
+		}
 		
 		List<Unit> unitsThatCouldBuild = new ArrayList<Unit>();
 		for(Unit unitList: tile.getUnits()) {
@@ -58,7 +66,6 @@ public class GameLogicUtilities {
 			}
 		}
 
-		List<UnitType> retval = new ArrayList<UnitType>();
 		for(Unit current: unitsThatCouldBuild) {
 			if(current.getType().getAttribute("builds") != null) {
 				List<String> types = (List<String>)current.getType().getAttribute("builds");
@@ -75,7 +82,11 @@ public class GameLogicUtilities {
 	private static class MarketTileComparator implements Comparator<Tile> {
 		@Override
 		public int compare(Tile arg0, Tile arg1) {
-			return (int)(arg1.tradePower() - arg0.tradePower());
+			if(arg0.tradePower() < arg1.tradePower()) {
+				return 1;
+			} else {
+				return -1;
+			}
 		}		
 	}
 	
@@ -84,11 +95,11 @@ public class GameLogicUtilities {
 		Set<Tile> tilesInMarket = new HashSet<Tile>();
 		List<Market> markets = new ArrayList<Market>();
 		Collections.sort(tiles, new MarketTileComparator());
-		
+				
 		for(Tile current: tiles) {
 			if(current.getOwner() != null && !tilesInMarket.contains(current)) {
 				Set<Tile> newArea = new HashSet<Tile>();
-				for(Coordinate coord: game.world.tilesWithinRange(current.getCoordinate(), (int)current.tradePower())) {
+				for(Coordinate coord: game.world.tilesWithinRange(current.getCoordinate(), current.tradePower())) {
 					Tile tile = game.world.getTileAt(coord);
 					if(!tilesInMarket.contains(game.world.getTileAt(coord)) && current.getOwner().equals(tile.getOwner())) {
 						newArea.add(game.world.getTileAt(coord));

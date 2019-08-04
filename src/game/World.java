@@ -106,7 +106,7 @@ public class World {
 		return retval;
 	}
 	
-	public List<Coordinate> tilesWithinRange(Coordinate tile, int range){
+	public List<Coordinate> tilesWithinRange(Coordinate tile, double range){
 		DistanceCalculator calc = new DistanceCalculator(this);
 		
 		return calc.coordinatesInRange(tile, range);

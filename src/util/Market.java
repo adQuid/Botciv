@@ -43,10 +43,6 @@ public class Market {
 		int totalGrowth = Math.max(0, Math.min((int)((averageFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2)); 
 		
 		averageFood /= tiles.size();	
-
-		if(game.isLive() && hub.getX() == 21 && hub.getY() == 56) {
-			System.out.println("hook");
-		}
 		
 		for(Tile current: tiles) {
 			int growthRate = (int)Math.round(totalGrowth * migrationPreference());

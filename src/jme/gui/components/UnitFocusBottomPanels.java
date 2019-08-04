@@ -36,7 +36,7 @@ public class UnitFocusBottomPanels {
 					if(unit.getOwner() == null) {
 						text(unit.getType().getName());
 					} else {
-						text(unit.getOwner().getName()+"'s "+unit.getType().getName()+" ("+unit.getHealth()+"/"+unit.getType().getMaxHealth()+" HP)");
+						text(unit.getOwner().getName()+"'s "+unit.getType().getName()+" ("+unit.getDisplayStackSize()+")");
 					}
 					font("Interface/Fonts/Default.fnt");
 				}});

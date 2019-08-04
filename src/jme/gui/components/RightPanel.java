@@ -70,7 +70,7 @@ public class RightPanel {
 		List<String> actions = new ArrayList<String>();
 		for(Unit current: tile.getUnits()) {
 			if(!current.getType().has("displayOnly")) {
-				labels.add(current.getType().getName()+" ("+current.getStackSize()+")");
+				labels.add(current.getType().getName()+" ("+current.getDisplayStackSize()+")");
 				actions.add("focusOnUnit("+current.getId()+")");
 			}
 		}

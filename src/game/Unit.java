@@ -152,6 +152,14 @@ public class Unit {
 		this.stackSize = stackSize;
 	}
 
+	public String getDisplayStackSize() {
+		if(getHealth() == type.getMaxHealth()) {
+			return ""+stackSize;
+		} else {
+			return (stackSize-1)+"."+((int)((getHealth()/(double)type.getMaxHealth()) * 100));
+		}
+	}
+	
 	public BotcivPlayer getOwner() {
 		return owner;
 	}

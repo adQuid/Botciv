@@ -2,9 +2,13 @@ package test.actions;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import aibrain.Action;
 import controller.Controller;
 import game.BotcivGame;
 import game.BotcivPlayer;
@@ -14,6 +18,7 @@ import game.Unit;
 import game.UnitType;
 import game.World;
 import game.actions.MigrateUnit;
+import game.actions.SplitUnit;
 import jme.gui.GlobalContext;
 import jme.gui.MainUI;
 import map.Coordinate;
@@ -51,6 +56,35 @@ public class ActionIntegrationTests {
 		
 		assert(baseGame.world.getTileAt(new Coordinate(5,5)).getUnits().size() == 0);
 		assert(baseGame.world.getTileAt(new Coordinate(5,6)).getUnits().size() == 1);
+	}
+	
+	@Test
+	public void testSplitAndMigrate() {
+
+		BotcivGame baseGame = generateTestGame();		
+		BotcivPlayer player = baseGame.playerByName("test");
+		
+		Unit toMove = new Unit(baseGame, UnitType.TYPES.get("population"),player);	
+		toMove.setStackSize(3);
+		Tile tile = baseGame.world.getTileAt(new Coordinate(5,5));
+		tile.addUnit(toMove,baseGame);
+		
+		Controller.setController(baseGame);
+		MainUI.setupGUI(player, true);
+		player = MainUI.getGame().playerByName("test");
+						
+		
+		SplitUnit split = new SplitUnit(toMove,1);
+		MigrateUnit migrate = new MigrateUnit(toMove, new Coordinate(5,6));
+
+		MainUI.addAction(migrate);
+		MainUI.addAction(split);
+		MainUI.commitTurn();
+		
+		assert(baseGame.world.getTileAt(new Coordinate(5,5)).getUnits().size() == 1);
+		assert(baseGame.world.getTileAt(new Coordinate(5,5)).getUnits().get(0).getStackSize() == 1);
+		assert(baseGame.world.getTileAt(new Coordinate(5,6)).getUnits().size() == 1);
+		assert(baseGame.world.getTileAt(new Coordinate(5,6)).getUnits().get(0).getStackSize() == 2);
 	}
 
 	private BotcivGame generateTestGame() {

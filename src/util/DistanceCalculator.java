@@ -10,13 +10,15 @@ import map.Coordinate;
 
 public class DistanceCalculator {
 
-	private class Node {
+	private class WorkingNode {//terrible name
 		public Coordinate coord;
+		public Coordinate origin;
 		public double distance;
 		public boolean checked;
 		
-		public Node(Coordinate coord, double distance) {
+		public WorkingNode(Coordinate coord, Coordinate origin, double distance) {
 			this.coord = coord;
+			this.origin = origin;
 			this.distance = distance;
 			this.checked = false;
 		}		
@@ -28,41 +30,41 @@ public class DistanceCalculator {
 		this.world = world; //a copy would be safer, but this equation is going to be running tons of times
 	}
 	
-	public List<Coordinate> coordinatesInRange(Coordinate start, double range){
+	public NodeList coordinatesInRange(Coordinate start, double range){
 		
-		Set<Node> nodes = new HashSet<Node>();
-		Set<Node> nodesToAdd = new HashSet<Node>();
+		Set<WorkingNode> nodes = new HashSet<WorkingNode>();
+		Set<WorkingNode> nodesToAdd = new HashSet<WorkingNode>();
 		
-		nodesToAdd.add(new Node(start,0.0));
+		nodesToAdd.add(new WorkingNode(start,null,0.0));
 		
 		while(nodesToAdd.size() > 0) {
 			nodes.addAll(nodesToAdd);
 			nodesToAdd.clear();
-			for(Node current: nodes) {
+			for(WorkingNode current: nodes) {
 				if(!current.checked) {
-					tryToAdd(nodesToAdd, current.coord.left(), current.distance, range);
-					tryToAdd(nodesToAdd, current.coord.right(), current.distance, range);
-					tryToAdd(nodesToAdd, current.coord.up(), current.distance, range);
-					tryToAdd(nodesToAdd, current.coord.down(), current.distance, range);
+					tryToAdd(nodesToAdd, current.coord, current.coord.left(), current.distance, range);
+					tryToAdd(nodesToAdd, current.coord, current.coord.right(), current.distance, range);
+					tryToAdd(nodesToAdd, current.coord, current.coord.up(), current.distance, range);
+					tryToAdd(nodesToAdd, current.coord, current.coord.down(), current.distance, range);
 					current.checked = true;
 				}
 			}
 		}
 		
-		List<Coordinate> retval = new ArrayList<Coordinate>();
-		for(Node current: nodes) {
-			retval.add(current.coord);
+		List<Node> retval = new ArrayList<Node>();
+		for(WorkingNode current: nodes) {
+			retval.add(new Node(current.coord,current.origin));
 		}
 		
-		return retval;
+		return new NodeList(retval);
 	}
 	
-	private void tryToAdd(Set<Node> set, Coordinate toAdd, double range, double rangeMax) {
+	private void tryToAdd(Set<WorkingNode> set, Coordinate origin, Coordinate toAdd, double range, double rangeMax) {
 		if(world.getTileAt(toAdd) == null) {
 			return;
 		}
 		if(world.getTileAt(toAdd).moveCost() + range <= rangeMax) {
-			Node retval = new Node(toAdd, world.getTileAt(toAdd).moveCost() + range);
+			WorkingNode retval = new WorkingNode(toAdd, origin, world.getTileAt(toAdd).moveCost() + range);
 			set.add(retval);
 		}
 	}

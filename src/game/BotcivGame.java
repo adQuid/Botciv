@@ -99,7 +99,7 @@ public class BotcivGame implements Game{
 			player.setActions(new ArrayList<BotcivAction>());
 		}
 		
-		GameLogicUtilities.calculateMarkets(this);
+		GameLogicUtilities.runMarkets(this);
 		
 		//end of round resource generation
 		for(BotcivPlayer current: players) {

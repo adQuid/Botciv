@@ -28,6 +28,7 @@ import com.jme3.texture.plugins.AWTLoader;
 import game.Tile;
 import game.TileType;
 import util.ImageUtilities;
+import util.MapUtilities;
 
 /**
  *
@@ -81,7 +82,7 @@ public class TileToken{
         	material = preloadedImages.get(tile.getType());
         } else {         	
         	Texture texture = new Texture2D();
-        	texture.setImage(loader.load(tile.image(100, 100),false));
+        	texture.setImage(loader.load(MapUtilities.image(MainUI.getGame(), tile, 100, 100),false));
         	material = new Material(
     		        assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         	material.setTexture("ColorMap", texture);

@@ -32,6 +32,19 @@ public class GlobalContext {
 	public static ScrollAction scrollAction = new ZoomMap();
 	public static ClickAction clickAction = new FocusOnTile();
 	
+	public static class DisplayType{
+		
+		public String name;
+		
+		public static DisplayType units = new DisplayType("Units");
+		public static DisplayType trade = new DisplayType("Trade");
+		
+		private DisplayType(String name) {
+			this.name = name;
+		}
+	}
+	public static DisplayType displayType = DisplayType.units;
+	
 	public static void clear() {
 		selectedCoord = null;
 		waitingForPlayers = false;

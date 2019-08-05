@@ -10,6 +10,8 @@ import java.util.TreeMap;
 
 import map.Coordinate;
 import util.DistanceCalculator;
+import util.Node;
+import util.NodeList;
 import worldgen.WorldGenerator;
 
 public class World {
@@ -106,7 +108,7 @@ public class World {
 		return retval;
 	}
 	
-	public List<Coordinate> tilesWithinRange(Coordinate tile, double range){
+	public NodeList tilesWithinRange(Coordinate tile, double range){
 		DistanceCalculator calc = new DistanceCalculator(this);
 		
 		return calc.coordinatesInRange(tile, range);
@@ -114,7 +116,7 @@ public class World {
 		
 	public int rangeBetween(Coordinate c1, Coordinate c2) {
 		for(int retval = 0; retval < WORLD_SIZE; retval++) {
-			if(tilesWithinRange(c1,retval).contains(c2)) {
+			if(tilesWithinRange(c1,retval).getCoordinates().contains(c2)) {
 				return retval;
 			}
 		}

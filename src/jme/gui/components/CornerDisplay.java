@@ -6,6 +6,7 @@ import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.render.NiftyImage;
+import jme.gui.GlobalContext;
 
 public class CornerDisplay {
 
@@ -93,6 +94,11 @@ public class CornerDisplay {
 					text("1234");
 					font("Interface/Fonts/Default.fnt");
 					interactOnMouseOver("updateDescription(educationAmount)");
+				}});
+				control(new ButtonBuilder("Display_Type_Button",GlobalContext.displayType.name){{
+					height("100%");
+					width("33%");
+					interactOnClick("rotateDisplay()");
 				}});
 				
 				text(new TextBuilder("RESOURCE_PLACEHOLDER") {{

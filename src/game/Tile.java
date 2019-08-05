@@ -9,22 +9,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import jme.gui.GlobalContext;
 import jme.gui.MainUI;
 import map.Coordinate;
+import util.GameLogicUtilities;
 import util.ImageUtilities;
+import util.Market;
 import util.MiscUtilities;
+import util.Node;
 
 //this kind of belongs in the game package as well
 public class Tile {
 
-	private class UnitDisplayComparator implements Comparator<UnitType>{
-		@Override
-		public int compare(UnitType arg0, UnitType arg1) {
-			// backwards so we can just grab element 0
-			return arg1.getDisplayImportance() - arg0.getDisplayImportance();
-		}
-	}
-	
 	//STATEFUL VALUES THAT ARE SAVED
 	private int x;
 	private static final String X_NAME = "x";
@@ -153,7 +149,18 @@ public class Tile {
 	public List<Unit> getUnits() {
 		return units;
 	}
-		
+	
+	public boolean equals(Object other) {
+		if(other == null) {
+			return false;
+		}
+		if(other instanceof Tile) {
+			Tile otherTile = (Tile)other;
+			return otherTile.x == x && otherTile.y == y; 
+		}
+		return false;
+	}
+	
 	//if there's more than one stack, it will combine them
 	public List<Unit> getUnitsByType(UnitType type) {
 		List<Unit> retval = new ArrayList<Unit>();
@@ -221,79 +228,11 @@ public class Tile {
 	public void setOwner(BotcivPlayer owner) {
 		this.owner = owner;
 	}		
-	
-	public BufferedImage image(int width, int height) {
-		BufferedImage retval;
-		retval = ImageUtilities.importImage(type.getImage());	
 		
-		retval = ImageUtilities.scale(retval, width, height);
-		
-		if(units.size() > 0) {
-			List<List<UnitType>> displayCategories = new ArrayList<List<UnitType>>();
-			for(int i=0; i<10; i++) {
-				displayCategories.add(new ArrayList<UnitType>());
-			}
-			for(Unit current: units) {				
-				displayCategories.get(current.getType().getDisplayClass()).add(current.getType());
-			}
-			for(int i=0; i<10; i++) {
-				Collections.sort(displayCategories.get(i),new UnitDisplayComparator());				
-			}
-			for(UnitType current: displayCategories.get(0)) {
-				BufferedImage unit = ImageUtilities.importImage(current.getImage());
-				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit,getUnitsByType(current).get(0).getOwner()));
-			}
-			List<UnitType> layers = new ArrayList<UnitType>();
-			for(int i=1; i<10; i++) {
-				if(!displayCategories.get(i).isEmpty()) {
-					layers.add(displayCategories.get(i).get(0));
-				}
-			}
-			Collections.sort(layers, new UnitDisplayComparator());
-			Collections.reverse(layers);//the comparator is backwards 
-			for(UnitType type: layers) {
-				BufferedImage unit = ImageUtilities.importImage(type.getImage());
-				retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.applyFactionColor(unit,getUnitsByType(type).get(0).getOwner()));	
-			}
-			
-		}
-			
-		//borders with other nations
-		try {
-		if(owner != null) {
-			//Yes, east and west are backwards. This is required by JMonkey for some reason
-			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().left()).getOwner())) {
-				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/East Border.png"),owner));
-			}
-			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().right()).getOwner())) {
-				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/West Border.png"),owner));
-			}
-			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().up()).getOwner())) {
-				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/North Border.png"),owner));
-			}
-			if(!owner.equals(MainUI.getGame().world.getTileAt(this.getCoordinate().down()).getOwner())) {
-				retval = ImageUtilities.layerImageOnImage(retval, 
-						ImageUtilities.applyFactionColor(ImageUtilities.importImage("features/South Border.png"),owner));
-			}
-		}
-		} catch(Exception e) {
-			if(MainUI.getGame() == null) System.out.println("game is null");
-			if(MainUI.getGame().world == null) System.out.println("game is null");
-			if(this.getCoordinate().left() == null) System.out.println("left is null");
-			retval = ImageUtilities.importImage(TileType.TYPES.get("Sea").getImage());
-		}
-		
-		//selection
-		if(selected) {
-			retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("ui/selection.png"));
-		}
-		
-		return retval;
+	public boolean isSelected() {
+		return selected;
 	}
-	
+
 	public double tradePower() {
 		double retval = 0;		
 		for(Unit current: getUnits()) {

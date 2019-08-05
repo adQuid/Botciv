@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jme3.scene.control.Control;
+
 import controller.Controller;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
@@ -38,6 +41,7 @@ import jme.gui.mouseactions.ScrollAction;
 import map.Coordinate;
 import util.GameLogicUtilities;
 import util.MiscUtilities;
+import util.Node;
 
 public class ButtonActions implements ScreenController{
 
@@ -71,6 +75,19 @@ public class ButtonActions implements ScreenController{
 		
 		Element elementToFill = MainUI.nifty.getCurrentScreen().findElementById(DescriptionDisplay.descriptionID);
 	    elementToFill.getRenderer(TextRenderer.class).setText(text);
+	}
+	
+	public void rotateDisplay() {
+		if(GlobalContext.displayType == GlobalContext.DisplayType.units) {
+			GlobalContext.displayType = GlobalContext.DisplayType.trade;
+		} else if(GlobalContext.displayType == GlobalContext.DisplayType.trade) {
+			GlobalContext.displayType = GlobalContext.DisplayType.units;
+		}
+		
+		Element elementToFill = MainUI.nifty.getCurrentScreen().findElementById("Resource_Row_2");
+	    elementToFill.findNiftyControl("Display_Type_Button",Button.class).setText(GlobalContext.displayType.name);
+	    
+	    MainUI.updateGameDisplay();
 	}
 	
 	public void endHoverActions() {
@@ -171,9 +188,9 @@ public class ButtonActions implements ScreenController{
 	public void showMigrationOptions(String unitID) {
 		Unit unit = MainUI.getGame().getUnit(unitID);
 		
-		List<Coordinate> inRange = MainUI.getGame().world.tilesWithinRange(unit.getLocation().getCoordinate(), 1);
-		for(Coordinate current: inRange) {
-			MainUI.getGame().world.getTileAt(current).setSelected(true);
+		List<Node> inRange = MainUI.getGame().world.tilesWithinRange(unit.getLocation().getCoordinate(), 1).getNodes();
+		for(Node current: inRange) {
+			MainUI.getGame().world.getTileAt(current.coord).setSelected(true);
 		}
 		MainUI.updateGameDisplay();
 		GlobalContext.clickAction = new Migrate();

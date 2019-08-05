@@ -90,7 +90,7 @@ public class GameLogicUtilities {
 		}		
 	}
 	
-	public static void calculateMarkets(BotcivGame game) {
+	public static List<Market> calculateMarkets(BotcivGame game) {
 		List<Tile> tiles = new ArrayList<Tile>(game.world.allTiles());
 		Set<Tile> tilesInMarket = new HashSet<Tile>();
 		List<Market> markets = new ArrayList<Market>();
@@ -98,18 +98,24 @@ public class GameLogicUtilities {
 				
 		for(Tile current: tiles) {
 			if(current.getOwner() != null && !tilesInMarket.contains(current)) {
-				Set<Tile> newArea = new HashSet<Tile>();
-				for(Coordinate coord: game.world.tilesWithinRange(current.getCoordinate(), current.tradePower())) {
-					Tile tile = game.world.getTileAt(coord);
-					if(!tilesInMarket.contains(game.world.getTileAt(coord)) && current.getOwner().equals(tile.getOwner())) {
-						newArea.add(game.world.getTileAt(coord));
-						tilesInMarket.add(game.world.getTileAt(coord));
+				Set<Node> newArea = new HashSet<Node>();
+				for(Node node: game.world.tilesWithinRange(current.getCoordinate(), current.tradePower()).getNodes()) {
+					Tile tile = game.world.getTileAt(node.coord);
+					if(!tilesInMarket.contains(game.world.getTileAt(node.coord)) && current.getOwner().equals(tile.getOwner())) {
+						newArea.add(node);
+						tilesInMarket.add(game.world.getTileAt(node.coord));
 					}
 				}
 				markets.add(new Market(current,newArea));
 			}
 		}
 		
+		return markets;
+	}
+	
+	public static void runMarkets(BotcivGame game) {
+		List<Market> markets = calculateMarkets(game);
+	
 		for(Market current: markets) {
 			current.tradeFood(game);
 		}

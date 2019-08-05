@@ -43,7 +43,7 @@ public class MigrateUnit extends BotcivAction{
 		Tile destination = game.world.getTileAt(location);
 		if(destination != null &&
 				unit.getOwner().equals(player) && 
-				game.world.rangeBetween(unit.getLocation().getCoordinate(), location) <= 1 &&
+				game.world.tilesWithinRange(unit.getLocation().getCoordinate(), 1).getCoordinates().contains(location) &&
 				GameLogicUtilities.unitCanTraverse(unit, destination) &&
 				GameLogicUtilities.tryTopay(player, 
 						new ResourcePortfolio("{I:10}"))) {

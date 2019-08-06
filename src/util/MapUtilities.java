@@ -98,32 +98,37 @@ public class MapUtilities {
 			List<Market> markets = GameLogicUtilities.calculateMarkets(MainUI.getGame());
 
 			for(Market market: markets) {
-				 for(Node current: market.nodes) {
-					Tile curTile = game.world.getTileAt(current.coord);
-					if(curTile.equals(tile)) {
-						if(current.origin == null) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Hub Primary Trade.png"));
-						}else if(current.origin.equals(tile.getCoordinate().up())) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Up Primary Trade.png"));
-						} else if(current.origin.equals(tile.getCoordinate().down())) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Down Primary Trade.png"));
-						} else if(current.origin.equals(tile.getCoordinate().left())) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Left Primary Trade.png"));
-						} else if(current.origin.equals(tile.getCoordinate().right())) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Right Primary Trade.png"));
-						}						
-					} else if(current.origin != null){
-						if(current.origin.up().equals(tile.getCoordinate())) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Down Primary Trade.png"));
-						} else if(current.origin.down().equals(tile.getCoordinate())) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Up Primary Trade.png"));
-						} else if(current.origin.left().equals(tile.getCoordinate())) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Right Primary Trade.png"));
-						} else if(current.origin.right().equals(tile.getCoordinate())) {
-							retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Left Primary Trade.png"));
+				if(market.inMarket(tile.getCoordinate())) {
+					for(Node current: market.nodes) {
+						Tile curTile = game.world.getTileAt(current.coord);
+						if(curTile.equals(tile)) {
+							//pointing towards the hub
+							if(current.origin == null) {
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Hub Primary Trade.png"));
+							}else if(current.origin.equals(tile.getCoordinate().up())) {
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Up Primary Trade.png"));
+							} else if(current.origin.equals(tile.getCoordinate().down())) {
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Down Primary Trade.png"));
+							} else if(current.origin.equals(tile.getCoordinate().left())) {
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Right Primary Trade.png"));
+							} else if(current.origin.equals(tile.getCoordinate().right())) {
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Left Primary Trade.png"));
+							}						
+						//pointing back from the hub
+						} else if(current.origin != null && current.origin.equals(tile.getCoordinate())){
+							if(current.coord.equals(tile.getCoordinate().up())) {
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Up Primary Trade.png"));
+							} else if(current.coord.equals(tile.getCoordinate().down())) {
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Down Primary Trade.png"));
+							} else if(current.coord.equals(tile.getCoordinate().left())) {
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Right Primary Trade.png"));
+							} else if(current.coord.equals(tile.getCoordinate().right())) {
+								System.out.println("got here");
+								retval = ImageUtilities.layerImageOnImage(retval, ImageUtilities.importImage("features/Left Primary Trade.png"));
+							}
 						}
+
 					}
-					
 				}
 			}
 		}

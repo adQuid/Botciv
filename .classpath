@@ -89,7 +89,7 @@
 	<classpathentry kind="lib" path="C:/Users/b/Downloads/jmonkey/jME3.2-stable/lib/lwjgl-platform-natives-linux.jar"/>
 	<classpathentry kind="lib" path="C:/Users/b/Downloads/jmonkey/jME3.2-stable/lib/lwjgl-platform-natives-osx.jar"/>
 	<classpathentry kind="lib" path="C:/Users/b/Downloads/jmonkey/jME3.2-stable/lib/lwjgl-platform-natives-windows.jar"/>
-	<classpathentry kind="lib" path="C:/Users/b/Downloads/jmonkey/jME3.2-stable/lib/nifty.jar"/>
+	<classpathentry kind="lib" path="C:/Users/b/Documents/jmonkey/jME3.2-stable/lib/nifty.jar"/>
 	<classpathentry kind="lib" path="C:/Users/b/Downloads/jmonkey/jME3.2-stable/lib/nifty-default-controls.jar"/>
 	<classpathentry kind="lib" path="C:/Users/b/Downloads/jmonkey/jME3.2-stable/lib/nifty-examples.jar"/>
 	<classpathentry kind="lib" path="C:/Users/b/Downloads/jmonkey/jME3.2-stable/lib/nifty-style-black.jar"/>

@@ -71,4 +71,13 @@ public class Market {
 	private double migrationPreference() {
 		return 1.0 / nodes.size();
 	}
+	
+	public boolean inMarket(Coordinate coord) {
+		for(Node node: nodes) {
+			if(node.coord.equals(coord)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

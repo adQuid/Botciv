@@ -84,8 +84,10 @@ public class GameLogicUtilities {
 		public int compare(Tile arg0, Tile arg1) {
 			if(arg0.tradePower() < arg1.tradePower()) {
 				return 1;
-			} else {
+			} else if (arg0.tradePower() > arg1.tradePower()){
 				return -1;
+			} else {
+				return 0;
 			}
 		}		
 	}

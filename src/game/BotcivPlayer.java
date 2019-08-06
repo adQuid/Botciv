@@ -40,7 +40,7 @@ public class BotcivPlayer implements Player{
 		this.player = player;
 		this.influence = 10;
 		this.labor = 1;
-		this.materials = 5;
+		this.materials = 15;
 	}
 	
 	public BotcivPlayer(BotcivPlayer other) {

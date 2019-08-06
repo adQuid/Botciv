@@ -32,8 +32,8 @@ public class DistanceCalculator {
 	
 	public NodeList coordinatesInRange(Coordinate start, double range){
 		
-		Set<WorkingNode> nodes = new HashSet<WorkingNode>();
-		Set<WorkingNode> nodesToAdd = new HashSet<WorkingNode>();
+		List<WorkingNode> nodes = new ArrayList<WorkingNode>();
+		List<WorkingNode> nodesToAdd = new ArrayList<WorkingNode>();
 		
 		nodesToAdd.add(new WorkingNode(start,null,0.0));
 		
@@ -59,7 +59,7 @@ public class DistanceCalculator {
 		return new NodeList(retval);
 	}
 	
-	private void tryToAdd(Set<WorkingNode> set, Coordinate origin, Coordinate toAdd, double range, double rangeMax) {
+	private void tryToAdd(List<WorkingNode> set, Coordinate origin, Coordinate toAdd, double range, double rangeMax) {
 		if(world.getTileAt(toAdd) == null) {
 			return;
 		}

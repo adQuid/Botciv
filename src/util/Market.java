@@ -47,7 +47,7 @@ public class Market {
 			
 		}
 			
-		totalGrowth = Math.max(0, Math.min((int)((averageFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2)); 
+		totalGrowth = Math.max(-10, Math.min((int)((averageFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2)); 
 		
 		averageFood /= nodes.size();	
 		

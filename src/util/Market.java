@@ -16,7 +16,9 @@ public class Market {
 	
 	public Tile hub;
 	public Set<Node> nodes;//the hub is included in the tiles list
-	public double food;
+	private double totalGrowth;
+	private double totalMigrationPopularity;
+	
 	
 	public Market(Tile hub, Set<Node> tiles) {
 		super();
@@ -36,19 +38,22 @@ public class Market {
 		UnitType pop = UnitType.TYPES.get("population");
 		double averageFood = 0.0;
 		int totalPopulation = 0;
+		totalMigrationPopularity = 0;
 		for(Node current: nodes) {
 			Tile tile = game.world.getTileAt(current.coord);
 			averageFood += tile.food();
 			totalPopulation += tile.population();
+			totalMigrationPopularity += migrationPopularity(tile);
+			
 		}
 			
-		int totalGrowth = Math.max(0, Math.min((int)((averageFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2)); 
+		totalGrowth = Math.max(0, Math.min((int)((averageFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2)); 
 		
 		averageFood /= nodes.size();	
 		
 		for(Node current: nodes) {
 			Tile tile = game.world.getTileAt(current.coord);
-			int growthRate = (int)Math.round(totalGrowth * migrationPreference());
+			int growthRate = (int)Math.round(totalGrowth * (migrationPopularity(tile)/Math.abs(totalMigrationPopularity)));
 			List<Unit> unitList = tile.getUnitsByType(pop);
 			if(unitList.size() > 0) {
 				Unit unit = unitList.get(0);
@@ -68,8 +73,8 @@ public class Market {
 		}
 	}
 	
-	private double migrationPreference() {
-		return 1.0 / nodes.size();
+	private double migrationPopularity(Tile tile) {
+		return 10 - tile.population();
 	}
 	
 	public boolean inMarket(Coordinate coord) {

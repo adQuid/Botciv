@@ -385,7 +385,11 @@ public class MainUI extends SimpleApplication{
 		Element bottomHolder = nifty.getCurrentScreen().findElementById(BasicBottomPanels.BOTTOM_BUTTON_LABEL);
 		nifty.removeChildren(bottomHolder);
 		nifty.cleanup();
-		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
+		try {
+			newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), bottomHolder);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -397,7 +401,10 @@ public class MainUI extends SimpleApplication{
 		Element sideHolder = nifty.getCurrentScreen().findElementById("Right_Panel_Holder");
 		nifty.removeChildren(sideHolder);
 		nifty.cleanup();
-		newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), sideHolder);
-		
+		try {
+			newPanel.build(nifty.niftyDisplay.getNifty(), nifty.getCurrentScreen(), sideHolder);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

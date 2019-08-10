@@ -27,10 +27,9 @@ public class Launcher {
 		try {
 			UnitType.loadData();
 			TileType.loadData();
-			BotcivGame activeGame = loadGame();
-			BotcivPlayer player = (BotcivPlayer)activeGame.getPlayers().get(0);
-			Controller.setController(activeGame);
-
+			Controller.setController("test");
+			BotcivPlayer player = (BotcivPlayer)Controller.instance.getPlayers().get(0);
+			
 			MainUI.setupGUI(player,false);
 			
 			Thread.sleep(2000);
@@ -47,19 +46,5 @@ public class Launcher {
 	public static BotcivGame newGame() {
 		return new BotcivGame();
 	}
-	
-	public static BotcivGame loadGame() {
-		try {
-			System.out.println("loading game");
-			Scanner reader = new Scanner(new File("saves/test.savegam"));
-			Gson gson = new Gson();
-			String saveState = reader.nextLine();
-			return new BotcivGame(gson.fromJson(saveState, Map.class));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+		
 }

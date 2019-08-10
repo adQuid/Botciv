@@ -42,7 +42,7 @@ public class ActionIntegrationTests {
 		Tile tile = baseGame.world.getTileAt(new Coordinate(5,5));
 		tile.addUnit(toMove,baseGame);
 		
-		Controller.setController(baseGame);
+		Controller.setTestController(baseGame);
 		MainUI.setupGUI(player, true);
 		player = MainUI.getGame().playerByName("test");
 						
@@ -69,7 +69,7 @@ public class ActionIntegrationTests {
 		Tile tile = baseGame.world.getTileAt(new Coordinate(5,5));
 		tile.addUnit(toMove,baseGame);
 		
-		Controller.setController(baseGame);
+		Controller.setTestController(baseGame);
 		MainUI.setupGUI(player, true);
 		player = MainUI.getGame().playerByName("test");
 						

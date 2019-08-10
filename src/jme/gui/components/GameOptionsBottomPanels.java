@@ -17,7 +17,7 @@ public class GameOptionsBottomPanels {
 				valignBottom();
 				height("100%");
 				width("50%");
-				interactOnClick("saveGame()");
+				interactOnClick("saveGame(test)");
 			}});
 
 			control(new ButtonBuilder("Load_Button", "Load Game"){{
@@ -25,7 +25,7 @@ public class GameOptionsBottomPanels {
 				valignBottom();
 				height("100%");
 				width("50%");
-				interactOnClick("printstuff()");
+				interactOnClick("loadGame(test)");
 			}});
 		}};
 	}

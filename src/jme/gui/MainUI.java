@@ -108,7 +108,7 @@ public class MainUI extends SimpleApplication{
 		assetManager.registerLocator("assets", FileLocator.class);
 		TileToken.setup(assetManager);
 
-		cam.setLocation(new Vector3f(focus.x + 0.25f,1.2f,focus.y + 0.9f));
+		focusCamera();
 		tiltCamera();
 
 		inputManager.clearMappings();//Apparently application start with mappings
@@ -224,6 +224,10 @@ public class MainUI extends SimpleApplication{
 		}  
 	}
 
+	public static void focusCamera() {
+		instance.cam.setLocation(new Vector3f(focus.x + 0.25f,1.2f,focus.y + 0.9f));
+	}
+	
 	private void tiltCamera(){
 		float tiltFactor = 0.25f / (0.5f+(cam.getLocation().y/2));
 		cam.setRotation(new Quaternion(0.0f,0.7f + tiltFactor,-0.7f,0.0f));
@@ -296,6 +300,7 @@ public class MainUI extends SimpleApplication{
 			for(TileToken token: row) {
 				if(token.geo == geo) {
 					Coordinate coord = token.tile.getCoordinate();
+					focus = coord;
 					GlobalContext.clickAction.doAction(coord);
 				}
 			}
@@ -323,6 +328,7 @@ public class MainUI extends SimpleApplication{
 
 	public static void newTurn() {
 		imageGame = Controller.instance.getImageGame(playingAs);
+		focus = imageGame.playerByName(playingAs.getName()).getLastFocus();
 		GlobalContext.clear();
 		RightPanel.defaultRightPanel();
 		

@@ -116,8 +116,14 @@ public class ButtonActions implements ScreenController{
 		MainUI.updateBottomPanel(GameOptionsBottomPanels.gameOptionsPanel());
 	}
 	
-	public void saveGame() {
-		Controller.instance.saveGame();
+	public void saveGame(String name) {
+		Controller.instance.saveGame(name);
+	}
+	
+	public void loadGame(String name) {
+		Controller.instance.loadGame(name);
+		MainUI.newTurn();
+		MainUI.focusCamera();
 	}
 		
 	public void click() {

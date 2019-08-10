@@ -132,19 +132,21 @@ public class GameLogicUtilities {
 				
 		for(Unit current: units) {
 			if(player.equals(current.getOwner())) {
-				if( current.getHealth() == current.getType().getMaxHealth()) {
-					retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"),current.getStackSize());
-					retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"),current.getStackSize());
-					retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"),current.getStackSize());
-					retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"),current.getStackSize());
-					retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"),current.getStackSize());
-				} else {
-					retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"),current.getStackSize()-1);
-					retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"),current.getStackSize()-1);
-					retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"),current.getStackSize()-1);
-					retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"),current.getStackSize()-1);
-					retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"),current.getStackSize()-1);
+				int stackSize = current.getStackSize();
+				if( current.getHealth() < current.getType().getMaxHealth()) {
+					stackSize--;
 				}
+				retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborGeneration"),stackSize);
+				retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsGeneration"),stackSize);
+				retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceGeneration"),stackSize);
+				retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthGeneration"),stackSize);
+				retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationGeneration"),stackSize);
+				
+				retval.labor = MiscUtilities.addTo(retval.labor,current.getType().getAttribute("laborMaintenance"),-stackSize);
+				retval.materials = MiscUtilities.addTo(retval.materials,current.getType().getAttribute("materialsMaintenance"),-stackSize);
+				retval.influence = MiscUtilities.addTo(retval.influence,current.getType().getAttribute("influenceMaintenance"),-stackSize);
+				retval.wealth = MiscUtilities.addTo(retval.wealth,current.getType().getAttribute("wealthMaintenance"),-stackSize);
+				retval.education = MiscUtilities.addTo(retval.education,current.getType().getAttribute("educationMaintenance"),-stackSize);
 			}
 		}
 		

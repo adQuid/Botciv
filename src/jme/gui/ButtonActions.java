@@ -31,6 +31,7 @@ import jme.gui.components.UnitFocusBottomPanels;
 import jme.gui.descriptionwrappers.ExploreDescriptionWrapper;
 import jme.gui.descriptionwrappers.GenericDescriptionWrapper;
 import jme.gui.descriptionwrappers.BuildDescriptionWrapper;
+import jme.gui.descriptionwrappers.BuildSpecificUnitDescriptionWrapper;
 import jme.gui.descriptionwrappers.ClaimDescriptionWrapper;
 import jme.gui.descriptionwrappers.DescriptionWrapper;
 import jme.gui.descriptionwrappers.ResourceDescriptionWrapper;
@@ -63,13 +64,12 @@ public class ButtonActions implements ScreenController{
 		wrappers.put("explore", ExploreDescriptionWrapper.explore);
 		wrappers.put("claim", ClaimDescriptionWrapper.claim);
 		wrappers.put("build", BuildDescriptionWrapper.build);
-		wrappers.put("migrate",new GenericDescriptionWrapper("Move this unit one tile"));
+		wrappers.put("migrate",new GenericDescriptionWrapper("Move this unit one tile at the cost of 10 influence"));
+		for(UnitType current: UnitType.TYPES.values()) {
+			wrappers.put(current.getId(), new BuildSpecificUnitDescriptionWrapper(current));
+		}
 	}
 	
-	public void printstuff() {
-		System.out.println("is this how we do this?");
-	}
-
 	public void updateDescription(String key) {
 		String text = wrappers.get(key).getDescription();
 		

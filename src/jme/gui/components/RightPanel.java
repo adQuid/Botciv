@@ -100,12 +100,14 @@ public class RightPanel {
 		status = PanelStatus.BUILD_LIST;
 		List<String> labels = new ArrayList<String>();
 		List<String> actions = new ArrayList<String>();
+		List<String> descriptions = new ArrayList<String>();
 		for(UnitType current: units) {
 			labels.add(current.getName());
 			actions.add("buildUnit("+current.getId()+")");
+			descriptions.add(current.getId());
 		}
 		
-		list.setup(labels, actions);
+		list.setup(labels, actions, descriptions);
 		
 		return new PanelBuilder("Unit_List_Holder") {{
 			childLayoutVertical();

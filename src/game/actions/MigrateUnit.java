@@ -46,7 +46,7 @@ public class MigrateUnit extends BotcivAction{
 				game.world.tilesWithinRange(unit.getLocation().getCoordinate(), 1).getCoordinates().contains(location) &&
 				GameLogicUtilities.unitCanTraverse(unit, destination) &&
 				GameLogicUtilities.tryTopay(player, 
-						new ResourcePortfolio("{I:10}"))) {
+						new ResourcePortfolio("{I:"+(10*unit.getStackSize())+"}"))) {
 			game.world.getTileAt(unit.getLocation().getCoordinate()).removeUnit(unit);
 			game.world.getTileAt(location).addUnit(unit,game);
 			player.addExploredTile(location);

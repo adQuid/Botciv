@@ -64,6 +64,7 @@ public class ActionUnitTests {
 		
 		BotcivPlayer player1 = baseGame.playerByName("test");
 		BotcivPlayer player2 = baseGame.playerByName("test 2");
+		player2.setInfluence(100);
 		
 		
 		Unit toMove1 = new Unit(baseGame, UnitType.TYPES.get("population"),player1);	
@@ -121,6 +122,7 @@ public class ActionUnitTests {
 		BotcivGame testGame = new BotcivGame(testWorld);
 		
 		BotcivPlayer player = new BotcivPlayer("test",true);
+		player.setInfluence(100);
 		testGame.players.add(player);
 		
 		return testGame;

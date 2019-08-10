@@ -99,6 +99,7 @@ public class ActionIntegrationTests {
 		BotcivGame testGame = new BotcivGame(testWorld);
 		
 		BotcivPlayer player = new BotcivPlayer("test",true);
+		player.setInfluence(100);
 		player.addExploredTile(new Coordinate(5,5));
 		player.addExploredTile(new Coordinate(5,6));
 		testGame.players.add(player);

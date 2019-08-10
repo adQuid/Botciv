@@ -38,32 +38,37 @@ data:[
 			foodProduced:1.05,
 			migrates:true,
 			tradePower:0.2,
-			builds:["farm","road"]
+			builds:["farm"]
 		}
 	},
 	{
 		id:"road",
 		name:"Road",
+		tooltip:"Reduces movement cost into this tile to 0.5",
 		displayClass:0,
 		displayImportance:2,
 		image:"units/Dirt Road.png",
 		maxHealth:4,
 		attributes:{
 			alwaysBuildable:true,
-			materialsCost:15,
+			laborCost:2,
+			laborMaintenance:0.2,
+			materialsCost:5,
+			materialsMaintenance:0.8,
 			moveCost:0.5
 		}
 	},
 	{
 		id:"farm",
 		name:"Farm",
-		tooltip:"Produces food when at least one population is available to work it.",
+		tooltip:"Produces food when at least one population is available to work it",
 		displayClass:1,
 		displayImportance:2,
 		image:"units/farm.png",
 		maxHealth:8,
 		attributes:{
 			laborCost:1,
+			laborMaintenance:0.4,
 			materialsCost:10,
 			foodProduced:2.2
 		}

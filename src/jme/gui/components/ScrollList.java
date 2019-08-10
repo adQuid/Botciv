@@ -19,6 +19,7 @@ public class ScrollList {
 	private int position = 0;
 	private List<String> labels;
 	private List<String> actions;
+	private List<String> descriptions;
 	private Scroll scroll = new Scroll();
 	
 	public static Map<String,ScrollList> listDictionary = new HashMap<String,ScrollList>();
@@ -31,8 +32,13 @@ public class ScrollList {
 	}
 	
 	public void setup(List<String> labels, List<String> actions) {
+		setup(labels, actions, new ArrayList<String>());
+	}
+	
+	public void setup(List<String> labels, List<String> actions, List<String> descriptions) {
 		this.labels = labels;
 		this.actions = actions;
+		this.descriptions = descriptions;
 	}
 	
 	public PanelBuilder getPanel() {
@@ -46,7 +52,10 @@ public class ScrollList {
 						height((100/size)+"%");
 						width("100%");
 						if(j < actions.size()) {
-							interactOnClick(actions.get(j));
+							interactOnClick(actions.get(j));							
+						}
+						if(j < descriptions.size()) {
+							interactOnMouseOver("updateDescription("+descriptions.get(j)+")");
 						}
 					}});
 				} else {

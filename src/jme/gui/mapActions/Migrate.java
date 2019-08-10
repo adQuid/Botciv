@@ -16,8 +16,7 @@ public class Migrate extends MapAction{
 		if(MainUI.getGame().findMatching(unit) != null &&
 				MainUI.getGame().world.rangeBetween(unit.getLocation().getCoordinate(), coord) <= 1) {
 			MainUI.addAction(new MigrateUnit(MainUI.getGame().findMatching(unit), coord));
-			GlobalContext.getSelectedUnit().getLocation().removeUnit(unit);
-			MainUI.getGame().world.getTileAt(coord).addUnit(unit,MainUI.getGame());
+			new MigrateUnit(MainUI.getGame().findMatching(unit), coord).doAction(MainUI.getGame(), MainUI.getPlayer());
 		} 
 		GlobalContext.clickAction = new FocusOnTile();
 		GlobalContext.setSelectedUnit(null);

@@ -65,7 +65,6 @@ public class Market {
 						totalGrowth -= tile.adjustPopulation(game, -1);
 					}
 				}
-				totalGrowth++;
 			}
 		} else {
 			while(totalGrowth > 0) {
@@ -75,7 +74,6 @@ public class Market {
 						totalGrowth -= tile.adjustPopulation(game, 1);
 					}
 				}
-				totalGrowth--;
 			}
 		}
 	}

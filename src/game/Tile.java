@@ -254,7 +254,7 @@ public class Tile {
 	public double food() {
 		List<Double> foodValues = new ArrayList<Double>();
 		for(Unit current: getUnits()) {
-			if(current.getHealth() == current.getType().getMaxHealth()) {
+			for(int i=0; i < current.getStackSize(); i ++) {
 				foodValues.add(MiscUtilities.extractDouble(current.getType().getAttribute("foodProduced")));
 			}
 		}		
@@ -271,14 +271,40 @@ public class Tile {
 	}
 	
 	public int population() {
+		return populationHealth()/UnitType.TYPES.get("population").getMaxHealth();
+	}
+	
+	public int populationHealth() {
 		int retval = 0;		
 		for(Unit current: getUnitsByType(UnitType.TYPES.get("population"))) {
-			if(current.getHealth() == current.getType().getMaxHealth()) {
-				retval += current.getStackSize();
-			} else {
-				retval += current.getStackSize()-1;
-			}
+			retval += current.getTotalHealth();
 		}		
 		return retval;
+	}
+	
+	public int adjustPopulation(BotcivGame game, int amount) {
+		if(amount < 0) {
+			amount = -1 * Math.min(-amount, populationHealth());
+		}
+		int amountLeft = amount;
+		for(Unit current: getUnitsByType(UnitType.TYPES.get("population"))) {
+			int adjustment;
+			if(amountLeft < 0) {
+				adjustment = -1 * Math.min(-amountLeft, current.getTotalHealth());
+			} else {
+				adjustment = amountLeft;
+			}
+			current.setTotalHealth(current.getTotalHealth() + adjustment);
+			if(current.getTotalHealth() == 0) {
+				units.remove(current);
+			}
+			amountLeft -= adjustment;
+		}
+		if(amountLeft > 0) {
+			Unit toAdd = new Unit(game, UnitType.TYPES.get("population"), getOwner());
+			toAdd.setTotalHealth(amountLeft);
+			addUnit(toAdd, game);
+		}
+		return amount;
 	}
 }

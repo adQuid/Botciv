@@ -36,45 +36,52 @@ public class Market {
 
 	public void tradeFood(BotcivGame game) {
 		UnitType pop = UnitType.TYPES.get("population");
-		double averageFood = 0.0;
+		double totalFood = 0.0;
 		int totalPopulation = 0;
-		totalMigrationPopularity = 0;
 		for(Node current: nodes) {
 			Tile tile = game.world.getTileAt(current.coord);
-			averageFood += tile.food();
 			totalPopulation += tile.population();
-			totalMigrationPopularity += migrationPopularity(tile);
-			
+			totalFood += tile.food();	
 		}
 			
-		totalGrowth = Math.max(-10, Math.min((int)((averageFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2)); 
+		//growth from births/deaths
+		if(game.isLive) {
+			System.out.println(totalFood+" - "+totalPopulation);
+		}
+		totalGrowth = Math.min((int)((totalFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2); 
 		
-		averageFood /= nodes.size();	
-		
+		//growth from internal migration
 		for(Node current: nodes) {
 			Tile tile = game.world.getTileAt(current.coord);
-			int growthRate = (int)Math.round(totalGrowth * (migrationPopularity(tile)/Math.abs(totalMigrationPopularity)));
-			List<Unit> unitList = tile.getUnitsByType(pop);
-			if(unitList.size() > 0) {
-				Unit unit = unitList.get(0);
-				totalGrowth -= growthRate;
-				while(growthRate > 0 && unit.getHealth() < unit.getType().getMaxHealth()) {
-					unit.setHealth(unit.getHealth()+1);
-					growthRate--;
+			int change = Math.max(Math.min(tile.population(), idealPopulationHealth(tile) - tile.populationHealth()), -tile.population());
+			totalGrowth += tile.adjustPopulation(game, (int)Math.min(totalGrowth, change));
+		}
+		
+		if(totalGrowth < 0) {
+			while(totalGrowth < 0) {
+				for(Node current: nodes) {
+					if(totalGrowth < 0) {
+						Tile tile = game.world.getTileAt(current.coord);
+						totalGrowth -= tile.adjustPopulation(game, -1);
+					}
 				}
+				totalGrowth++;
 			}
-
-			while(growthRate > 0) {
-				Unit toAdd = new Unit(game, pop,tile.getOwner(),
-						Math.min(pop.getMaxHealth(), growthRate));
-				growthRate -= toAdd.getHealth();
-				tile.addUnit(toAdd, game);
+		} else {
+			while(totalGrowth > 0) {
+				for(Node current: nodes) {
+					if(totalGrowth > 0) {
+						Tile tile = game.world.getTileAt(current.coord);
+						totalGrowth -= tile.adjustPopulation(game, 1);
+					}
+				}
+				totalGrowth--;
 			}
 		}
 	}
-	
-	private double migrationPopularity(Tile tile) {
-		return 10 - tile.population();
+		
+	private int idealPopulationHealth(Tile tile) {
+		return 3 * UnitType.TYPES.get("population").getMaxHealth();
 	}
 	
 	public boolean inMarket(Coordinate coord) {

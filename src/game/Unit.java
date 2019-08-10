@@ -148,10 +148,23 @@ public class Unit {
 		return stackSize;
 	}
 
+	public int getTotalHealth() {
+		return (stackSize-1) * type.getMaxHealth() + health;
+	}
+	
 	public void setStackSize(int stackSize) {
 		this.stackSize = stackSize;
 	}
 
+	public void setTotalHealth(int health) {
+		this.stackSize = (int)Math.ceil(health / (1.0 * type.getMaxHealth()));
+		if(health % type.getMaxHealth() == 0) {
+			this.health = type.getMaxHealth();
+		} else {			
+			this.health = health % type.getMaxHealth();
+		}
+	}
+	
 	public String getDisplayStackSize() {
 		if(getHealth() == type.getMaxHealth()) {
 			return ""+stackSize;

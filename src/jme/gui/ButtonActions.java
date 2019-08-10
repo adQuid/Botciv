@@ -24,6 +24,7 @@ import game.actions.SplitUnit;
 import jme.gui.components.CornerDisplay;
 import jme.gui.MainUI;
 import jme.gui.components.DescriptionDisplay;
+import jme.gui.components.GameOptionsBottomPanels;
 import jme.gui.components.RightPanel;
 import jme.gui.components.ScrollList;
 import jme.gui.components.TileFocusBottomPanels;
@@ -64,7 +65,7 @@ public class ButtonActions implements ScreenController{
 		wrappers.put("explore", ExploreDescriptionWrapper.explore);
 		wrappers.put("claim", ClaimDescriptionWrapper.claim);
 		wrappers.put("build", BuildDescriptionWrapper.build);
-		wrappers.put("migrate",new GenericDescriptionWrapper("Move this unit one tile at the cost of 10 influence"));
+		wrappers.put("migrate",new GenericDescriptionWrapper("Move this unit one tile at the cost of 10 influence per pop"));
 		for(UnitType current: UnitType.TYPES.values()) {
 			wrappers.put(current.getId(), new BuildSpecificUnitDescriptionWrapper(current));
 		}
@@ -111,10 +112,14 @@ public class ButtonActions implements ScreenController{
 		}
 	}
 	
+	public void openGameOptions() {
+		MainUI.updateBottomPanel(GameOptionsBottomPanels.gameOptionsPanel());
+	}
+	
 	public void saveGame() {
 		Controller.instance.saveGame();
 	}
-	
+		
 	public void click() {
 		if(!GlobalContext.waitingForPlayers) {
 			MainUI.instance.click();
@@ -179,6 +184,7 @@ public class ButtonActions implements ScreenController{
 		if(GameLogicUtilities.tryTopay(MainUI.getPlayer(), toBuild.getCost())) {
 			GlobalContext.getSelectedTile().addUnit(new Unit(MainUI.getGame(), toBuild,MainUI.getPlayer()),MainUI.getGame());
 			MainUI.addAction(new BuildUnit(GlobalContext.getSelectedTile().getCoordinate(),toBuild));
+			RightPanel.tileFocusRightPanel(GlobalContext.getSelectedTile());
 			MainUI.updateGameDisplay();
 		} else {
 			System.out.println("you can't afford this");

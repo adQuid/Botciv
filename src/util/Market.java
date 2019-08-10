@@ -43,11 +43,7 @@ public class Market {
 			totalPopulation += tile.population();
 			totalFood += tile.food();	
 		}
-			
-		//growth from births/deaths
-		if(game.isLive) {
-			System.out.println(totalFood+" - "+totalPopulation);
-		}
+		
 		totalGrowth = Math.min((int)((totalFood - totalPopulation) * pop.getMaxHealth()), totalPopulation * 2); 
 		
 		//growth from internal migration

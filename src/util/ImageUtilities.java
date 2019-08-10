@@ -137,19 +137,32 @@ public class ImageUtilities {
 		
 		int color = 0xFF000000;
 		if(player.getName().hashCode() % 5 == 0) {
-			color += 0xFF;
+			color += 0x55DD;
 		}
 		if(player.getName().hashCode() % 5 == 1) {
-			color += 0xFF00;
+			color += 0xDD55;
 		}
 		if(player.getName().hashCode() % 5 == 2) {
-			color += 0xFFFF;
+			color += 0xDDDD;
 		}
 		if(player.getName().hashCode() % 5 == 3) {
-			color += 0xFF0000;
+			color += 0xDD0055;
 		}
 		if(player.getName().hashCode() % 5 == 4) {
-			color += 0xFF00FF;
+			color += 0xDD00DD;
+		}
+		
+		if(player.getName().hashCode() % 4 == 0) {
+			color += 0x22;
+		}
+		if(player.getName().hashCode() % 4 == 1) {
+			color += 0x2200;
+		}
+		if(player.getName().hashCode() % 4 == 2) {
+			color += 0x2222;
+		}
+		if(player.getName().hashCode() % 4 == 3) {
+			color += 0x220000;
 		}
 		
 		for(int x=0; x<retval.getWidth(); x++) {

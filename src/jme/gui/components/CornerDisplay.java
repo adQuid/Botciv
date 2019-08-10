@@ -126,7 +126,7 @@ public class CornerDisplay {
 						valignBottom();
 						height("100%");
 						width("50%");
-						interactOnClick("saveGame()");
+						interactOnClick("openGameOptions()");
 					}});
 
 				}});

@@ -35,11 +35,11 @@ public class TileFocusBottomPanels {
 				height("100%");
 				width("20%");
 				filename("images/"+tile.getType().getImage());
-				image(new ImageBuilder() {{
+				/*image(new ImageBuilder() {{
 					height("100%");
 					width("100%");
 					filename("images/ui/labor.png");
-				}});
+				}});*/
 			}});
 
 
@@ -53,7 +53,7 @@ public class TileFocusBottomPanels {
 					height("20%");
 					width("100%");
 					if(tile.getOwner() == null) {
-						text("Unclaimed "+tile.getType().getName()+" "+tile.getCoordinate());
+						text("Unclaimed "+tile.getType().getName());
 					} else {
 						text(tile.getOwner().getName()+"'s "+tile.getType().getName());
 					}
